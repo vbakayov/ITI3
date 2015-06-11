@@ -287,6 +287,7 @@ public class BarChartCellRenderer extends DefaultTableCellRenderer
 			lColumnClass = iTable.getColumnClass(iColumn);
 		}
 		if (!mMinMaxMap.containsKey(lColumn)) {
+			System.out.println(String.valueOf(lModelColumn)+ "  "+ lColumnClass.getClass().toString());
 			resetMinMax(lModelColumn, lColumnClass);
 		}
 		Format lFormatter = getFormat(lColumn, lColumnClass);

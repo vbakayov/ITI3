@@ -69,30 +69,31 @@ class SelectorPanel extends JPanel
 		this.available = model.getAvailableRows();
 		this.selected = new ArrayList<Integer>();
 		this.setLayout(new GridLayout(12,2));
+		System.out.println("HEREEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE");
 		
 		// the lists are sorted so that the check boxes appear in alphabetical order
 		currencyISOList = new ArrayList<String>();		
-		for (int row = 0; row < model.dataSize(); row++) {
-        		String currencyISO = (String) model.record(row).get(4);
-        		if (!currencyISOList.contains(currencyISO))
-        			currencyISOList.add(currencyISO);
-		}
+//		for (int row = 0; row < model.dataSize(); row++) {
+//        		String currencyISO = (String) model.record(row).get(4);
+//        		if (!currencyISOList.contains(currencyISO))
+//        			currencyISOList.add(currencyISO);
+//		}
 		Collections.sort(currencyISOList);
 		
 		customerSegmentList = new ArrayList<String>();		
-		for (int row = 0; row < model.dataSize(); row++) {
-        		String customerSegment = (String) model.record(row).get(5);
-        		if (!customerSegmentList.contains(customerSegment))
-        			customerSegmentList.add(customerSegment);
-		}
+//		for (int row = 0; row < model.dataSize(); row++) {
+//        		String customerSegment = (String) model.record(row).get(5);
+//        		if (!customerSegmentList.contains(customerSegment))
+//        			customerSegmentList.add(customerSegment);
+//		}
 		Collections.sort(customerSegmentList);
 		
 		tradeDateList = new ArrayList<String>();		
-		for (int row = 0; row < model.dataSize(); row++) {
-        		String tradeDate = (String) model.record(row).get(10);
-        		if (!tradeDateList.contains(tradeDate))
-        			tradeDateList.add(tradeDate);
-		}
+//		for (int row = 0; row < model.dataSize(); row++) {
+//        		String tradeDate = (String) model.record(row).get(10);
+//        		if (!tradeDateList.contains(tradeDate))
+//        			tradeDateList.add(tradeDate);
+//		}
 		Collections.sort(tradeDateList);
 		
 		// create and add the menu bars to the panel (along with their descriptive labels)
@@ -221,19 +222,19 @@ class SelectorPanel extends JPanel
 		add (pIDRange);
 		
 		// YIELD
-		yieldRange = new JRangeSlider(-25, 75, -25, 75, JRangeSlider.HORIZONTAL);
+		yieldRange = new JRangeSlider(0, 100, 0, 100, JRangeSlider.HORIZONTAL);
 		yieldRange.addChangeListener(new RangeSliderChangeListener());
 		yieldRange.addChangeListener(new RangeSliderLabelUpdater());
 		
-		yieldLabel = new JLabel("YIELD   [ " + yieldRange.getLowValue() + "% to " + yieldRange.getHighValue() + "% ]");
+		yieldLabel = new JLabel("Age   [ " + yieldRange.getLowValue() + "% to " + yieldRange.getHighValue() + "% ]");
 		yieldLabel.setBorder(BorderFactory.createLineBorder(Color.lightGray, 1));
 		yieldLabel.setHorizontalAlignment(JLabel.CENTER);
 		yieldLabel.setVerticalAlignment(JLabel.CENTER);  
         
 		add (yieldLabel);
 		add (yieldRange);
-		
-		// DAYS_TO_MATURITY
+		System.out.println("Hafter adding the labels and slider");
+//		// DAYS_TO_MATURITY
 		dtmRange = new JRangeSlider(1, 10000, 1, 10000, JRangeSlider.HORIZONTAL);
 		dtmRange.addChangeListener(new RangeSliderChangeListener());
 		dtmRange.addChangeListener(new RangeSliderLabelUpdater());
@@ -337,50 +338,50 @@ class SelectorPanel extends JPanel
 				boolean passFilters = true;
 				
 				// filter for X
-	        	if (parseD(record.get(0)) < xRange.getLowValue() ||
-	        		parseD(record.get(0)) > xRange.getHighValue()) 
-	        		passFilters = false;
-	        	
+//	        	if (parseD(record.get(0)) < xRange.getLowValue() ||
+//	        		parseD(record.get(0)) > xRange.getHighValue()) 
+//	        		passFilters = false;
+//	        	
 	        	// filter for Y
-	        	if (parseD(record.get(1)) < yRange.getLowValue() ||
-		        	parseD(record.get(1)) > yRange.getHighValue()) 
-		        	passFilters = false;
+//	        	if (parseD(record.get(1)) < yRange.getLowValue() ||
+//		        	parseD(record.get(1)) > yRange.getHighValue()) 
+//		        	passFilters = false;
 	        	
 	        	// filter for CUSTOMER_ID
-	        	if (parseD(record.get(2)) < cIDRange.getLowValue() ||
-		        	parseD(record.get(2)) > cIDRange.getHighValue()) 
-		        	passFilters = false;
+//	        	if (parseD(record.get(2)) < cIDRange.getLowValue() ||
+//		        	parseD(record.get(2)) > cIDRange.getHighValue()) 
+//		        	passFilters = false;
 	        	
 	        	// filter for PRODUCTTYPE_ID
-	        	if (parseD(record.get(3)) < pIDRange.getLowValue() ||
-			        parseD(record.get(3)) > pIDRange.getHighValue()) 
-		        	passFilters = false;
-	        	
+//	        	if (parseD(record.get(3)) < pIDRange.getLowValue() ||
+//			        parseD(record.get(3)) > pIDRange.getHighValue()) 
+//		        	passFilters = false;
+//	        	
 	        	// filter for YIELD
-	        	if (parseD(record.get(6)) < yieldRange.getLowValue() ||
-	        		parseD(record.get(6)) > yieldRange.getHighValue())
+	        	if (parseD(record.get(2)) < yieldRange.getLowValue() ||
+	        		parseD(record.get(2)) > yieldRange.getHighValue())
 		        	passFilters = false;
 	        	
-	        	// filter for DAYS_TO_MATURITY
-	        	if (parseD(record.get(7)) < dtmRange.getLowValue() ||
-		        	parseD(record.get(7)) > dtmRange.getHighValue())
-		        	passFilters = false;
-	        	
-	        	// filter for AMOUNT_CHF(000)
-	        	if (parseD(record.get(8)) < amountRange.getLowValue() ||
-		        	parseD(record.get(8)) > amountRange.getHighValue())
-		        	passFilters = false;
-	        	
-	        	// filter for FULLNAME
-	        	if (((String)record.get(9)).charAt(0) < (char)('A' + fullnameRange.getLowValue()) ||
-	        		((String)record.get(9)).charAt(0) > (char)('A' + fullnameRange.getHighValue())) 
-		        	passFilters = false;
-	        	
-	        	// filter for INDEX
-	        	// omit the 'T' at the beginning and parse a double from the rest of the string
-	        	double value = Double.parseDouble(((String) record.get(11)).substring(1));
-	        	if (value < indexRange.getLowValue() || value > indexRange.getHighValue())
-		        	passFilters = false;
+//	        	// filter for DAYS_TO_MATURITY
+//	        	if (parseD(record.get(7)) < dtmRange.getLowValue() ||
+//		        	parseD(record.get(7)) > dtmRange.getHighValue())
+//		        	passFilters = false;
+//	        	
+//	        	// filter for AMOUNT_CHF(000)
+//	        	if (parseD(record.get(8)) < amountRange.getLowValue() ||
+//		        	parseD(record.get(8)) > amountRange.getHighValue())
+//		        	passFilters = false;
+//	        	
+//	        	// filter for FULLNAME
+//	        	if (((String)record.get(9)).charAt(0) < (char)('A' + fullnameRange.getLowValue()) ||
+//	        		((String)record.get(9)).charAt(0) > (char)('A' + fullnameRange.getHighValue())) 
+//		        	passFilters = false;
+//	        	
+//	        	// filter for INDEX
+//	        	// omit the 'T' at the beginning and parse a double from the rest of the string
+//	        	double value = Double.parseDouble(((String) record.get(11)).substring(1));
+//	        	if (value < indexRange.getLowValue() || value > indexRange.getHighValue())
+//		        	passFilters = false;
 
 	        	if (passFilters) filtered.add(row);
 	        			

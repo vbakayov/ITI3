@@ -25,8 +25,8 @@ class TradeViewerFrame extends JFrame {
         addWindowListener(new WindowCloser());
 
         // add the main Swing components
-        scatterplotPanel = new ScatterplotPanel(model);
-        model.addChild(scatterplotPanel);
+    //    scatterplotPanel = new ScatterplotPanel(model);
+    //    model.addChild(scatterplotPanel);
         tablePanel = new TablePanel(model);
         model.addChild(tablePanel);
         selectorPanel = new SelectorPanel(model);
@@ -43,7 +43,7 @@ class TradeViewerFrame extends JFrame {
         // prep component layout
         Container contentPane = getContentPane();
         contentPane.setLayout(new BorderLayout());
-        contentPane.add("Center", scatterplotPanel);
+        //contentPane.add("Center", scatterplotPanel);
         contentPane.add("South", dataPanel);
 
         final int DEFAULT_FRAME_WIDTH = 900;

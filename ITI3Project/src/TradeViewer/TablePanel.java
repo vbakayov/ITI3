@@ -100,18 +100,14 @@ class TablePanel extends JPanel
 	// Inner class for the table model.
 	private class RecordTableModel extends AbstractTableModel {
 		
-	    private final String[] columnNames = {"X", "Y", "CUSTOMER_ID", "PRODUCTTYPE_ID",
-	                                    	  "CURRENCY_ISO", "CUSTOMER_SEGMENT", "YIELD",
-	                                    	  "DAYS_TO_MATURITY", "AMOUNT_CHF(000)",
-	                                    	  "FULLNAME","TRADE_DATE", "INDEX"};
+	    private final String[] columnNames = {"Service User ID", "Gender","Age"};
 	    private Object[][] data;
 	    	
 	    // override getColumnClass to return our chosen class type - 
 	    // getColumnClass has to return Double in order to create a bar chart
         @Override  
         public Class getColumnClass(int columnIndex) {
-        	if (columnIndex == 4 || columnIndex == 5 || columnIndex == 9 ||
-        		columnIndex == 10 || columnIndex == 11)
+        	if (columnIndex == 0 || columnIndex == 1)
         		return java.lang.String.class;
         	else 
         		return java.lang.Double.class; 
@@ -136,6 +132,7 @@ class TablePanel extends JPanel
 	        return columnNames[col];
 	    }
 	    public Object getValueAt(int row, int col) {
+	    	System.out.println("ROW+ COL : "+row + "  "+ col +" ");
 	        return data[row][col];
 	    }
 	    public void setValue(Object value, int row, int col) {
