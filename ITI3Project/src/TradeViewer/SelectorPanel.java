@@ -50,14 +50,14 @@ class SelectorPanel extends JPanel
 	private JRangeSlider xRange, yRange, cIDRange, pIDRange, yieldRange, dtmRange,
 						 amountRange, fullnameRange, indexRange;
 	// menu bars with menus containing check boxes for the categorical attributes
-	private JMenuBar currencyISOMenuBar, customerSegmentMenuBar, tradeDateMenuBar;
+	private JMenuBar AgeGroupMenuBar, customerSegmentMenuBar, tradeDateMenuBar;
 	private JMenu currencyMenu, customerMenu, tradeDateMenu;
 	// descriptive labels
 	private JLabel xLabel, yLabel, cIDLabel, pIDLabel, yieldLabel, 
 				   dtmLabel, amountLabel, fullnameLabel, indexLabel,	   
-				   currencyISOLabel, customerSegmentLabel, tradeDateLabel;
+				   AgeGroupLabel, customerSegmentLabel, tradeDateLabel;
 	// used for creating the check boxes
-	private ArrayList<String> currencyISOList, customerSegmentList, tradeDateList;
+	private ArrayList<String> AgeGroupList, customerSegmentList, tradeDateList;
     // used for filtering the points
     private ArrayList<Integer> available;
     // used for multiple selection of points
@@ -72,13 +72,13 @@ class SelectorPanel extends JPanel
 		System.out.println("HEREEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE");
 		
 		// the lists are sorted so that the check boxes appear in alphabetical order
-		currencyISOList = new ArrayList<String>();		
-//		for (int row = 0; row < model.dataSize(); row++) {
-//        		String currencyISO = (String) model.record(row).get(4);
-//        		if (!currencyISOList.contains(currencyISO))
-//        			currencyISOList.add(currencyISO);
-//		}
-		Collections.sort(currencyISOList);
+		AgeGroupList = new ArrayList<String>();		
+		for (int row = 0; row < model.dataSize(); row++) {
+        		String AgeGroup = (String) model.record(row).get(3);
+        		if (!AgeGroupList.contains( AgeGroup))
+        			AgeGroupList.add( AgeGroup);
+		}
+		Collections.sort(AgeGroupList);
 		
 		customerSegmentList = new ArrayList<String>();		
 //		for (int row = 0; row < model.dataSize(); row++) {
@@ -103,23 +103,23 @@ class SelectorPanel extends JPanel
 		currencyMenu.setBorder(BorderFactory.createLineBorder(Color.lightGray, 1));
 		currencyMenu.setBorderPainted(true);
 		
-		currencyISOMenuBar = new JMenuBar();		
-		currencyISOMenuBar.add("MIDDLE", currencyMenu);
-		currencyISOMenuBar.setBorder(BorderFactory.createLineBorder(Color.lightGray, 1));
+		AgeGroupMenuBar = new JMenuBar();		
+		AgeGroupMenuBar.add("MIDDLE", currencyMenu);
+		AgeGroupMenuBar.setBorder(BorderFactory.createLineBorder(Color.lightGray, 1));
 		
-		for (String str : currencyISOList) {
+		for (String str : AgeGroupList) {
 			JCheckBoxMenuItem cb = new JCheckBoxMenuItem(str);
 			cb.addItemListener(new CheckBoxListener ());
 			currencyMenu.add(cb);
 		}
 		
-		currencyISOLabel = new JLabel("CURRENCY_ISO");
-		currencyISOLabel.setBorder(BorderFactory.createLineBorder(Color.lightGray, 1));
-		currencyISOLabel.setHorizontalAlignment(JLabel.CENTER);
-        currencyISOLabel.setVerticalAlignment(JLabel.CENTER);
+		 AgeGroupLabel = new JLabel("AgeGroup");
+		 AgeGroupLabel.setBorder(BorderFactory.createLineBorder(Color.lightGray, 1));
+		 AgeGroupLabel.setHorizontalAlignment(JLabel.CENTER);
+		 AgeGroupLabel.setVerticalAlignment(JLabel.CENTER);
         
-        add(currencyISOLabel);
-		add(currencyISOMenuBar);
+        add( AgeGroupLabel);
+		add(AgeGroupMenuBar);
 		
 		// CUSTOMER_SEGMENT
 		customerMenu = new JMenu("Selection Menu");
@@ -226,7 +226,7 @@ class SelectorPanel extends JPanel
 		yieldRange.addChangeListener(new RangeSliderChangeListener());
 		yieldRange.addChangeListener(new RangeSliderLabelUpdater());
 		
-		yieldLabel = new JLabel("Age   [ " + yieldRange.getLowValue() + "% to " + yieldRange.getHighValue() + "% ]");
+		yieldLabel = new JLabel("Age   [ " + yieldRange.getLowValue() + " to " + yieldRange.getHighValue() + "]");
 		yieldLabel.setBorder(BorderFactory.createLineBorder(Color.lightGray, 1));
 		yieldLabel.setHorizontalAlignment(JLabel.CENTER);
 		yieldLabel.setVerticalAlignment(JLabel.CENTER);  
@@ -300,6 +300,8 @@ class SelectorPanel extends JPanel
 	// inner class that handles events from the check boxes
     private class CheckBoxListener implements ItemListener {	
     	public void itemStateChanged(ItemEvent event) {
+    		System.out.println("STATEEEE CHANGE");
+    		ArrayList<Integer> filtered = new ArrayList<Integer>()	;
     		JCheckBoxMenuItem source = (JCheckBoxMenuItem) event.getSource() ;
         	String value = source.getText();
         	// a check box is selected -
@@ -307,12 +309,15 @@ class SelectorPanel extends JPanel
         	if (event.getStateChange() == ItemEvent.SELECTED) {       	
 	        	for (int row = 0; row < model.dataSize(); row++) {
 	        		// do not bother with already selected rows
-	        		if (!selected.contains(row)) {
+	        		if (available.contains(row)) {
 		        		ArrayList record = model.record(row);
-			        	if (record.contains(value)) selected.add(row);
+			        	if (record.contains(value)) filtered.add(row);
 	        		}
 	        	}
-	        	model.select(selected);
+	        	//model.select(available);
+	        	
+	        	model.setAvailableRows(filtered);
+	        	model.select(new ArrayList());
         	}
     	}    	  	
     }
