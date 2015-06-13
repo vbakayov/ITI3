@@ -38,8 +38,10 @@ import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+
 import java.util.*;
 
 class SelectorPanel extends JPanel 
@@ -50,25 +52,33 @@ class SelectorPanel extends JPanel
 	private JRangeSlider xRange, yRange, cIDRange, pIDRange, yieldRange, dtmRange,
 						 amountRange, fullnameRange, indexRange;
 	// menu bars with menus containing check boxes for the categorical attributes
-	private JMenuBar AgeGroupMenuBar, customerSegmentMenuBar, tradeDateMenuBar;
+	private JMenuBar AgeGroupMenuBar, CountrySegmentMenuBar, tradeDateMenuBar;
 	private JMenu currencyMenu, customerMenu, tradeDateMenu;
 	// descriptive labels
 	private JLabel xLabel, yLabel, cIDLabel, pIDLabel, yieldLabel, 
 				   dtmLabel, amountLabel, fullnameLabel, indexLabel,	   
-				   AgeGroupLabel, customerSegmentLabel, tradeDateLabel;
+				   AgeGroupLabel, CountrySegmentLabel, tradeDateLabel;
 	// used for creating the check boxes
-	private ArrayList<String> AgeGroupList, customerSegmentList, tradeDateList;
+	private ArrayList<String> AgeGroupList, countrySegmentList, tradeDateList;
     // used for filtering the points
     private ArrayList<Integer> available;
     // used for multiple selection of points
     private ArrayList<Integer> selected;
+    
+    private ArrayList<JCheckBoxMenuItem> selectedCategories;
+    
+    private ArrayList<Integer> filtered;
+    private int activeFilters ;
 	
 	public SelectorPanel(Model m) {
 		
 		this.model = m;
 		this.available = model.getAvailableRows();
 		this.selected = new ArrayList<Integer>();
+		this.selectedCategories = new ArrayList<JCheckBoxMenuItem>();
 		this.setLayout(new GridLayout(12,2));
+		this.filtered  = new ArrayList<Integer>()	;
+		activeFilters= 0;
 		System.out.println("HEREEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE");
 		
 		// the lists are sorted so that the check boxes appear in alphabetical order
@@ -80,13 +90,13 @@ class SelectorPanel extends JPanel
 		}
 		Collections.sort(AgeGroupList);
 		
-		customerSegmentList = new ArrayList<String>();		
-//		for (int row = 0; row < model.dataSize(); row++) {
-//        		String customerSegment = (String) model.record(row).get(5);
-//        		if (!customerSegmentList.contains(customerSegment))
-//        			customerSegmentList.add(customerSegment);
-//		}
-		Collections.sort(customerSegmentList);
+		countrySegmentList = new ArrayList<String>();		
+		for (int row = 0; row < model.dataSize(); row++) {
+        		String countrySegment = (String) model.record(row).get(4);
+        		if (!countrySegmentList.contains(countrySegment))
+        			countrySegmentList.add(countrySegment);
+		}
+		Collections.sort(countrySegmentList);
 		
 		tradeDateList = new ArrayList<String>();		
 //		for (int row = 0; row < model.dataSize(); row++) {
@@ -100,6 +110,7 @@ class SelectorPanel extends JPanel
 		
 		// CURRENCY_ISO
 		currencyMenu = new JMenu("Selection Menu");
+		currencyMenu.setName("Ageee");
 		currencyMenu.setBorder(BorderFactory.createLineBorder(Color.lightGray, 1));
 		currencyMenu.setBorderPainted(true);
 		
@@ -126,23 +137,23 @@ class SelectorPanel extends JPanel
 		customerMenu.setBorder(BorderFactory.createLineBorder(Color.lightGray, 1));
 		customerMenu.setBorderPainted(true);
 		
-		customerSegmentMenuBar = new JMenuBar();		
-		customerSegmentMenuBar.add("MIDDLE", customerMenu);
-		customerSegmentMenuBar.setBorder(BorderFactory.createLineBorder(Color.lightGray, 1));
+		CountrySegmentMenuBar = new JMenuBar();		
+		CountrySegmentMenuBar.add("MIDDLE", customerMenu);
+		CountrySegmentMenuBar.setBorder(BorderFactory.createLineBorder(Color.lightGray, 1));
 		
-		for (String str : customerSegmentList) {
+		for (String str : countrySegmentList) {
 			JCheckBoxMenuItem cb = new JCheckBoxMenuItem(str);
 			cb.addItemListener(new CheckBoxListener ());
 			customerMenu.add(cb);
 		} 
 		
-		customerSegmentLabel = new JLabel("CUSTOMER_SEGMENT");
-		customerSegmentLabel.setBorder(BorderFactory.createLineBorder(Color.lightGray, 1));
-		customerSegmentLabel.setHorizontalAlignment(JLabel.CENTER);
-        customerSegmentLabel.setVerticalAlignment(JLabel.CENTER); 
+		CountrySegmentLabel = new JLabel("Country");
+		CountrySegmentLabel.setBorder(BorderFactory.createLineBorder(Color.lightGray, 1));
+		CountrySegmentLabel.setHorizontalAlignment(JLabel.CENTER);
+		CountrySegmentLabel.setVerticalAlignment(JLabel.CENTER); 
         
-		add(customerSegmentLabel);
-		add(customerSegmentMenuBar);
+		add(CountrySegmentLabel);
+		add(CountrySegmentMenuBar);
 		
 		// TRADE_DATE
 		tradeDateMenu = new JMenu("Selection Menu");
@@ -299,25 +310,38 @@ class SelectorPanel extends JPanel
 	
 	// inner class that handles events from the check boxes
     private class CheckBoxListener implements ItemListener {	
+    	
     	public void itemStateChanged(ItemEvent event) {
     		System.out.println("STATEEEE CHANGE");
-    		ArrayList<Integer> filtered = new ArrayList<Integer>()	;
     		JCheckBoxMenuItem source = (JCheckBoxMenuItem) event.getSource() ;
-        	String value = source.getText();
+    		String value2 = source.getText();
+    		
+//    		JPopupMenu fromParent = (JPopupMenu)source.getParent();
+//    		JMenu foo = (JMenu)fromParent.getInvoker();	
+//    		System.out.println(foo.getName());
+
         	// a check box is selected -
         	// select all items that match the criteria
-        	if (event.getStateChange() == ItemEvent.SELECTED) {       	
+        	if (event.getStateChange() == ItemEvent.SELECTED) {  
+        		if(activeFilters == 0) filtered.clear();;
+        		activeFilters++;
+        		selectedCategories.add(source);
 	        	for (int row = 0; row < model.dataSize(); row++) {
-	        		// do not bother with already selected rows
-	        		if (available.contains(row)) {
 		        		ArrayList record = model.record(row);
-			        	if (record.contains(value)) filtered.add(row);
-	        		}
+			        	if (record.contains(value2)) filtered.add(row);
 	        	}
-	        	//model.select(available);
-	        	
 	        	model.setAvailableRows(filtered);
 	        	model.select(new ArrayList());
+        	}	
+        	if(event.getStateChange()== ItemEvent.DESELECTED){
+        		activeFilters--;
+        		for(int row = 0; row<model.dataSize(); row++){
+        			ArrayList record = model.record(row);
+        			if(activeFilters == 0) filtered.add(row);
+        			else if(record.contains(value2)) filtered.remove(new Integer(row));
+        		}	
+        		model.setAvailableRows(filtered);
+        		model.select(new ArrayList());
         	}
     	}    	  	
     }

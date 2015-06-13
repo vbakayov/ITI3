@@ -132,7 +132,7 @@ class TablePanel extends JPanel
 	        return columnNames[col];
 	    }
 	    public Object getValueAt(int row, int col) {
-	    	System.out.println("ROW+ COL : "+row + "  "+ col +" ");
+	    	//System.out.println("ROW+ COL : "+row + "  "+ col +" ");
 	        return data[row][col];
 	    }
 	    public void setValue(Object value, int row, int col) {
