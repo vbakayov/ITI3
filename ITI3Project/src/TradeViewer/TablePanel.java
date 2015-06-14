@@ -53,6 +53,8 @@ class TablePanel extends JPanel
 	// a slider to edit the row height
 	private JSlider rowHeightSlider;
 	
+	private  JScrollPane scrollPane ;
+	
 	public TablePanel(Model m) {
 		
 		this.model = m;
@@ -91,7 +93,7 @@ class TablePanel extends JPanel
         rowHeightSlider.addChangeListener(new RowHeightSliderListener ());
 		
 	    // add the table to a scroll pane
-	    JScrollPane scrollPane = new JScrollPane(recordTable);
+	     scrollPane = new JScrollPane(recordTable);
 	    setLayout(new BorderLayout());
 	    add("Center", scrollPane);
 	    add("West", rowHeightSlider);
@@ -176,6 +178,7 @@ class TablePanel extends JPanel
 				catch (IllegalArgumentException e) {}
 			}	
 		ready = true;
+		 scrollPane.getViewport().revalidate();
 		recordTable.repaint();
 	}
 	

@@ -339,7 +339,7 @@ class SelectorPanel extends JPanel
         		
 	        	model.setAvailableRows(filterdata());
 	        	model.select(new ArrayList());
-	        	filterdata();
+	        	
         		
         	}
         	// a check box is  deselected 
@@ -371,12 +371,12 @@ class SelectorPanel extends JPanel
     }
     /**
      * 
-     * Method to find the union of all filters
+     * Method to find the  intersection of all filters
      * Enables multi filtering
      * 
      * **/
     private ArrayList<Integer> filterdata(){
-    	//store the elements which occur in every(union)  menu(filter)
+    	//store the elements which occur in every(intersection)  menu(filter)
     	ArrayList<Integer> output = new ArrayList<Integer>();
     	int first= 0;
     	//iterate on  the menus
@@ -386,7 +386,7 @@ class SelectorPanel extends JPanel
     		//System.out.println(pair.getKey() + " = " + pair.getValue());
     		ArrayList<Integer> data =   ((SelectionFilter) pair.getValue()).getData();
     		if(first++ == 0) output.addAll(data);
-    		//union
+    		//Intersection
     		output.retainAll(data);
     	}
     	return output;
