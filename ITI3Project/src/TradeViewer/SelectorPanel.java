@@ -44,6 +44,7 @@ import javax.swing.event.ChangeListener;
 
 import java.util.*;
 
+
 class SelectorPanel extends JPanel 
 					implements ViewController {
 	
@@ -64,20 +65,19 @@ class SelectorPanel extends JPanel
     private ArrayList<Integer> available;
     // used for multiple selection of points
     private ArrayList<Integer> selected;
-    
-    private ArrayList<JCheckBoxMenuItem> selectedCategories;
+
     
     private ArrayList<Integer> filtered;
     private int activeFilters ;
-	
+	private HashMap<JMenu, SelectionFilter> activeFiltersMap;
 	public SelectorPanel(Model m) {
 		
 		this.model = m;
 		this.available = model.getAvailableRows();
 		this.selected = new ArrayList<Integer>();
-		this.selectedCategories = new ArrayList<JCheckBoxMenuItem>();
 		this.setLayout(new GridLayout(12,2));
 		this.filtered  = new ArrayList<Integer>()	;
+		this.activeFiltersMap= new HashMap<JMenu, SelectionFilter>();
 		activeFilters= 0;
 		System.out.println("HEREEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE");
 		
@@ -312,39 +312,87 @@ class SelectorPanel extends JPanel
     private class CheckBoxListener implements ItemListener {	
     	
     	public void itemStateChanged(ItemEvent event) {
-    		System.out.println("STATEEEE CHANGE");
+    		//get the JCheckBox which triggered the event
     		JCheckBoxMenuItem source = (JCheckBoxMenuItem) event.getSource() ;
     		String value2 = source.getText();
-    		
-//    		JPopupMenu fromParent = (JPopupMenu)source.getParent();
-//    		JMenu foo = (JMenu)fromParent.getInvoker();	
-//    		System.out.println(foo.getName());
+    		//find the menue the CheckBox belongs to
+    		JPopupMenu fromParent = (JPopupMenu)source.getParent();
+    		JMenu menu = (JMenu)fromParent.getInvoker();	
 
-        	// a check box is selected -
-        	// select all items that match the criteria
+    		//HashMap to track the active menus
+    		if(!activeFiltersMap.containsKey(menu)) activeFiltersMap.put(menu, new SelectionFilter());	
+    		
+        	// a check box is selected 
         	if (event.getStateChange() == ItemEvent.SELECTED) {  
-        		if(activeFilters == 0) filtered.clear();;
-        		activeFilters++;
-        		selectedCategories.add(source);
+        		//clear the data if there are no active filets for the correspoding menu
+        		if(activeFiltersMap.get(menu).getActiveFilters().equals(0))
+        			activeFiltersMap.get(menu).getData().clear();
+        
+        		//increment the number of filters for the corresponding menu
+        		 activeFiltersMap.get(menu).incrementActiveFilters() ;
+        		
+        		//iterate the data, add all items that match the criteria to its menu entries list
 	        	for (int row = 0; row < model.dataSize(); row++) {
 		        		ArrayList record = model.record(row);
-			        	if (record.contains(value2)) filtered.add(row);
+			        	if (record.contains(value2)) activeFiltersMap.get(menu).add(row);
 	        	}
-	        	model.setAvailableRows(filtered);
+        		
+	        	model.setAvailableRows(filterdata());
 	        	model.select(new ArrayList());
-        	}	
+	        	filterdata();
+        		
+        	}
+        	// a check box is  deselected 
         	if(event.getStateChange()== ItemEvent.DESELECTED){
-        		activeFilters--;
+        		
+        		//decrement the active filters
+        		 activeFiltersMap.get(menu).decrementActiveFilters() ;
+
         		for(int row = 0; row<model.dataSize(); row++){
         			ArrayList record = model.record(row);
-        			if(activeFilters == 0) filtered.add(row);
-        			else if(record.contains(value2)) filtered.remove(new Integer(row));
-        		}	
-        		model.setAvailableRows(filtered);
+        			//no filters for the menu which means all data is available
+        			if(activeFiltersMap.get(menu).getActiveFilters().equals(0)){
+        				if(row == 0) activeFiltersMap.get(menu).getData().clear();
+        				activeFiltersMap.get(menu).add(row);
+        				}
+        			//else one or more filters active, data should be further restricted (remove)
+        			//use new Integer(row) to remove by value , not by index!!!!
+        			else if(record.contains(value2)) activeFiltersMap.get(menu).remove(new Integer(row));
+        		}
+        		
+        		model.setAvailableRows(filterdata());
         		model.select(new ArrayList());
+        		//if not filters active for the menue remove its entries from the hashMap
+        		if(activeFiltersMap.get(menu).getActiveFilters().equals(0)){
+        			activeFiltersMap.remove(menu);
+        		}
         	}
     	}    	  	
     }
+    /**
+     * 
+     * Method to find the union of all filters
+     * Enables multi filtering
+     * 
+     * **/
+    private ArrayList<Integer> filterdata(){
+    	//store the elements which occur in every(union)  menu(filter)
+    	ArrayList<Integer> output = new ArrayList<Integer>();
+    	int first= 0;
+    	//iterate on  the menus
+    	Iterator it = activeFiltersMap.entrySet().iterator();
+    	while (it.hasNext()) {
+    		Map.Entry pair = (Map.Entry)it.next();
+    		//System.out.println(pair.getKey() + " = " + pair.getValue());
+    		ArrayList<Integer> data =   ((SelectionFilter) pair.getValue()).getData();
+    		if(first++ == 0) output.addAll(data);
+    		//union
+    		output.retainAll(data);
+    	}
+    	return output;
+    }
+    
+    
     
     //	Note: for convenience, we use two separate handler classes for
     // 		  updating the other views refreshing the sliders' labels.
@@ -457,6 +505,8 @@ class SelectorPanel extends JPanel
         	}
     	}
     }
+    
+  
     
     public void update(ArrayList<Integer> availableRows, ArrayList<Integer> selectedRows) {
     	available = availableRows;
