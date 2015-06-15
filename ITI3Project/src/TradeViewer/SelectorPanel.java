@@ -336,7 +336,7 @@ class SelectorPanel extends JPanel
 		        		ArrayList record = model.record(row);
 			        	if (record.contains(value2)) activeFiltersMap.get(menu).add(row);
 	        	}
-        		
+        		System.out.println(model.getCountry(0));
 	        	model.setAvailableRows(filterdata());
 	        	model.select(new ArrayList());
 	        	

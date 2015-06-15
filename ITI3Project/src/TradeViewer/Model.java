@@ -97,9 +97,9 @@ public class Model {
             buffer = new BufferedReader(fileReader);
 
             // read labels line
-            readHeader(buffer.readLine(), labels);
+           // readHeader(buffer.readLine(), labels);
             // read the types line
-            readHeader(buffer.readLine(), types);
+           // readHeader(buffer.readLine(), types);
             while ((line = buffer.readLine()) != null) {
                 // now read a line of data
                 readALine(line);
@@ -237,6 +237,7 @@ public class Model {
             printRow(row);
         }
     }
+    
 
     public void printRow(ArrayList row) {
         Iterator labelIter = labels.iterator();
@@ -248,6 +249,10 @@ public class Model {
                     + rowIter.next().toString());
             System.out.println("***************************");
         }
+    }
+    
+    public String getCountry(int index){
+    	return ((ArrayList)dataset.get(index)).get(4).toString();
     }
 
     public void printRow(int rowNumber) {
