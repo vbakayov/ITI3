@@ -102,17 +102,19 @@ class TablePanel extends JPanel
 	// Inner class for the table model.
 	private class RecordTableModel extends AbstractTableModel {
 		
-	    private final String[] columnNames = {"Service User ID", "Gender","Age", "Age Group","Coutry of Origin"};
+	    private final String[] columnNames = {"Service User ID", "Gender","Age", "Age Group","Coutry of Origin","Ethnicity",
+	    		"Immigration","Asylum","NRM","ILR","ILR DV","EU","Housing","FMPO","Age Assessment",
+	    		"Fresh Claim","JR","Family Reunion"};
 	    private Object[][] data;
-	    	
+	    
 	    // override getColumnClass to return our chosen class type - 
 	    // getColumnClass has to return Double in order to create a bar chart
         @Override  
         public Class getColumnClass(int columnIndex) {
-        	if (columnIndex == 0 || columnIndex == 1 || columnIndex == 3 || columnIndex == 4)
-        		return java.lang.String.class;
+        	if (columnIndex ==2)
+        		return java.lang.Double.class;
         	else 
-        		return java.lang.Double.class; 
+        		return java.lang.String.class; 
 		}
 	    // fills the data array with the records that pass the currently set filters
 	    public void load() {
