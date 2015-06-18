@@ -157,11 +157,12 @@ public class BarChartCellRenderer extends DefaultTableCellRenderer
 	
 	private static double getDoubleFromValue(Object iObject) {
 		try {
-			double lValue = 0;
+			double lValue = -1;
 			if (iObject == null) {
 				return lValue;
 			}
 			if (iObject instanceof String) {
+			
 				String lString = (String) iObject;
 				if (lString.length() > 0) {
 					lValue = Double.parseDouble(lString); 
@@ -345,8 +346,13 @@ public class BarChartCellRenderer extends DefaultTableCellRenderer
 						COLORS[lModelColumn % COLORS.length]);
 				
 				lIcon.setFormater(null);
+				if(lValue == -1){
+					lLabel.setText("NULL");
+					lLabel.setIcon(lIcon);
+				}else{
 				lLabel.setText(lFormatter.format(new Double(lValue)));
 				lLabel.setIcon(lIcon);
+				}
 			} else {
 				lLabel.setText(lFormatter.format(new Double(lValue)));
 				lLabel.setIcon(null);

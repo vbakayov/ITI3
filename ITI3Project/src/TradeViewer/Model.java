@@ -147,20 +147,19 @@ public class Model {
         	ArrayList rowArray = new ArrayList();
             Row row = rowIterator.next();
             //For each row, iterate through all the columns
-            Iterator<Cell> cellIterator = row.cellIterator();
+           // Iterator<Cell> cellIterator = row.cellIterator();
 
-            while (cellIterator.hasNext())
-            {
-                Cell cell = cellIterator.next();
+            for(int cn=0; cn<row.getLastCellNum(); cn++) {
+                Cell cell = row.getCell(cn, Row.CREATE_NULL_AS_BLANK);
                 rowArray.add(cell.toString());
                 //Check the cell type and format accordingly
                 switch (cell.getCellType())
                 {
                     case Cell.CELL_TYPE_NUMERIC:
-                        System.out.print(cell.getNumericCellValue() + "t");
+                      //  System.out.print(cell.getNumericCellValue() + "t");
                         break;
                     case Cell.CELL_TYPE_STRING:
-                        System.out.print(cell.getStringCellValue() + "t");
+                     //   System.out.print(cell.getStringCellValue() + "t");
                         break;
                 }
             }
@@ -339,6 +338,10 @@ public class Model {
     
     public String getCountry(int index){
     	return ((ArrayList)dataset.get(index)).get(4).toString();
+    }
+    
+    public String getNaima(int index){
+    	return ((ArrayList)dataset.get(48)).get(2).toString();
     }
 
     public void printRow(int rowNumber) {
