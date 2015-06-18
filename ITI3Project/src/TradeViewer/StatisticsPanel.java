@@ -25,7 +25,7 @@ public class StatisticsPanel extends JPanel
 	
 	public StatisticsPanel(Model model) {
 		this.model = model;
-		populateMap();
+	//	populateMap();
 		printMap();
 		PieChart demo = new PieChart("Pie Chart",countryCountMap);
 		  setLayout(new BorderLayout());

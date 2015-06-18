@@ -27,6 +27,12 @@ import java.util.Iterator;
 import java.util.ListIterator;
 import java.util.StringTokenizer;
 
+import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.usermodel.WorkbookFactory;
+
 public class Model {
 
     private ArrayList children;  /* set of subcomponent viewControllers */
@@ -89,29 +95,109 @@ public class Model {
     }
     
     void load(String filename) {
-        FileReader fileReader;
-        BufferedReader buffer;
-        String line;
-        try {
-            fileReader = new FileReader(new File(filename));
-            buffer = new BufferedReader(fileReader);
 
-            // read labels line
-           // readHeader(buffer.readLine(), labels);
-            // read the types line
-           // readHeader(buffer.readLine(), types);
-            while ((line = buffer.readLine()) != null) {
-                // now read a line of data
-                readALine(line);
-            }
-            // close the file
-            fileReader.close();
-        } catch (FileNotFoundException e) {
-            System.out.println("File not found when loading graph");
+    	//Create a file  from the xlsx/xls file
+    	try{
+        File f=new File(filename);
+        String filetype = filename.substring(filename.lastIndexOf('.'), filename.length());
+        System.out.println(filetype);
+        switch(filetype){
+			case ".csv":
+				load_csv(filename);
+				break;
+			case ".xlsm":
+				load_xlms(f);
+				break;
+			default :
+				System.out.println("The Inputed format is not supported");
 
-        } catch (IOException e) {
-            System.out.println("IO exception when loading graph");
+        }}
+
+        catch(Exception e){
+        	System.out.println("No file with such name");
+        	e.printStackTrace();
+        	}
         }
+     
+    	
+    
+    
+    private void load_xlms(File filename) {
+    	   //Create Workbook instance holding reference to .xlsx file
+        Workbook workbook=null;
+		try {
+			workbook = WorkbookFactory.create(filename);
+		} catch (InvalidFormatException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+        System.out.println(workbook);
+
+        //printing number of sheet avilable in workbook
+        org.apache.poi.ss.usermodel.Sheet sheet=null;
+        sheet = workbook.getSheetAt(0);
+        
+        //Iterate through each rows one by one
+        Iterator<Row> rowIterator = sheet.iterator();
+        while (rowIterator.hasNext())
+        {
+        	ArrayList rowArray = new ArrayList();
+            Row row = rowIterator.next();
+            //For each row, iterate through all the columns
+            Iterator<Cell> cellIterator = row.cellIterator();
+
+            while (cellIterator.hasNext())
+            {
+                Cell cell = cellIterator.next();
+                rowArray.add(cell.toString());
+                //Check the cell type and format accordingly
+                switch (cell.getCellType())
+                {
+                    case Cell.CELL_TYPE_NUMERIC:
+                        System.out.print(cell.getNumericCellValue() + "t");
+                        break;
+                    case Cell.CELL_TYPE_STRING:
+                        System.out.print(cell.getStringCellValue() + "t");
+                        break;
+                }
+            }
+            dataset.add(rowArray);
+        }
+        
+        
+        
+    	}
+    	
+		
+	
+
+	void load_csv(String filename){
+      FileReader fileReader;
+      BufferedReader buffer;
+      String line;
+      try {
+          fileReader = new FileReader(new File(filename));
+          buffer = new BufferedReader(fileReader);
+
+          // read labels line
+         // readHeader(buffer.readLine(), labels);
+          // read the types line
+         // readHeader(buffer.readLine(), types);
+          while ((line = buffer.readLine()) != null) {
+              // now read a line of data
+              readALine(line);
+          }
+          // close the file
+          fileReader.close();
+      } catch (FileNotFoundException e) {
+          System.out.println("File not found when loading graph");
+
+      } catch (IOException e) {
+          System.out.println("IO exception when loading graph");
+      }
     }
 
     void readHeader(String line, ArrayList headers) {
