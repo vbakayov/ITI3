@@ -125,6 +125,7 @@ public class Model {
     private void load_xlms(File filename) {
     	   //Create Workbook instance holding reference to .xlsx file
         Workbook workbook=null;
+        boolean isHeader=true;
 		try {
 			workbook = WorkbookFactory.create(filename);
 		} catch (InvalidFormatException e) {
@@ -149,8 +150,13 @@ public class Model {
             //For each row, iterate through all the columns
            // Iterator<Cell> cellIterator = row.cellIterator();
 
-            for(int cn=0; cn<row.getLastCellNum(); cn++) {
+            for(int cn=0; cn<row.getLastCellNum()-1; cn++) {
+      
                 Cell cell = row.getCell(cn, Row.CREATE_NULL_AS_BLANK);
+                if (isHeader){
+                	labels.add(cell.toString());
+                }
+                else{
                 rowArray.add(cell.toString());
                 //Check the cell type and format accordingly
                 switch (cell.getCellType())
@@ -162,8 +168,12 @@ public class Model {
                      //   System.out.print(cell.getStringCellValue() + "t");
                         break;
                 }
-            }
-            dataset.add(rowArray);
+                   
+                }
+        }
+            if(!isHeader) dataset.add(rowArray);
+            isHeader= false;
+            
         }
         
         
@@ -340,6 +350,10 @@ public class Model {
     	return ((ArrayList)dataset.get(index)).get(4).toString();
     }
     
+    public String getAgeGroup(int index){
+    	return ((ArrayList)dataset.get(index)).get(3).toString();
+    }
+    
     public String getNaima(int index){
     	return ((ArrayList)dataset.get(48)).get(2).toString();
     }
@@ -352,4 +366,17 @@ public class Model {
         }
     }
 
+	public String getData(int column, int row) {
+		return ((ArrayList)dataset.get(row)).get(column).toString();
+	}
+	
+	public String getLabels(int index){
+		//System.out.println(labels.size()+"   "+ index);
+		//System.out.println(labels.get(index));
+		return labels.get(index).toString();
+	}
+
+	public ArrayList getLabel(){
+		return labels;
+	}
 }

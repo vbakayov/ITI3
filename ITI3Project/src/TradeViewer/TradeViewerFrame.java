@@ -39,7 +39,7 @@ class TradeViewerFrame extends JFrame {
         
         // contains the record panel and the selector panel 
         JPanel dataPanel = new JPanel(new GridLayout(1,2));
-        dataPanel.add(tablePanel);
+        dataPanel.add(statisticsPanel);
         dataPanel.add(selectorPanel);
         // the border is added so that the edges of the 
         // components do not cover the scatterplot
@@ -48,8 +48,8 @@ class TradeViewerFrame extends JFrame {
         // prep component layout
         Container contentPane = getContentPane();
         contentPane.setLayout(new BorderLayout());
-        contentPane.add("Center", statisticsPanel);
-        contentPane.add("South", dataPanel);
+        contentPane.add("North",dataPanel);
+        contentPane.add("Center", tablePanel);
 
         final int DEFAULT_FRAME_WIDTH = 900;
         final int DEFAULT_FRAME_HEIGHT = 700;

@@ -347,7 +347,7 @@ public class BarChartCellRenderer extends DefaultTableCellRenderer
 				
 				lIcon.setFormater(null);
 				if(lValue == -1){
-					lLabel.setText("NULL");
+					lLabel.setText("  ");
 					lLabel.setIcon(lIcon);
 				}else{
 				lLabel.setText(lFormatter.format(new Double(lValue)));

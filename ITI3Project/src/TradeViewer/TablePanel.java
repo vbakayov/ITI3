@@ -67,7 +67,7 @@ class TablePanel extends JPanel
 		recordDataModel.load();
 		// create table
 		recordTable = new JTable(recordDataModel);
-		recordTable.setPreferredScrollableViewportSize(new Dimension(500, 250));
+		recordTable.setPreferredScrollableViewportSize(new Dimension(500, 150));
 		// enable multiple selection 
 		recordTable.setRowSelectionAllowed(true);
 		recordTable.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
@@ -102,9 +102,15 @@ class TablePanel extends JPanel
 	// Inner class for the table model.
 	private class RecordTableModel extends AbstractTableModel {
 		
-	    private final String[] columnNames = {"Service User ID", "Gender","Age", "Age Group","Coutry of Origin","Ethnicity",
+		
+	    private String[] columnNames = {"Service User ID", "Gender","Age", "Age Group","Coutry of Origin","Ethnicity",
 	    		"Immigration","Asylum","NRM","ILR","ILR DV","EU","Housing","FMPO","Age Assessment",
-	    		"Fresh Claim","JR","Family Reunion"};
+	    		"Fresh Claim","JR","Family Reunion", "Appeal","Community Care", "HPDL",
+	    		"CICA", "Nationality", "Welfare/Support", "Other", "HR", 
+	    		"Human Trafficking for purposes of Commercial Sexual Exploitation",
+	    		"Human Trafficking for other Purposes","FGM","Forced Marriage","Domestic Abuse"};
+		
+//		private ArrayList columnNames = model.getLabel();
 	    private Object[][] data;
 	    
 	    // override getColumnClass to return our chosen class type - 
@@ -118,6 +124,11 @@ class TablePanel extends JPanel
 		}
 	    // fills the data array with the records that pass the currently set filters
 	    public void load() {
+	    	System.out.println(model.getLabel().size());
+	    	ArrayList labals = model.getLabel();
+	    	for (int i = 0; i< labals.size(); i++){
+	    		System.out.println(labals.get(i));
+	    	}
 	    	data = new Object[available.size()][];
 	    	for (int i = 0; i < available.size(); i++) {
 	    		// add a record from the dataset to the data array
@@ -133,10 +144,11 @@ class TablePanel extends JPanel
 	        return data.length;
 	    }
 	    public String getColumnName(int col) {
+	    	System.out.println(col);
 	        return columnNames[col];
 	    }
 	    public Object getValueAt(int row, int col) {
-	    	//System.out.println("ROW+ COL : "+row + "  "+ col +" ");
+	    //	System.out.println("ROW+ COL : "+row + "  "+ col +" ");
 	        return data[row][col];
 	    }
 	    public void setValue(Object value, int row, int col) {

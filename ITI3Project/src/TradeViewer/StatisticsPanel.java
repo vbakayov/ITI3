@@ -21,11 +21,16 @@ public class StatisticsPanel extends JPanel
 							implements ViewController{
 	private Model model;
 	private HashMap <String,Integer> countryCountMap = new HashMap<String,Integer>();
+	private HashMap<String, Integer> ageGroupsMap = new HashMap<String,Integer>();
+	//hash map integer-integer(colomn intex, count) for the different cases
+	private HashMap<String, Integer> casesMap = new HashMap<String,Integer>();
 	JPanel chartPanel=new JPanel();
 	
 	public StatisticsPanel(Model model) {
 		this.model = model;
 	//	populateMap();
+		countAgeGroups();
+		getCaseCount();
 		printMap();
 		PieChart demo = new PieChart("Pie Chart",countryCountMap);
 		  setLayout(new BorderLayout());
@@ -39,7 +44,8 @@ public class StatisticsPanel extends JPanel
 		ArrayList<Integer> output = new ArrayList<Integer>();
     
     	//iterate on  the menus
-    	Iterator it = countryCountMap.entrySet().iterator();
+    	//Iterator it = countryCountMap.entrySet().iterator();
+		Iterator it = casesMap.entrySet().iterator();
     	while (it.hasNext()) {
     		Map.Entry pair = (Map.Entry)it.next();
     		System.out.println(pair.getKey() + " = " + pair.getValue());
@@ -54,6 +60,28 @@ public class StatisticsPanel extends JPanel
 			String country = model.getCountry(i);
 			int count = countryCountMap.containsKey(country) ? countryCountMap.get(country) : 0;
 			countryCountMap.put(country, count + 1);
+		}
+	}
+	
+	private void countAgeGroups(){
+		for(int i =0; i< model.dataSize(); i++){
+			String country = model.getAgeGroup(i);
+			int count =  ageGroupsMap.containsKey(country) ?  ageGroupsMap.get(country) : 0;
+			 ageGroupsMap.put(country, count + 1);
+		}
+	}
+	//fixed 
+	private void getCaseCount(){
+		for(int column=6; column < 26 ; column++){
+			for(int row= 0; row< model.dataSize(); row++){
+				String info = model.getData(column,row);
+				if(info.equals("YES")){
+					String label = model.getLabels(column);
+					int count = casesMap.containsKey(label) ? casesMap.get(label) : 0;
+					casesMap.put(label, count + 1);
+				}
+			}
+			
 		}
 	}
 
