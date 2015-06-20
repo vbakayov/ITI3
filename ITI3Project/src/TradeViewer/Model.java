@@ -124,6 +124,7 @@ public class Model {
     
     private void load_xlms(File filename) {
     	   //Create Workbook instance holding reference to .xlsx file
+    	short max = 0;
         Workbook workbook=null;
         boolean isHeader=true;
 		try {
@@ -149,9 +150,11 @@ public class Model {
             Row row = rowIterator.next();
             //For each row, iterate through all the columns
            // Iterator<Cell> cellIterator = row.cellIterator();
-
-            for(int cn=0; cn<row.getLastCellNum()-1; cn++) {
-      
+            short  current =  row.getLastCellNum();
+            //IMPORTANT!!! COLUMNS MUST BE NAMED OR THIS WILL FAIL
+            max = (max > current) ? max :  current;
+            for(int cn=0; cn< max; cn++) {
+            	System.out.println(row.getLastCellNum());
                 Cell cell = row.getCell(cn, Row.CREATE_NULL_AS_BLANK);
                 if (isHeader){
                 	labels.add(cell.toString());

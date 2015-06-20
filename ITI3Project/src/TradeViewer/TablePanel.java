@@ -103,14 +103,14 @@ class TablePanel extends JPanel
 	private class RecordTableModel extends AbstractTableModel {
 		
 		
-	    private String[] columnNames = {"Service User ID", "Gender","Age", "Age Group","Coutry of Origin","Ethnicity",
-	    		"Immigration","Asylum","NRM","ILR","ILR DV","EU","Housing","FMPO","Age Assessment",
-	    		"Fresh Claim","JR","Family Reunion", "Appeal","Community Care", "HPDL",
-	    		"CICA", "Nationality", "Welfare/Support", "Other", "HR", 
-	    		"Human Trafficking for purposes of Commercial Sexual Exploitation",
-	    		"Human Trafficking for other Purposes","FGM","Forced Marriage","Domestic Abuse"};
+//	    private String[] columnNames = {"Service User ID", "Gender","Age", "Age Group","Coutry of Origin","Ethnicity",
+//	    		"Immigration","Asylum","NRM","ILR","ILR DV","EU","Housing","FMPO","Age Assessment",
+//	    		"Fresh Claim","JR","Family Reunion", "Appeal","Community Care", "HPDL",
+//	    		"CICA", "Nationality", "Welfare/Support", "Other", "HR", 
+//	    		"Human Trafficking for purposes of Commercial Sexual Exploitation",
+//	    		"Human Trafficking for other Purposes","FGM","Forced Marriage","Domestic Abuse","Violence in the UK","Asylum Application","Asylum Appeal"};
 		
-//		private ArrayList columnNames = model.getLabel();
+		private ArrayList columnNames = model.getLabel();
 	    private Object[][] data;
 	    
 	    // override getColumnClass to return our chosen class type - 
@@ -138,17 +138,17 @@ class TablePanel extends JPanel
 	    }
 	    // accessing methods
 	    public int getColumnCount() {
-	        return columnNames.length;
+	        return columnNames.size();
 	    }
 	    public int getRowCount() {
 	        return data.length;
 	    }
 	    public String getColumnName(int col) {
 	    	System.out.println(col);
-	        return columnNames[col];
+	        return columnNames.get(col).toString();
 	    }
 	    public Object getValueAt(int row, int col) {
-	    //	System.out.println("ROW+ COL : "+row + "  "+ col +" ");
+	    	System.out.println("ROW+ COL : "+row + "  "+ col +" ");
 	        return data[row][col];
 	    }
 	    public void setValue(Object value, int row, int col) {
