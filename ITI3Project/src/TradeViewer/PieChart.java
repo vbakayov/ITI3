@@ -1,18 +1,29 @@
 package TradeViewer;
 import java.awt.Font;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
+import org.jfree.chart.ChartRenderingInfo;
+import org.jfree.chart.ChartUtilities;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.labels.PieSectionLabelGenerator;
 import org.jfree.chart.labels.StandardPieSectionLabelGenerator;
 import org.jfree.chart.plot.PiePlot;
+import org.jfree.chart.plot.PlotRenderingInfo;
 import org.jfree.data.general.DefaultPieDataset;
 import org.jfree.data.general.PieDataset;
 import org.jfree.ui.ApplicationFrame;
@@ -65,6 +76,29 @@ private static JFreeChart createChart(PieDataset dataset) {
     PieSectionLabelGenerator gen = new StandardPieSectionLabelGenerator(
             "{0}: {1} ({2})", new DecimalFormat("0"), new DecimalFormat("0%"));
         plot.setLabelGenerator(gen);
+        /*OutputStream output=null;
+        try {
+			output= new FileOutputStream("H:\\output.png");
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+        try {
+			ChartUtilities.writeChartAsPNG(output,chart,600, 800);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}*/
+     BufferedImage image=chart.createBufferedImage(500, 600);
+     try {
+		saveToFile(image);
+	} catch (FileNotFoundException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	} catch (IOException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
     return chart;
     
 }
@@ -85,12 +119,14 @@ public static JPanel createDemoPanel() {
  * @param args  ignored.
  * 
  */
-    //final PieChart demo = new PieChart("Pie Chart Demo 4");
-    //demo.pack();
-   // RefineryUtilities.centerFrameOnScreen(demo);
-   // demo.setVisible(true);
 
+public static void saveToFile(BufferedImage img)
+	    throws FileNotFoundException, IOException
+	    {
 
+	    File outputfile = new File("H:\\Sample.png");
+	    ImageIO.write(img, "png", outputfile);
+	    }
 
 
 }

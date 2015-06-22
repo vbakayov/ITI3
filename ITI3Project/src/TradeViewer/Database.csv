@@ -1,0 +1,78 @@
+Service User ID,Gender ,Age ,Age Group,Country of Origin,Ethnicity,Immigration,Asylum,NRM,ILR,ILR DV,EU,Housing,FMPO,Age A ,Fresh Claim,JR ,F Reunion,Appeal,Community Care,HPDL,CICA,Nationality,Welfare/Support,Other,HR,Human Trafficking for purposes of Commercial Sexual Exploitation,Human Trafficking for other Purposes,FGM,Forced Marriage,Domestic Abuse,Violence in the UK ,Asylum Application,Asylum Appeal,Fresh Claim for Asylum
+Maisha Kimangi,Female ,17,16-19,Burundi,African,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,YES,NO,NO,NO,NO,YES,NO,NO,NO,NO,YES,n/a,n/a,n/a
+Rose Christopher,Female ,18,16-19,Nigeria,African,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,YES,NO,NO,NO,NO,YES,NO,YES,YES,YES,YES,n/a,n/a,n/a
+Rudina Toska,Female ,27,25-39,Albania,Other White,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,YES,NO,NO,NO,NO,YES,NO,NO,NO,NO,YES,n/a,n/a,n/a
+Faiza Ali,Female ,32,25-39,Pakistan,Pakistani,YES,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,YES,N/a ,N/a,n/a
+Abiola Olayinka,Female ,35,25-39,Nigeria,African,NO,YES,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,YES,NO,NO,NO,NO,NO,Refusal,Appeal awaited,N/a
+Bolanle Victoria Jaysimi,Female ,32,25-39,Nigeria,African,YES,NO,NO,YES,NO,NO,NO,NO,NO,YES,YES,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,YES,YES,not known,YES,YES,N/a,n/a,n/a
+Joy Ilechukwu,Female ,26,25-39,Nigeria,African,NO,YES,NO, NO,NO,NO,NO,NO,NO,NO,YES,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,Not known,NO,NO,NO,N/a,n/a,n/a
+Latisha Musyorpa,Female ,26,25-39,DRC,African,NO,YES,YES, NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,YES,NO,NO,NO,NO,YES,YES,NO,NO,NO,YES,n/a,N/a,n/a
+Constance Asiimwe,Female ,43,40-59,Uganda,African,YES,YES,NO, NO,YES,NO,NO,NO,NO,NO,YES,NO,NO,NO,NO,YES,NO,NO,NO,NO,NO ,NO ,Not known,NO,YES,YES,n/a,n/a,n/a
+Moleen Homera,Female ,32,25-39,Zimbabwe,African,YES,NO,NO, NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,YES,YES,n/a,n/a,n/a
+Tionge Mhango,Female ,12,25-40,Malawi,African,NO,NO,NO, NO,NO,NO,NO,NO,NO,YES,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,YES,YES,N/a,n/a,Leave granted. 
+Vanessa Amadin,Female ,21,20-24,Nigeria,African,YES,NO,NO, NO,NO,NO,NO,NO,NO,YES,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,YES,NO,Not known,NO,YES,YES,n/a,n/a,n/a
+Alice Mugisha,Female ,29,25-39,Uganda,African,YES,YES,YES, NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,YES,NO,NO,NO,YES,YES,n/a,n/a,n/a
+Qingxia Wang,Female ,16,16-19,China,Chinese ,NO,YES,YES, NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,YES,NO,NO,NO,NO,YES,NO,NO,NO,NO,YES,n/a,N/a,n/a
+Oluwatosin Olusanya,Female ,28,25-39,Nigeria,African,NO,YES,YES, NO,NO,NO,NO,NO,NO,NO,NO,NO,YES,NO,NO,YES,NO,NO,NO,NO,YES,NO,NO,NO,YES,YES,n/a,Nj/a,N/a
+Destiny Osaigbovo,Female ,27,25-39,Nigeria,African,YES,NO,NO, NO,NO,NO,NO,NO,NO,YES,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,YES,NO,Not known,NO,NO,YES,n/a,n/a,Unsuccessful.
+Bolanle Tijani,Female ,100,25-39,Nigeria,African,NO,NO,YES, NO,NO,NO,NO,NO,NO,YES,YES,NO,NO,NO,NO,NO,NO,NO,NO,NO,YES,NO,NO,NO,NO ,YES,n/a,n/a,Fresh claim/further submissions – decision awaited
+Geralda Shahu,Female ,20,20-24,Albania,Other White,NO,YES,YES, NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,YES,NO,NO,NO,YES,NO,Refugee Status,n/a,n/a
+Deborah Onodje,Female ,27,25-39,Nigeria,African,NO,YES,YES,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,YES,NO,NO,NO,NO,YES,NO,NO,NO,NO,YES,Refugee Status,,
+Enkeledja Frakulli,Female ,29,25-39,Albania,Other White,NO,YES,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,YES,NO,Refugee Status,,
+Esperance Bolingo,Female ,41,40-59,DRC,African,NO,YES,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO ,NO,NO,NO,NO,NO,Refugee Status,,
+Sibonghile Bhule,Female ,48,40-59,Zimbabwe,African,NO,YES,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,YES,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,YES,NO,Refused,Appeal outstanding,
+Grace Adeosun,Female ,30,25-39,Nigeria,African,YES,YES,YES,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,YES,NO,NO,YES,YES,YES,Refugee Status,,
+Gaelle Mukarampi,Female ,26,25-39,DRC,African,NO,NO,NO,NO,NO,NO,NO,NO,NO,YES,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,Not known,,,Further Submission submitted – decision outsatnding
+Ajoke Faleti,Female ,31,25-39,Nigeria,African,YES,YES,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,YES,NO,NOT KNOW,YES,NO,YES,Refused,No Appeal. ,
+Silvi Bolingo,Female ,43,40-59,DRC,African,NO,YES,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,Not known,NO,Refugee Status,,
+Helen Chettah,Female ,34,25-39,Nigeria,African,NO,YES,YES,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,YES,NO,Not known,NO,NO,YES,,,
+Olivia awuha,Female ,34,25-39,Ghana,African,NO,YES,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,YES,NO,NO,NO,NO,NO,NO,NO,NO,NO,Not known,NO,NO,NO,Refugee Status,,
+Mary Odeyemi,Female ,4,0-4,Nigeria,African,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,YES,NO,NO,NO,N/a,l,n/a
+Josephine Obashan,Female ,29,25-39,Nigeria,African,NO,YES,YES,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,YES,NO,NO,NO,NO,YES,NO,YES,NO,NO,YES,Refugee Status,,
+Akintuke Odeyemi,Female ,29,25-39,Nigeria,African,NO,YES,NO,NO,NO,NO,NO,NO,NO,YES,NO,NO,YES,NO,NO,NO,NO,NO,NO,NO,NO,NO,YES,NO,YES,YES,,,N.a
+Isatou Ceesay,Female ,35,25-39,Gambia,African,NO,YES,NO,NO,NO,NO,NO,NO,NO,NO,NO,YES,NO,NO,NO,NO,NO,NO,NO,NO,NO,YES,Not known,YES,YES,NO,n/az,n/a,n/a
+Augustina Alonge,Female ,40,40-59,Nigeria,African,YES,YES,YES,NO,NO,NO,NO,NO,NO,NO,NO,NO,YES,NO,NO,NO,NO,NO,NO,NO,NO,YES,NO,NO,YES,YES,Refusal,Appeal outstanding,n/a
+Leyla Saddat,Female ,19,16-19,Somalia,African,NO,YES,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,YES,Not known,NO,NO,NO,N/a,n/a,n/a
+Wudie Kiflai,Female ,34,25-39,Eritrea,African,NO,YES,NO,NO,NO,NO,NO,NO,NO,NO,NO,YES,NO,NO,NO,YES,NO,NO,NO,NO,NO,MAYBE (outside UK),Not known,NO,NO,NO,Refugee Status,n/a,n/a
+Ying He,Female ,28,25-39,China,Other (South) Asian,NO,YES,YES,NO,NO,NO,NO,NO,NO,NO,NO,NO,YES,NO,NO,NO,NO,NO,NO,NO,YES,NO,NO,NO,NO,YES,Refusal,Refusal,n/a
+Yama Mbye,Female ,25,25-39,Gambia,African,NO,YES,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,YES,NO,NO,NO,NO,NO,NO,NO,NO,NO,YES,YES,YES,NO ,Refusal,n/a,n/a
+Jane Kariuki,Female ,35,25-39,Kenya,African,NO,NO,NO,NO,NO,NO,NO,NO,NO,YES,NO,NO,YES,NO,NO,NO,NO,NO,NO,NO,NO,NO,Not known,NO,YES ,YES,N/a,n/a,Fresh Claim accepted – appeal outstanding
+Nada Al- Naemyi,Female ,44,40-59,Iraq,Other,NO,YES,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,n/a,n/a,n/a
+Frankline Tebandeke,Female ,39,25-39,Uganda,African,NO,YES,YES,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,YES,NO,Not known,NO,NO,YES,Refugee Status,n/a,n/a
+Oghenoro John,Female ,18,16-19,Nigeria,African,NO,YES,YES,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,YES,NO,NO,NO,NO,YES,NO,Not known,YES,YES,YES,Refugee Status,n/a ,n/a
+Stella Imagohtor,Female ,30,25-39,Nigeria,African,NO,YES,YES,NO,NO,NO,NO,NO,NO,NO,NO,NO,YES,NO,NO,NO,NO,NO,NO,NO,YES,NO,YES,YES,NO,YES,,n/a,n/a
+Primerose Ndlovu,Female ,23,20-24,Zimbabwe,African,NO,NO,NO,NO,NO,NO,NO,NO,NO,YES,NO,NO,NO,NO,NO,NO,NO,YES,NO,NO,NO,NO,NO,NO,NO,NO,n/a,n/a,n/a
+Denjona Hodo,Female ,21,20-24,Albania,Other,NO,YES,YES,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,YES,NO,NO,NO,NO,YES,NO,NO,NO,NO,YES ,,N/a,n/a
+Orcah Sima,Female ,100,40-59,Zimbabwe,African,YES,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,Not known,Not known,Not known,Not known,N/a,n/a,n/a
+Sherifat Babolola,Female ,100,25-39,Nigeria,African,YES,YES,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,YES,YES,Refusal,Appeal outstanding ,n/a
+Naima Sharif,Female ,100,25-39,Somalia,African,YES,NO,NO,NO,NO,NO,NO,NO,NO,YES,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,YES,NO,NO,NO,N/a,n/a,n/a
+Bolanle Oyekale,Female ,100,25-39,Nigeria,African,NO,YES,YES,NO,NO,NO,NO,NO,NO,NO,NO,NO,YES,NO,NO,YES,NO,NO,NO,NO,YES,NO,NO,YES,NO,NO,,,
+Anna Grey Johnson,Female ,23,20-24,Stateless,Other,YES,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,Not known,NO,YES,YES,,,
+Shumila Amber,Female ,30,25-39,Pakistan,Pakistani,NO,YES,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,Not known,NO,YES,YES,Refugee Status ,,
+Bintou Sillah,Female ,21,20-24,Gambia,African,NO,YES,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,YES,YES,YES,Not known,Refugee Status,,
+Shumalia Ameen,Female ,22,20-24,Pakistan,Pakistani,YES,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,Not known,Not known,YES,Yes ,,,
+Mathilde Ruragaragaza,Female ,40,40-59,Burundi,African,NO,NO,NO,YES,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,,,
+Fumni Fabumni,Female ,33,25-39,Nigeria,African,YES,YES,YES,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,YES,NO,YES,YES,YES,YES,,,
+Nancy Lungu,Female ,50,40-59,Malawi,African,YES,YES,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,Not known,YES,YES,YES,Refused,Appeal outstanding. ,
+Khadija Abdallah,Female ,54,40-59,Somalia,African,NO,NO,NO,NO,NO,NO,NO,NO,NO,YES,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,Not known,NO,YES,YES,,,Leave granted. 
+Ulemetu Obazee,Female ,29,25-39,Nigeria,African,NO,YES,YES,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,YES,NO,Not known,NO,NO,NO,,,
+Patience Adeyoe,Female ,40,40-59,Nigeria,African,NO,YES,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,Not known,NO,NO,NO,Refused,Appeal outstanding. ,
+Fatma Aballah,Female ,22,20-24,Somalia,African,NO,YES,YES,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,YES,NO,NO,NO,NO,YES,NO,Not known,NO,NO,YES,Refugee Status,,
+Jeanette Apollo ,Female ,26,25-39,Burundi,African,YES,NO,NO,NO,NO,NO,NO,NO,NO,NO,YES,NO,NO,NO,NO,NO,NO,NO,YES,NO,Not known,YES,Not known,Not known,YES,YES,,,
+Farina Hassan,Female ,100,25-39,Pakistan,Other (South) Asian,YES,YES,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,YES,NO,NO,NO,NO,NO,NO,YES,YES,,,
+Pauline Joseph,Female ,23,20-24,Kenya,African,NO,NO,NO,YES,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,YES,NO,YES,YES,NO,YES,,,
+Debra Simeon,Female ,44,40-59,Nigeria,African,NO,NO,NO,YES,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,YES,NO,NO,NO,NO,YES,,,
+Princess Goodluck,Female ,33,25-39,Nigeria,African,NO,YES,YES,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,YES,NO,YES,NO,NO,NO,,,
+Omuwumi Okeowo,Female ,29,25-39,Nigeria,African,NO,YES,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,Not known,Not known,YES,Not known ,,,
+Olasumbu Johnson,Female ,17,16-19,Nigeria,African,NO,YES,YES,NO,NO,NO,NO,NO,YES,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,YES,,,,,YES,,,
+Nadine Kalema,Female ,35,25-39,DRC,African,NO,YES,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,,,,,,,,,
+Ehinomen Sumaila,Female ,39,25-39,Nigeria,African,NO,YES,YES,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,YES,,YES,YES,,YES,,,
+Linh Tran,Female ,30,25-39,Vietnam,Other (South) Asian,YES,YES,YES,NO,NO,NO,NO,NO,NO,NO,NO,NO,YES,NO,NO,YES,NO,NO,NO,NO,YES,,,,,YES,Refusal,Outstanding ,
+Shobhita Edampurath,Female ,20,20-24,India,Other (South) Asian,YES,YES,NO,NO,NO,NO,NO,YES,NO,NO,NO,NO,NO,NO,NO,NO,NO,YES,NO,NO,NO,NO,Not Known,YES,YES,YES,,,
+Adetoun Paul-okoh,Female ,52,40-59,Nigeria,African,YES,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,Not Known,NO,YES,YES,,,
+Zainab Sosseh,Female ,17,16-19,Gambia,African,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,YES,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,Not Known,NO,NO,NO,,,
+Mahado Duale,Female ,16,16-19,Somalia,African,NO,YES,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,YES,NO,NO,NO,Not known,,,
+Hanna Abbas,Female ,100,25-39,Iraq,Other,YES,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,,Not known,Not known,,,,,,
+Patricia Chunda,Female ,21,25-39,Malawi,African,185-,NO,NO,NO,NO,NO,NO,NO,NO,YES,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,,,,,,YES,,,
+Sehrish Mazhar,Female ,27,25-39,Pakistan,Pakistani,NO,NO,NO,YES,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,NO,,,,,YES,YES,,,
+Marie Grace Atta,Female ,25,25-39,Ivory Coast,African,NO,YES,YES,NO,NO,NO,NO,NO,NO,NO,NO,NO,YES,NO,NO,NO,NO,NO,NO,NO,NO,YES,Not Known,YES,YES,YES,Refused,Outstanding ,

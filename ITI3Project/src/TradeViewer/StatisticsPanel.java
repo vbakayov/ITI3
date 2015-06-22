@@ -28,7 +28,7 @@ public class StatisticsPanel extends JPanel
 	
 	public StatisticsPanel(Model model) {
 		this.model = model;
-	//	populateMap();
+		populateMap();
 		countAgeGroups();
 		getCaseCount();
 		printMap();
@@ -36,6 +36,7 @@ public class StatisticsPanel extends JPanel
 		  setLayout(new BorderLayout());
 	     //add("Center", demo); 
 		demo.pack();
+	
 		RefineryUtilities.centerFrameOnScreen(demo);
 		demo.setVisible(true);	
 	}
