@@ -154,7 +154,7 @@ public class Model {
             //IMPORTANT!!! COLUMNS MUST BE NAMED OR THIS WILL FAIL
             max = (max > current) ? max :  current;
             for(int cn=0; cn< max; cn++) {
-            	System.out.println(row.getLastCellNum());
+            	//System.out.println(row.getLastCellNum());
                 Cell cell = row.getCell(cn, Row.CREATE_NULL_AS_BLANK);
                 if (isHeader){
                 	labels.add(cell.toString());
@@ -381,5 +381,20 @@ public class Model {
 
 	public ArrayList getLabel(){
 		return labels;
+	}
+	
+	public int getIndexOfLabel(String itemName)
+	{
+	    for (int i = 0; i < labels.size(); i++)
+	    {
+	   
+	    	String string = labels.get(i).toString();
+	       if (itemName.equals(string)){
+	        	System.out.println("INDEX OF"+ itemName + labels.get(i));
+	            return i;
+	        }
+	    }
+
+	    return -1;
 	}
 }
