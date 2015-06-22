@@ -98,6 +98,7 @@ public class TableSorter extends AbstractTableModel {
     public TableSorter() {
         this.mouseListener = new MouseHandler();
         this.tableModelListener = new TableModelHandler();
+        System.out.println("INITIALIZATTTTION");
     }
 
     public TableSorter(TableModel tableModel) {
@@ -214,6 +215,7 @@ public class TableSorter extends AbstractTableModel {
 
     protected Comparator getComparator(int column) {
         Class columnType = tableModel.getColumnClass(column);
+      //  System.out.println(columnType);
         Comparator comparator = (Comparator) columnComparators.get(columnType);
         if (comparator != null) {
             return comparator;
@@ -312,6 +314,7 @@ public class TableSorter extends AbstractTableModel {
                 } else if (o2 == null) {
                     comparison = 1;
                 } else {
+                	//System.out.println("I am compering motherfuckers");
                     comparison = getComparator(column).compare(o1, o2);
                 }
                 if (comparison != 0) {

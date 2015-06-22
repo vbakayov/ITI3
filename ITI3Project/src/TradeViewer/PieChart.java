@@ -124,7 +124,7 @@ public static void saveToFile(BufferedImage img)
 	    throws FileNotFoundException, IOException
 	    {
 
-	    File outputfile = new File("H:\\Sample.png");
+	    File outputfile = new File("C:\\Sample.png");
 	    ImageIO.write(img, "png", outputfile);
 	    }
 

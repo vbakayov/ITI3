@@ -34,7 +34,7 @@ public class StatisticsPanel extends JPanel
 		printMap();
 		PieChart demo = new PieChart("Pie Chart",countryCountMap);
 		setLayout(new BorderLayout());
-	     add("Center", demo); 
+	    // add("Center", demo); 
 		demo.pack();
 	
 		RefineryUtilities.centerFrameOnScreen(demo);
@@ -81,10 +81,11 @@ public class StatisticsPanel extends JPanel
 					int count = casesMap.containsKey(label) ? casesMap.get(label) : 0;
 					casesMap.put(label, count + 1);
 				}
-			}
-			
+			}	
 		}
 	}
+	
+	
 
 	@Override
 	public void update(ArrayList<Integer> availableRows,

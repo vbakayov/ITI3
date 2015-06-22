@@ -77,6 +77,9 @@ public class Model {
     // of the records in the dataset) to the ArrayList of selected rows
     public void select(ArrayList<Integer> rows) {
     	// add the rows to the ArrayList of selected rows
+    	System.out.println("FROM MODEL "+ rows.size());
+    	selectedRows.clear();
+    
         for (int i = 0; i < rows.size(); i++) {
         	int row = rows.get(i);
         	// check if selection is out of range
@@ -85,7 +88,8 @@ public class Model {
                 return;
         	}
         	// add the row only if it is not already selected
-	        if (!selectedRows.contains(row)) selectedRows.add(row);
+	      selectedRows.add(row);
+	        //else if (rows.size() == 1) selectedRows.remove(new Integer(row));
 		}
 		// the children are updated
         for (int i = 0; i < children.size(); i++) {
@@ -396,5 +400,8 @@ public class Model {
 	    }
 
 	    return -1;
+	}
+	public ArrayList getData(){
+		return dataset;
 	}
 }

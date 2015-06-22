@@ -42,6 +42,7 @@ class TablePanel extends JPanel
     private ArrayList<Integer> available;
     // used for multiple selection of points
     private ArrayList<Integer> selected;
+    
 	// a table to display the information from the dataset records
 	private JTable recordTable;
 	// data model
@@ -70,7 +71,14 @@ class TablePanel extends JPanel
 		recordTable.setPreferredScrollableViewportSize(new Dimension(500, 150));
 		// enable multiple selection 
 		recordTable.setRowSelectionAllowed(true);
+		
 		recordTable.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+		ListSelectionModel selection= recordTable.getSelectionModel();
+		selection.addListSelectionListener(new RecordTableListener());
+		//recordTable.setAutoCreateRowSorter(true);
+	//	 TableRowSorter trs = new TableRowSorter(recordTable);
+		
+		
 		// set selection model
 		recordSelectionModel = recordTable.getSelectionModel();
 		recordSelectionModel.addListSelectionListener(new RecordTableListener());
@@ -81,8 +89,12 @@ class TablePanel extends JPanel
 		// disable auto resizing so that the columns do not become very shrunk
 		recordTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 		// enable row sorting
-		recordTable.setRowSorter(new TableRowSorter(recordDataModel));
+		 TableRowSorter trs = new TableRowSorter(recordDataModel);
+		 trs.setComparator(2, new IntComparator());
+		recordTable.setRowSorter(trs);
+	
 		recordTable.setAutoCreateRowSorter(true);
+
 		
 		// create a slider to edit the row height
         rowHeightSlider = new JSlider();
@@ -117,6 +129,7 @@ class TablePanel extends JPanel
 	    // getColumnClass has to return Double in order to create a bar chart
         @Override  
         public Class getColumnClass(int columnIndex) {
+        	//System.out.println("Index is"+ columnIndex);
         	if (columnIndex ==2)
         		return java.lang.Double.class;
         	else 
@@ -156,17 +169,43 @@ class TablePanel extends JPanel
 	
 	// inner class that handles selection events from the table
 	private class RecordTableListener implements ListSelectionListener {
-		public void valueChanged(ListSelectionEvent event) {
+	//	public void valueChanged(ListSelectionEvent event) {
 			// this part will not execute if the event is triggered
 			// by automatic selection from the update method
-			if (ready) {
-				int[] tableRows = recordTable.getSelectedRows();
-				for (int i = 0; i < tableRows.length; i++)
-					if (!selected.contains(tableRows[i])) selected.add(tableRows[i]);
-				model.select(selected);	
-			}	
+			
+		public void valueChanged(ListSelectionEvent e) {
+			if (ready){
+            ListSelectionModel lsm = (ListSelectionModel)e.getSource();
+            
+ 
+            int firstIndex = e.getFirstIndex();
+            int lastIndex = e.getLastIndex();
+            boolean isAdjusting = e.getValueIsAdjusting(); 
+           System.out.println("Event for indexes "
+                          + firstIndex + " - " + lastIndex
+                          + "; isAdjusting is " + isAdjusting
+                          + "; selected indexes:");
+           
+ 
+            if (lsm.isSelectionEmpty()) {
+                System.out.println(" ");
+            } else {
+                // Find out which indexes are selected.
+                int minIndex = lsm.getMinSelectionIndex();
+                int maxIndex = lsm.getMaxSelectionIndex();
+                for (int i = minIndex; i <= maxIndex; i++) {
+                    if (lsm.isSelectedIndex(i)) {
+                       selected.add(i);
+                       System.out.println(" " + i + "SIZE"+ selected.size());
+                       
+                    }
+                }
+                model.select(selected);
+               
+            }
 		}
-	}
+        }
+        }
 	
 	// inner class that handles events from the X and Y scale sliders
     private class RowHeightSliderListener implements ChangeListener {
@@ -192,5 +231,18 @@ class TablePanel extends JPanel
 		 scrollPane.getViewport().revalidate();
 		recordTable.repaint();
 	}
-	
+	class IntComparator implements Comparator {
+        public int compare(Object o1, Object o2) {
+        	
+            Integer int1 = (Integer)o1;
+            Integer int2 = (Integer)o2;
+            System.out.println("COMPARE"+ int1 + " "+ int2);
+            return int1.compareTo(int2);
+        }
+
+        public boolean equals(Object o2) {
+            return this.equals(o2);
+        }
+    }
+
 }

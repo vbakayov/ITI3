@@ -50,13 +50,13 @@ class SelectorPanel extends JPanel
 	
 	private Model model;
 	// range sliders for the continuous attributes
-	private JRangeSlider xRange, yRange, cIDRange, pIDRange, yieldRange, dtmRange,
+	private JRangeSlider xRange, yRange, cIDRange, pIDRange, ageRange, dtmRange,
 						 amountRange, fullnameRange, indexRange;
 	// menu bars with menus containing check boxes for the categorical attributes
 	private JMenuBar AgeGroupMenuBar, CountrySegmentMenuBar, casesDateMenuBar;
 	private JMenu ageMenu, customerMenu, CasesMenu;
 	// descriptive labels
-	private JLabel xLabel, yLabel, cIDLabel, pIDLabel, yieldLabel, 
+	private JLabel xLabel, yLabel, cIDLabel, pIDLabel, ageLabel, 
 				   dtmLabel, amountLabel, fullnameLabel, indexLabel,	   
 				   AgeGroupLabel, CountrySegmentLabel, casesLabel;
 	// used for creating the check boxes
@@ -70,12 +70,14 @@ class SelectorPanel extends JPanel
     private ArrayList<Integer> filtered;
     private int activeFilters ;
 	private HashMap<JMenu, SelectionFilter> activeFiltersMap;
+	private JLabel NameLabel;
+	private JTextField filterText;
 	public SelectorPanel(Model m) {
 		
 		this.model = m;
 		this.available = model.getAvailableRows();
 		this.selected = new ArrayList<Integer>();
-		this.setLayout(new GridLayout(12,2));
+		this.setLayout(new GridLayout(5,2));
 		this.filtered  = new ArrayList<Integer>()	;
 		this.activeFiltersMap= new HashMap<JMenu, SelectionFilter>();
 		activeFilters= 0;
@@ -184,132 +186,45 @@ class SelectorPanel extends JPanel
 		add(casesLabel);
 		add(casesDateMenuBar);
 		
+		
+		NameLabel = new JLabel("NAME");
+		NameLabel.setBorder(BorderFactory.createLineBorder(Color.lightGray, 1));
+		NameLabel.setHorizontalAlignment(JLabel.CENTER);
+		NameLabel.setVerticalAlignment(JLabel.CENTER);  
+
+		add(NameLabel);
+		
+		filterText = new JTextField();
+		add(filterText);
+		
 		// create and add range sliders and descriptive labels
 		
 		// X
-		xRange = new JRangeSlider(-50, 50, -50, 50, JRangeSlider.HORIZONTAL);
-		xRange.addChangeListener(new RangeSliderChangeListener());
-		xRange.addChangeListener(new RangeSliderLabelUpdater());
+//		xRange = new JRangeSlider(-50, 50, -50, 50, JRangeSlider.HORIZONTAL);
+//		xRange.addChangeListener(new RangeSliderChangeListener());
+//		xRange.addChangeListener(new RangeSliderLabelUpdater());
+//		
+//		xLabel = new JLabel("X   [ " + xRange.getLowValue() + " to " + xRange.getHighValue() + " ]");
+//		xLabel.setBorder(BorderFactory.createLineBorder(Color.lightGray, 1));
+//		xLabel.setHorizontalAlignment(JLabel.CENTER);
+//        xLabel.setVerticalAlignment(JLabel.CENTER);    
+//        
+//		add (xLabel);
+//		add (xRange);
 		
-		xLabel = new JLabel("X   [ " + xRange.getLowValue() + " to " + xRange.getHighValue() + " ]");
-		xLabel.setBorder(BorderFactory.createLineBorder(Color.lightGray, 1));
-		xLabel.setHorizontalAlignment(JLabel.CENTER);
-        xLabel.setVerticalAlignment(JLabel.CENTER);    
-        
-		add (xLabel);
-		add (xRange);
-		
-		// Y
-		yRange = new JRangeSlider(-50, 50, -50, 50, JRangeSlider.HORIZONTAL);
-		yRange.addChangeListener(new RangeSliderChangeListener());
-		yRange.addChangeListener(new RangeSliderLabelUpdater());
-		
-		yLabel = new JLabel("Y   [ " + yRange.getLowValue() + " to " + yRange.getHighValue() + " ]");
-		yLabel.setBorder(BorderFactory.createLineBorder(Color.lightGray, 1));
-		yLabel.setHorizontalAlignment(JLabel.CENTER);
-        yLabel.setVerticalAlignment(JLabel.CENTER);  
-        
-		add (yLabel);
-		add (yRange);
-		
-		// CUSTOMER_ID
-		cIDRange = new JRangeSlider(1, 5000, 1, 5000, JRangeSlider.HORIZONTAL);
-		cIDRange.addChangeListener(new RangeSliderChangeListener());
-		cIDRange.addChangeListener(new RangeSliderLabelUpdater());
-		
-		cIDLabel = new JLabel("CUSTOMER_ID   [ " + cIDRange.getLowValue() + " to " + cIDRange.getHighValue() + " ]");
-		cIDLabel.setBorder(BorderFactory.createLineBorder(Color.lightGray, 1));
-		cIDLabel.setHorizontalAlignment(JLabel.CENTER);
-		cIDLabel.setVerticalAlignment(JLabel.CENTER);  
-        
-		add (cIDLabel);
-		add (cIDRange);
-		
-		// PRODUCTTYPE_ID
-		pIDRange = new JRangeSlider(1, 5000, 1, 5000, JRangeSlider.HORIZONTAL);
-		pIDRange.addChangeListener(new RangeSliderChangeListener());
-		pIDRange.addChangeListener(new RangeSliderLabelUpdater());
-		
-		pIDLabel = new JLabel("PRODUCTTYPE_ID   [ " + pIDRange.getLowValue() + " to " + pIDRange.getHighValue() + " ]");
-		pIDLabel.setBorder(BorderFactory.createLineBorder(Color.lightGray, 1));
-		pIDLabel.setHorizontalAlignment(JLabel.CENTER);
-		pIDLabel.setVerticalAlignment(JLabel.CENTER);  
-        
-		add (pIDLabel);
-		add (pIDRange);
-		
-		// YIELD
-		yieldRange = new JRangeSlider(0, 100, 0, 100, JRangeSlider.HORIZONTAL);
-		yieldRange.addChangeListener(new RangeSliderChangeListener());
-		yieldRange.addChangeListener(new RangeSliderLabelUpdater());
-		
-		yieldLabel = new JLabel("Age   [ " + yieldRange.getLowValue() + " to " + yieldRange.getHighValue() + "]");
-		yieldLabel.setBorder(BorderFactory.createLineBorder(Color.lightGray, 1));
-		yieldLabel.setHorizontalAlignment(JLabel.CENTER);
-		yieldLabel.setVerticalAlignment(JLabel.CENTER);  
-        
-		add (yieldLabel);
-		add (yieldRange);
-//		// DAYS_TO_MATURITY
-		dtmRange = new JRangeSlider(1, 10000, 1, 10000, JRangeSlider.HORIZONTAL);
-		dtmRange.addChangeListener(new RangeSliderChangeListener());
-		dtmRange.addChangeListener(new RangeSliderLabelUpdater());
-		
-		dtmLabel = new JLabel("DAYS_TO_MATURITY   [ " + dtmRange.getLowValue() + " to " + dtmRange.getHighValue() + " ]");
-		dtmLabel.setBorder(BorderFactory.createLineBorder(Color.lightGray, 1));
-		dtmLabel.setHorizontalAlignment(JLabel.CENTER);
-		dtmLabel.setVerticalAlignment(JLabel.CENTER);  
-        
-		add (dtmLabel);
-		add (dtmRange);
-		
-		// AMOUNT_CHF(000)	
-		amountRange = new JRangeSlider(1, 50000, 1, 50000, JRangeSlider.HORIZONTAL);
-		amountRange.addChangeListener(new RangeSliderChangeListener());
-		amountRange.addChangeListener(new RangeSliderLabelUpdater());
 
-		amountLabel = new JLabel("AMOUNT_CHF(000)   [ " + amountRange.getLowValue() + " to " + amountRange.getHighValue() + " ]");
-		amountLabel.setBorder(BorderFactory.createLineBorder(Color.lightGray, 1));
-		amountLabel.setHorizontalAlignment(JLabel.CENTER);
-		amountLabel.setVerticalAlignment(JLabel.CENTER);  
+		// YIELD
+		ageRange = new JRangeSlider(0, 100, 0, 100, JRangeSlider.HORIZONTAL);
+		ageRange.addChangeListener(new RangeSliderChangeListener());
+		ageRange.addChangeListener(new RangeSliderLabelUpdater());
+		
+		ageLabel = new JLabel("Age   [ " + ageRange.getLowValue() + " to " + ageRange.getHighValue() + "]");
+		ageLabel.setBorder(BorderFactory.createLineBorder(Color.lightGray, 1));
+		ageLabel.setHorizontalAlignment(JLabel.CENTER);
+		ageLabel.setVerticalAlignment(JLabel.CENTER);  
         
-		add (amountLabel);
-		add (amountRange);
-		
-		// FULLNAME
-		fullnameRange = new JRangeSlider(0, 25, 0, 25, JRangeSlider.HORIZONTAL);
-		fullnameRange.addChangeListener(new RangeSliderChangeListener());
-		fullnameRange.addChangeListener(new RangeSliderLabelUpdater());
-		
-		char lowerBound = (char) ('A' + fullnameRange.getLowValue());
-		char upperBound = (char) ('A' + fullnameRange.getHighValue());
-		fullnameLabel = new JLabel("FULLNAME   [ " + lowerBound + " to " + upperBound + " ]");   
-		fullnameLabel.setBorder(BorderFactory.createLineBorder(Color.lightGray, 1));
-		fullnameLabel.setHorizontalAlignment(JLabel.CENTER);
-		fullnameLabel.setVerticalAlignment(JLabel.CENTER);
-		
-		add (fullnameLabel);
-		add (fullnameRange);
-		
-		// INDEX
-		indexRange = new JRangeSlider(1, 1000, 1, 1000, JRangeSlider.HORIZONTAL);
-		// of course, the maximum can be expanded up to 99999, but with the
-		// current expected number of total indexes being about several hundred,
-		// this will be make the slider incredibly difficult to use
-		indexRange.addChangeListener(new RangeSliderChangeListener());
-		indexRange.addChangeListener(new RangeSliderLabelUpdater());
-		
-		String lowerB = "" + indexRange.getLowValue();
-		while (lowerB.length() < 5) lowerB = "0" + lowerB;
-		String upperB = "" + indexRange.getHighValue();
-		while (upperB.length() < 5) upperB = "0" + upperB;
-		indexLabel = new JLabel("INDEX   [ T" + lowerB + " to T" + upperB + " ]");
-		indexLabel.setBorder(BorderFactory.createLineBorder(Color.lightGray, 1));
-		indexLabel.setHorizontalAlignment(JLabel.CENTER);
-		indexLabel.setVerticalAlignment(JLabel.CENTER);  
-        
-		add (indexLabel);
-		add (indexRange);
+		add (ageLabel);
+		add (ageRange);
 
 	}
 	
@@ -414,7 +329,7 @@ class SelectorPanel extends JPanel
     	
     	// saves typing when parsing doubles from a record's elements 
     	public double parseD (Object o) {
-    		return Double.parseDouble((String) o);
+    		return  o != "" ? Double.parseDouble((String) o) : 0;
     	}
 		
 		public void stateChanged(ChangeEvent event) {		
@@ -447,8 +362,8 @@ class SelectorPanel extends JPanel
 //		        	passFilters = false;
 //	        	
 	        	// filter for YIELD
-	        	if (parseD(record.get(2)) < yieldRange.getLowValue() ||
-	        		parseD(record.get(2)) > yieldRange.getHighValue())
+	        	if (parseD(record.get(2)) < ageRange.getLowValue() ||
+	        		parseD(record.get(2)) > ageRange.getHighValue())
 		        	passFilters = false;
 	        	
 //	        	// filter for DAYS_TO_MATURITY
@@ -489,24 +404,24 @@ class SelectorPanel extends JPanel
 			JRangeSlider source = (JRangeSlider) event.getSource() ;
 			// update the corresponding descriptive label
     		if (source.equals(xRange)) 
-    			xLabel.setText("X   [ " + xRange.getLowValue() + " to " + xRange.getHighValue() + " ]");
-    		else if (source.equals(yRange)) 
-    			yLabel.setText("Y   [ " + yRange.getLowValue() + " to " + yRange.getHighValue() + " ]");
-    		else if (source.equals(cIDRange)) 
-    			cIDLabel.setText("CUSTOMER_ID   [ " + cIDRange.getLowValue() + " to " + cIDRange.getHighValue() + " ]");
-    		else if (source.equals(pIDRange)) 
-    			pIDLabel.setText("PRODUCTTYPE_ID   [ " + pIDRange.getLowValue() + " to " + pIDRange.getHighValue() + " ]");
-    		else if (source.equals(yieldRange)) 
-    			yieldLabel.setText("YIELD   [ " + yieldRange.getLowValue() + "% to " + yieldRange.getHighValue() + "% ]");
-    		else if (source.equals(dtmRange)) 
-    			dtmLabel.setText("DAYS_TO_MATURITY   [ " + dtmRange.getLowValue() + " to " + dtmRange.getHighValue() + " ]");
-    		else if (source.equals(amountRange)) 
-    			amountLabel.setText("AMOUNT_CHF(000)   [ " + amountRange.getLowValue() + " to " + amountRange.getHighValue() + " ]"); 
-    		else if (source.equals(fullnameRange)) {
-    			char lowerBound = (char) ('A' + fullnameRange.getLowValue());
-    			char upperBound = (char) ('A' + fullnameRange.getHighValue());
-    			fullnameLabel.setText("FULLNAME   [ " + lowerBound + " to " + upperBound + " ]");
-    		}
+//    			xLabel.setText("X   [ " + xRange.getLowValue() + " to " + xRange.getHighValue() + " ]");
+//    		else if (source.equals(yRange)) 
+//    			yLabel.setText("Y   [ " + yRange.getLowValue() + " to " + yRange.getHighValue() + " ]");
+//    		else if (source.equals(cIDRange)) 
+//    			cIDLabel.setText("CUSTOMER_ID   [ " + cIDRange.getLowValue() + " to " + cIDRange.getHighValue() + " ]");
+//    		else if (source.equals(pIDRange)) 
+//    			pIDLabel.setText("PRODUCTTYPE_ID   [ " + pIDRange.getLowValue() + " to " + pIDRange.getHighValue() + " ]");
+//    		else if (source.equals(ageRange)) 
+    			ageLabel.setText("Age  [ " + ageRange.getLowValue() + " to " + ageRange.getHighValue() + "]");
+//    		else if (source.equals(dtmRange)) 
+//    			dtmLabel.setText("DAYS_TO_MATURITY   [ " + dtmRange.getLowValue() + " to " + dtmRange.getHighValue() + " ]");
+//    		else if (source.equals(amountRange)) 
+//    			amountLabel.setText("AMOUNT_CHF(000)   [ " + amountRange.getLowValue() + " to " + amountRange.getHighValue() + " ]"); 
+//    		else if (source.equals(fullnameRange)) {
+//    			char lowerBound = (char) ('A' + fullnameRange.getLowValue());
+//    			char upperBound = (char) ('A' + fullnameRange.getHighValue());
+//    			fullnameLabel.setText("FULLNAME   [ " + lowerBound + " to " + upperBound + " ]");
+    	//	}
         	else if (source.equals(indexRange)) {
         		// fix formatting
         		String lowerBound = "" + indexRange.getLowValue();
