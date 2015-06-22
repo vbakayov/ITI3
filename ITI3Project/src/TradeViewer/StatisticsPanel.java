@@ -33,8 +33,8 @@ public class StatisticsPanel extends JPanel
 		getCaseCount();
 		printMap();
 		PieChart demo = new PieChart("Pie Chart",countryCountMap);
-		  setLayout(new BorderLayout());
-	     //add("Center", demo); 
+		setLayout(new BorderLayout());
+	     add("Center", demo); 
 		demo.pack();
 	
 		RefineryUtilities.centerFrameOnScreen(demo);
