@@ -53,14 +53,14 @@ class SelectorPanel extends JPanel
 	private JRangeSlider xRange, yRange, cIDRange, pIDRange, yieldRange, dtmRange,
 						 amountRange, fullnameRange, indexRange;
 	// menu bars with menus containing check boxes for the categorical attributes
-	private JMenuBar AgeGroupMenuBar, CountrySegmentMenuBar, tradeDateMenuBar;
-	private JMenu currencyMenu, customerMenu, tradeDateMenu;
+	private JMenuBar AgeGroupMenuBar, CountrySegmentMenuBar, casesDateMenuBar;
+	private JMenu ageMenu, customerMenu, CasesMenu;
 	// descriptive labels
 	private JLabel xLabel, yLabel, cIDLabel, pIDLabel, yieldLabel, 
 				   dtmLabel, amountLabel, fullnameLabel, indexLabel,	   
-				   AgeGroupLabel, CountrySegmentLabel, tradeDateLabel;
+				   AgeGroupLabel, CountrySegmentLabel, casesLabel;
 	// used for creating the check boxes
-	private ArrayList<String> AgeGroupList, countrySegmentList, tradeDateList;
+	private ArrayList<String> AgeGroupList, countrySegmentList, casesList;
     // used for filtering the points
     private ArrayList<Integer> available;
     // used for multiple selection of points
@@ -79,7 +79,7 @@ class SelectorPanel extends JPanel
 		this.filtered  = new ArrayList<Integer>()	;
 		this.activeFiltersMap= new HashMap<JMenu, SelectionFilter>();
 		activeFilters= 0;
-		System.out.println("HEREEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE");
+		
 		
 		// the lists are sorted so that the check boxes appear in alphabetical order
 		AgeGroupList = new ArrayList<String>();		
@@ -90,6 +90,15 @@ class SelectorPanel extends JPanel
 		}
 		Collections.sort(AgeGroupList);
 		
+		//those are fixed
+		casesList = new ArrayList<String>();
+		for (int column = 6 ; column <25 ; column ++){
+			String columnName = model.getLabels(column);
+			//System.out.println(columnName);
+			casesList.add(columnName);
+		}
+		Collections.sort(casesList);
+		
 		countrySegmentList = new ArrayList<String>();		
 		for (int row = 0; row < model.dataSize(); row++) {
         		String countrySegment = (String) model.record(row).get(4);
@@ -98,30 +107,24 @@ class SelectorPanel extends JPanel
 		}
 		Collections.sort(countrySegmentList);
 		
-		tradeDateList = new ArrayList<String>();		
-//		for (int row = 0; row < model.dataSize(); row++) {
-//        		String tradeDate = (String) model.record(row).get(10);
-//        		if (!tradeDateList.contains(tradeDate))
-//        			tradeDateList.add(tradeDate);
-//		}
-		Collections.sort(tradeDateList);
+
 		
 		// create and add the menu bars to the panel (along with their descriptive labels)
 		
-		// CURRENCY_ISO
-		currencyMenu = new JMenu("Selection Menu");
-		currencyMenu.setName("Ageee");
-		currencyMenu.setBorder(BorderFactory.createLineBorder(Color.lightGray, 1));
-		currencyMenu.setBorderPainted(true);
+		// Ageee
+		ageMenu = new JMenu("Selection Menu");
+		ageMenu.setName("Ageee");
+		ageMenu.setBorder(BorderFactory.createLineBorder(Color.lightGray, 1));
+		ageMenu.setBorderPainted(true);
 		
 		AgeGroupMenuBar = new JMenuBar();		
-		AgeGroupMenuBar.add("MIDDLE", currencyMenu);
+		AgeGroupMenuBar.add("MIDDLE", ageMenu);
 		AgeGroupMenuBar.setBorder(BorderFactory.createLineBorder(Color.lightGray, 1));
 		
 		for (String str : AgeGroupList) {
 			JCheckBoxMenuItem cb = new JCheckBoxMenuItem(str);
 			cb.addItemListener(new CheckBoxListener ());
-			currencyMenu.add(cb);
+			ageMenu.add(cb);
 		}
 		
 		 AgeGroupLabel = new JLabel("AgeGroup");
@@ -132,7 +135,9 @@ class SelectorPanel extends JPanel
         add( AgeGroupLabel);
 		add(AgeGroupMenuBar);
 		
-		// CUSTOMER_SEGMENT
+		
+		
+		// CountryMenue
 		customerMenu = new JMenu("Selection Menu");
 		customerMenu.setBorder(BorderFactory.createLineBorder(Color.lightGray, 1));
 		customerMenu.setBorderPainted(true);
@@ -155,28 +160,29 @@ class SelectorPanel extends JPanel
 		add(CountrySegmentLabel);
 		add(CountrySegmentMenuBar);
 		
-		// TRADE_DATE
-		tradeDateMenu = new JMenu("Selection Menu");
-		tradeDateMenu.setBorder(BorderFactory.createLineBorder(Color.lightGray, 1));
-		tradeDateMenu.setBorderPainted(true);
+		// Cases Menue
+		CasesMenu = new JMenu("Selection Menu");
+		CasesMenu.setName("Case");
+		CasesMenu.setBorder(BorderFactory.createLineBorder(Color.lightGray, 1));
+		CasesMenu.setBorderPainted(true);
 		
-		tradeDateMenuBar = new JMenuBar();		
-		tradeDateMenuBar.add("MIDDLE", tradeDateMenu);
-		tradeDateMenuBar.setBorder(BorderFactory.createLineBorder(Color.lightGray, 1));
+		casesDateMenuBar = new JMenuBar();		
+		casesDateMenuBar.add("MIDDLE", CasesMenu);
+		casesDateMenuBar.setBorder(BorderFactory.createLineBorder(Color.lightGray, 1));
 		
-		for (String str : tradeDateList) {
+		for (String str : casesList) {
 			JCheckBoxMenuItem cb = new JCheckBoxMenuItem(str);
 			cb.addItemListener(new CheckBoxListener ());
-			tradeDateMenu.add(cb);
+			CasesMenu.add(cb);
 		}
 		
-		tradeDateLabel = new JLabel("TRADE_DATE");
-		tradeDateLabel.setBorder(BorderFactory.createLineBorder(Color.lightGray, 1));
-		tradeDateLabel.setHorizontalAlignment(JLabel.CENTER);
-        tradeDateLabel.setVerticalAlignment(JLabel.CENTER);  
+		casesLabel = new JLabel("CASES");
+		casesLabel.setBorder(BorderFactory.createLineBorder(Color.lightGray, 1));
+		casesLabel.setHorizontalAlignment(JLabel.CENTER);
+        casesLabel.setVerticalAlignment(JLabel.CENTER);  
 
-		add(tradeDateLabel);
-		add(tradeDateMenuBar);
+		add(casesLabel);
+		add(casesDateMenuBar);
 		
 		// create and add range sliders and descriptive labels
 		
@@ -244,7 +250,6 @@ class SelectorPanel extends JPanel
         
 		add (yieldLabel);
 		add (yieldRange);
-		System.out.println("Hafter adding the labels and slider");
 //		// DAYS_TO_MATURITY
 		dtmRange = new JRangeSlider(1, 10000, 1, 10000, JRangeSlider.HORIZONTAL);
 		dtmRange.addChangeListener(new RangeSliderChangeListener());
@@ -314,11 +319,14 @@ class SelectorPanel extends JPanel
     	public void itemStateChanged(ItemEvent event) {
     		//get the JCheckBox which triggered the event
     		JCheckBoxMenuItem source = (JCheckBoxMenuItem) event.getSource() ;
-    		String value2 = source.getText();
+    		String value2 ;
     		//find the menue the CheckBox belongs to
     		JPopupMenu fromParent = (JPopupMenu)source.getParent();
     		JMenu menu = (JMenu)fromParent.getInvoker();	
-
+    		///"YES" for range values 
+    		value2 = (menu.getName() == "Case")? "YES" : source.getText();
+    		int indexColumn =  model.getIndexOfLabel(source.getText());
+    		
     		//HashMap to track the active menus
     		if(!activeFiltersMap.containsKey(menu)) activeFiltersMap.put(menu, new SelectionFilter());	
     		
@@ -334,9 +342,13 @@ class SelectorPanel extends JPanel
         		//iterate the data, add all items that match the criteria to its menu entries list
 	        	for (int row = 0; row < model.dataSize(); row++) {
 		        		ArrayList record = model.record(row);
-			        	if (record.contains(value2)) activeFiltersMap.get(menu).add(row);
+		        		if(menu.getName() == "Case"){
+		        			//System.out.println("THE INDEX IS "+ indexColumn+record.get(indexColumn) );
+		        			if(record.get(indexColumn).equals( value2) ) activeFiltersMap.get(menu).add(row);
+		        		}else{
+		        			if (record.contains(value2)) activeFiltersMap.get(menu).add(row);}
 	        	}
-        		System.out.println(model.getCountry(0));
+        		//System.out.println(model.getCountry(0));
 	        	model.setAvailableRows(filterdata());
 	        	model.select(new ArrayList());
 	        	

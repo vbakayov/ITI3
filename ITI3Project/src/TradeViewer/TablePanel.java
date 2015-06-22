@@ -124,11 +124,8 @@ class TablePanel extends JPanel
 		}
 	    // fills the data array with the records that pass the currently set filters
 	    public void load() {
-	    	System.out.println(model.getLabel().size());
+	    	//System.out.println(model.getLabel().size());
 	    	ArrayList labals = model.getLabel();
-	    	for (int i = 0; i< labals.size(); i++){
-	    		System.out.println(labals.get(i));
-	    	}
 	    	data = new Object[available.size()][];
 	    	for (int i = 0; i < available.size(); i++) {
 	    		// add a record from the dataset to the data array
@@ -148,7 +145,7 @@ class TablePanel extends JPanel
 	        return columnNames.get(col).toString();
 	    }
 	    public Object getValueAt(int row, int col) {
-	    	System.out.println("ROW+ COL : "+row + "  "+ col +" ");
+	    	//System.out.println("ROW+ COL : "+row + "  "+ col +" ");
 	        return data[row][col];
 	    }
 	    public void setValue(Object value, int row, int col) {
