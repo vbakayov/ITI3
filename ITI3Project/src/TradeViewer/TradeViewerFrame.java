@@ -9,6 +9,7 @@ package TradeViewer;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.io.File;
 
 import javax.swing.*;
 import javax.swing.event.*;
@@ -36,30 +37,55 @@ class TradeViewerFrame extends JFrame {
         statisticsPanel=new StatisticsPanel(model);
         statisticsPanel.setLayout(new GridLayout(1,2));
         JButton countryButton = new JButton("Country Chart");
-        JButton ageButton=new JButton("Age Chart");
+        //JButton ageButton=new JButton("Age Chart");
+        JButton saveButton=new JButton("Save");
         countryButton.setPreferredSize(new Dimension(10, 10));
         statisticsPanel.add(countryButton);
-        statisticsPanel.add(ageButton);
+        //statisticsPanel.add(ageButton);
+        statisticsPanel.add(saveButton);
+        saveButton.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				showSaveDialog();
+				
+			}
+
+			private void showSaveDialog() {
+				JFileChooser fileChooser = new JFileChooser();
+				fileChooser.setDialogTitle("Specify a file to save");
+
+				int userSelection = fileChooser.showSaveDialog(statisticsPanel);
+				if (userSelection == JFileChooser.APPROVE_OPTION) {
+					File fileToSave = fileChooser.getSelectedFile();
+					//System.out.println("Save as file: " + fileToSave.getAbsolutePath());
+				}
+			}
+				
+        });
+			
         countryButton.addActionListener(new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				buttonPressed();
-				setEnabled(false);
+				saveButton.setEnabled(true);
+				countryButton.setEnabled(false);
 				
 			}
 
 			private void buttonPressed() {
 				PieChart demo = new PieChart("Pie Chart",statisticsPanel.countryCountMap);
 				setLayout(new BorderLayout());
-			    // add("Center", demo); 
+			    // add("Center", demo);
+				
 				demo.pack();
 				RefineryUtilities.centerFrameOnScreen(demo);
 				demo.setVisible(true);
 				
 			}
 	
-		});
+        });
         
     	
         model.addChild(statisticsPanel);

@@ -43,10 +43,17 @@ public class PieChart extends ApplicationFrame  {
 private static PieDataset createDataset() {
 	Iterator it = countryCountMap.entrySet().iterator();
 	DefaultPieDataset dataset = new DefaultPieDataset();
+	int others=0;
 	while (it.hasNext()) {
 		Map.Entry pair = (Map.Entry)it.next();
-		System.out.println(pair.getKey() + " = " + pair.getValue());	
-		dataset.setValue((Comparable) pair.getKey(),new Integer( (int) pair.getValue()));
+		System.out.println(pair.getKey() + " = " + pair.getValue());
+		if((int)pair.getValue()<3){
+			others=others+(int)pair.getValue();
+		}
+		else{
+			dataset.setValue((Comparable) pair.getKey(),new Integer( (int) pair.getValue()));
+		}
+		dataset.setValue("Others", others);
 	}
     return dataset;        
 }
@@ -124,7 +131,7 @@ public static void saveToFile(BufferedImage img)
 	    throws FileNotFoundException, IOException
 	    {
 
-	    File outputfile = new File("H:\\Sample.png");
+	    File outputfile = new File("H:\\Sample2.png");
 	    ImageIO.write(img, "png", outputfile);
 	    }
 
