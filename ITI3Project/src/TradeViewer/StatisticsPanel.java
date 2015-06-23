@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+import javax.swing.JButton;
 import javax.swing.JPanel;
 
 import org.jfree.chart.ChartFactory;
@@ -19,12 +20,15 @@ import org.jfree.ui.RefineryUtilities;
 
 public class StatisticsPanel extends JPanel 
 							implements ViewController{
+	
+	
 	private Model model;
-	private HashMap <String,Integer> countryCountMap = new HashMap<String,Integer>();
+	public HashMap <String,Integer> countryCountMap = new HashMap<String,Integer>();
 	private HashMap<String, Integer> ageGroupsMap = new HashMap<String,Integer>();
 	//hash map integer-integer(colomn intex, count) for the different cases
 	private HashMap<String, Integer> casesMap = new HashMap<String,Integer>();
 	JPanel chartPanel=new JPanel();
+
 	
 	public StatisticsPanel(Model model) {
 		this.model = model;
@@ -32,15 +36,7 @@ public class StatisticsPanel extends JPanel
 		countAgeGroups();
 		getCaseCount();
 		printMap();
-		PieChart demo = new PieChart("Pie Chart",countryCountMap);
-		setLayout(new BorderLayout());
-	    // add("Center", demo); 
-		demo.pack();
-	
-		RefineryUtilities.centerFrameOnScreen(demo);
-		demo.setVisible(true);	
 	}
-	
 	private void printMap() {
 		ArrayList<Integer> output = new ArrayList<Integer>();
     
@@ -93,9 +89,10 @@ public class StatisticsPanel extends JPanel
 		// TODO Auto-generated method stub
 		
 	}
-	
-	
 
 	   
 
 }
+
+
+

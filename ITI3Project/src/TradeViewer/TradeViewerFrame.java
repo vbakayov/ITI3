@@ -9,8 +9,11 @@ package TradeViewer;
 
 import java.awt.*;
 import java.awt.event.*;
+
 import javax.swing.*;
 import javax.swing.event.*;
+
+import org.jfree.ui.RefineryUtilities;
 
 class TradeViewerFrame extends JFrame {
 
@@ -19,23 +22,51 @@ class TradeViewerFrame extends JFrame {
     private SelectorPanel selectorPanel;
     private StatisticsPanel statisticsPanel;
     private Model model;
+    
 
     public TradeViewerFrame(String filename) {
     	
         model = new Model(filename);
         addWindowListener(new WindowCloser());
+        
 
         // add the main Swing components
     //    scatterplotPanel = new ScatterplotPanel(model);
     //    model.addChild(scatterplotPanel);
         statisticsPanel=new StatisticsPanel(model);
+        statisticsPanel.setLayout(new GridLayout(1,2));
+        JButton countryButton = new JButton("Country Chart");
+        JButton ageButton=new JButton("Age Chart");
+        countryButton.setPreferredSize(new Dimension(10, 10));
+        statisticsPanel.add(countryButton);
+        statisticsPanel.add(ageButton);
+        countryButton.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				buttonPressed();
+				setEnabled(false);
+				
+			}
+
+			private void buttonPressed() {
+				PieChart demo = new PieChart("Pie Chart",statisticsPanel.countryCountMap);
+				setLayout(new BorderLayout());
+			    // add("Center", demo); 
+				demo.pack();
+				RefineryUtilities.centerFrameOnScreen(demo);
+				demo.setVisible(true);
+				
+			}
+	
+		});
+        
+    	
         model.addChild(statisticsPanel);
         tablePanel = new TablePanel(model);
         model.addChild(tablePanel);
         selectorPanel = new SelectorPanel(model);
         model.addChild(selectorPanel);
-        
-        
         
         // contains the record panel and the selector panel 
         JPanel dataPanel = new JPanel(new GridLayout(1,2));
@@ -59,6 +90,8 @@ class TradeViewerFrame extends JFrame {
         setVisible(true);
 
     }
+    
+    
 
     private class WindowCloser extends WindowAdapter {
 

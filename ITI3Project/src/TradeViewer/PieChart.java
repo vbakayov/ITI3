@@ -89,7 +89,7 @@ private static JFreeChart createChart(PieDataset dataset) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}*/
-     BufferedImage image=chart.createBufferedImage(500, 600);
+     BufferedImage image=chart.createBufferedImage(800, 600);
      try {
 		saveToFile(image);
 	} catch (FileNotFoundException e) {
@@ -124,7 +124,7 @@ public static void saveToFile(BufferedImage img)
 	    throws FileNotFoundException, IOException
 	    {
 
-	    File outputfile = new File("C:\\Sample.png");
+	    File outputfile = new File("H:\\Sample.png");
 	    ImageIO.write(img, "png", outputfile);
 	    }
 
