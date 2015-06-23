@@ -56,6 +56,8 @@ class TablePanel extends JPanel
 	
 	private  JScrollPane scrollPane ;
 	
+
+	
 	public TablePanel(Model m) {
 		
 		this.model = m;
@@ -91,9 +93,10 @@ class TablePanel extends JPanel
 		// enable row sorting
 		 TableRowSorter trs = new TableRowSorter(recordDataModel);
 		 trs.setComparator(2, new IntComparator());
-		recordTable.setRowSorter(trs);
+		 recordTable.setRowSorter(trs);
 	
 		recordTable.setAutoCreateRowSorter(true);
+
 
 		
 		// create a slider to edit the row height

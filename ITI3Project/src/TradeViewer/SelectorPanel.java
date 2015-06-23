@@ -34,6 +34,8 @@ package TradeViewer;
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 
 import java.awt.*;
 import java.awt.event.ItemEvent;
@@ -41,6 +43,8 @@ import java.awt.event.ItemListener;
 
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import javax.swing.table.TableModel;
+import javax.swing.table.TableRowSorter;
 
 import java.util.*;
 
@@ -68,6 +72,8 @@ class SelectorPanel extends JPanel
 
     
     private ArrayList<Integer> filtered;
+    //sorter for the nameFilter
+ 
     private int activeFilters ;
 	private HashMap<JMenu, SelectionFilter> activeFiltersMap;
 	private JLabel NameLabel;
@@ -81,6 +87,9 @@ class SelectorPanel extends JPanel
 		this.filtered  = new ArrayList<Integer>()	;
 		this.activeFiltersMap= new HashMap<JMenu, SelectionFilter>();
 		activeFilters= 0;
+		//add a sorter to the table 
+
+		 
 		
 		
 		// the lists are sorted so that the check boxes appear in alphabetical order
@@ -195,6 +204,20 @@ class SelectorPanel extends JPanel
 		add(NameLabel);
 		
 		filterText = new JTextField();
+		filterText.getDocument().addDocumentListener( new DocumentListener() {
+			@Override
+			public void changedUpdate(DocumentEvent arg0) {
+				newFilter();
+			}
+			@Override
+			public void insertUpdate(DocumentEvent arg0) {
+				newFilter();
+			}
+			@Override
+			public void removeUpdate(DocumentEvent arg0) {
+				 newFilter();
+			}
+        });
 		add(filterText);
 		
 		// create and add range sliders and descriptive labels
@@ -434,7 +457,27 @@ class SelectorPanel extends JPanel
     }
     
   
-    
+    /** 
+     * Update the row filter regular expression from the expression in
+     * the text box.
+     */
+    private void newFilter() {
+        ArrayList<Integer> output = new ArrayList<Integer>();
+        //If current expression doesn't parse, don't update.
+        for(int row = 0; row<model.dataSize(); row++){
+			String name = (String) model.record(row).get(0);
+			System.out.println(name + " "+ filterText.getText());
+			if (name.contains(filterText.getText())){
+				System.out.println("It Matches");
+				output.add(row);
+			}
+			
+        }
+        // update the filtered rows
+		model.setAvailableRows(output);
+		// update the views by executing selection with an empty arra
+    	model.select(new ArrayList());
+    }
     public void update(ArrayList<Integer> availableRows, ArrayList<Integer> selectedRows) {
     	available = availableRows;
         selected = selectedRows;

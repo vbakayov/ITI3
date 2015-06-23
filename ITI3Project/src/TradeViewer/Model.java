@@ -27,6 +27,9 @@ import java.util.Iterator;
 import java.util.ListIterator;
 import java.util.StringTokenizer;
 
+import javax.swing.table.AbstractTableModel;
+import javax.swing.table.TableRowSorter;
+
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
@@ -45,7 +48,9 @@ public class Model {
     private static ArrayList<Integer> selectedRows;
     // contains only the rows from the original dataset that pass the currently set filters -
     // filtering is achieved by making all views use this dataset instead of the default one
-    private ArrayList<Integer> availableRows; 
+    private ArrayList<Integer> availableRows;
+
+	
 
     /* Constructor creates the main data structures and then loads data in 
      * the given file. After this, children should be null but the other 
@@ -404,4 +409,5 @@ public class Model {
 	public ArrayList getData(){
 		return dataset;
 	}
+
 }
