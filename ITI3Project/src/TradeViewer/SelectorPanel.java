@@ -116,6 +116,7 @@ class SelectorPanel extends JPanel
         		if (!countrySegmentList.contains(countrySegment))
         			countrySegmentList.add(countrySegment);
 		}
+		
 		Collections.sort(countrySegmentList);
 		
 
@@ -364,46 +365,14 @@ class SelectorPanel extends JPanel
 				ArrayList record = model.record(row);
 				boolean passFilters = true;
 				
-				// filter for X
-//	        	if (parseD(record.get(0)) < xRange.getLowValue() ||
-//	        		parseD(record.get(0)) > xRange.getHighValue()) 
-//	        		passFilters = false;
-//	        	
-	        	// filter for Y
-//	        	if (parseD(record.get(1)) < yRange.getLowValue() ||
-//		        	parseD(record.get(1)) > yRange.getHighValue()) 
-//		        	passFilters = false;
-	        	
-	        	// filter for CUSTOMER_ID
-//	        	if (parseD(record.get(2)) < cIDRange.getLowValue() ||
-//		        	parseD(record.get(2)) > cIDRange.getHighValue()) 
-//		        	passFilters = false;
-	        	
-	        	// filter for PRODUCTTYPE_ID
-//	        	if (parseD(record.get(3)) < pIDRange.getLowValue() ||
-//			        parseD(record.get(3)) > pIDRange.getHighValue()) 
-//		        	passFilters = false;
+
 //	        	
 	        	// filter for YIELD
 	        	if (parseD(record.get(2)) < ageRange.getLowValue() ||
 	        		parseD(record.get(2)) > ageRange.getHighValue())
 		        	passFilters = false;
 	        	
-//	        	// filter for DAYS_TO_MATURITY
-//	        	if (parseD(record.get(7)) < dtmRange.getLowValue() ||
-//		        	parseD(record.get(7)) > dtmRange.getHighValue())
-//		        	passFilters = false;
-//	        	
-//	        	// filter for AMOUNT_CHF(000)
-//	        	if (parseD(record.get(8)) < amountRange.getLowValue() ||
-//		        	parseD(record.get(8)) > amountRange.getHighValue())
-//		        	passFilters = false;
-//	        	
-//	        	// filter for FULLNAME
-//	        	if (((String)record.get(9)).charAt(0) < (char)('A' + fullnameRange.getLowValue()) ||
-//	        		((String)record.get(9)).charAt(0) > (char)('A' + fullnameRange.getHighValue())) 
-//		        	passFilters = false;
-//	        	
+
 //	        	// filter for INDEX
 //	        	// omit the 'T' at the beginning and parse a double from the rest of the string
 //	        	double value = Double.parseDouble(((String) record.get(11)).substring(1));
@@ -467,7 +436,7 @@ class SelectorPanel extends JPanel
         for(int row = 0; row<model.dataSize(); row++){
 			String name = (String) model.record(row).get(0);
 			System.out.println(name + " "+ filterText.getText());
-			if (name.contains(filterText.getText())){
+			if ( name.toLowerCase().contains(filterText.getText().toLowerCase())){
 				System.out.println("It Matches");
 				output.add(row);
 			}

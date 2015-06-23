@@ -94,6 +94,7 @@ class TablePanel extends JPanel
 		 TableRowSorter trs = new TableRowSorter(recordDataModel);
 		 trs.setComparator(2, new IntComparator());
 		 recordTable.setRowSorter(trs);
+		 model.setTable(recordTable);
 	
 		recordTable.setAutoCreateRowSorter(true);
 

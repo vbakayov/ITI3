@@ -27,6 +27,7 @@ import java.util.Iterator;
 import java.util.ListIterator;
 import java.util.StringTokenizer;
 
+import javax.swing.JTable;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableRowSorter;
 
@@ -49,6 +50,8 @@ public class Model {
     // contains only the rows from the original dataset that pass the currently set filters -
     // filtering is achieved by making all views use this dataset instead of the default one
     private ArrayList<Integer> availableRows;
+
+	private JTable recordTable;
 
 	
 
@@ -408,6 +411,14 @@ public class Model {
 	}
 	public ArrayList getData(){
 		return dataset;
+	}
+
+	public void setTable(JTable recordTable) {
+		this.recordTable = recordTable;
+		
+	}
+	public JTable getTable(){
+		return recordTable;
 	}
 
 }
