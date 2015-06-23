@@ -1,12 +1,18 @@
 package TradeViewer;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JPanel;
 
 import org.jfree.chart.ChartFactory;
@@ -36,6 +42,64 @@ public class StatisticsPanel extends JPanel
 		countAgeGroups();
 		getCaseCount();
 		printMap();
+		GUI();
+	}
+	
+	
+	
+	public void GUI(){
+		 setLayout(new GridLayout(1,2));
+	        JButton countryButton = new JButton("Country Chart");
+	        //JButton ageButton=new JButton("Age Chart");
+	        JButton saveButton=new JButton("Save");
+	        countryButton.setPreferredSize(new Dimension(10, 10));
+	        add(countryButton);
+	        //statisticsPanel.add(ageButton);
+	        add(saveButton);
+	        saveButton.addActionListener(new ActionListener() {
+				
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					showSaveDialog();
+					
+				}
+
+				private void showSaveDialog() {
+					JFileChooser fileChooser = new JFileChooser();
+					fileChooser.setDialogTitle("Specify a file to save");
+
+					int userSelection = fileChooser.showSaveDialog(chartPanel);
+					if (userSelection == JFileChooser.APPROVE_OPTION) {
+						File fileToSave = fileChooser.getSelectedFile();
+						//System.out.println("Save as file: " + fileToSave.getAbsolutePath());
+					}
+				}
+					
+	        });
+				
+	        countryButton.addActionListener(new ActionListener() {
+				
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					buttonPressed();
+					saveButton.setEnabled(true);
+					countryButton.setEnabled(false);
+					
+				}
+
+				private void buttonPressed() {
+					PieChart demo = new PieChart("Pie Chart",countryCountMap);
+					setLayout(new BorderLayout());
+				    // add("Center", demo);
+					
+					demo.pack();
+					RefineryUtilities.centerFrameOnScreen(demo);
+					demo.setVisible(true);
+					
+				}
+		
+	        });
+	        
 	}
 	private void printMap() {
 		ArrayList<Integer> output = new ArrayList<Integer>();
