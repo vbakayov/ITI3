@@ -3,6 +3,8 @@ package TradeViewer;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -22,7 +24,7 @@ public class Table extends JFrame {
 		this.model=model;
 		// Set the frame characteristics
 		setTitle( "Legal Cases" );
-		setSize(500, 600 );
+		setSize(200,300 );
 		setBackground( Color.gray );
 		initTable();
 
@@ -31,19 +33,18 @@ public class Table extends JFrame {
 	
 	private String[][] convertHashMaptoDoubleArray(){
 		
-		String data[][] = new String [1][casesMap.size()];
-		//int i = 0;
+		String data[][] = new String [casesMap.size()][2];
+		int i = 0;
 		System.out.println("Size of CasesMap: "+ casesMap.size());
-		int j=0;
-		for( String key : casesMap.keySet()) {
-		    String tValue = casesMap.get(key).toString();
-		    
-		    	//System.out.prirntln("OFFFFF "+ j);
-		        data[0][j] = tValue;
-		      
-		    
-		   j++;
-		}
+		Iterator it = casesMap.entrySet().iterator();
+    	while (it.hasNext()) {
+    		Map.Entry pair = (Map.Entry)it.next();
+    		data[i][0] = (String) pair.getKey();
+    		data[i][1] =  pair.getValue().toString();
+    		
+    		//System.out.println(pair.getKey() + " = " + pair.getValue());
+    		i++;
+    	}
 		System.out.println("Data Size"+data.length);
 		return data;
 		
@@ -56,10 +57,7 @@ public class Table extends JFrame {
 				getContentPane().add( topPanel );
 
 				// Create columns names
-				String columnNames[]=new String[20];
-				for(int i=6;i<26;i++){
-					columnNames[i-6] =model.getLabels(i);
-				}
+				String columnNames[]={"Case Type","Count"};
 						
 
 				// Create a new table instance
