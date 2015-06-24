@@ -51,7 +51,7 @@ public class StatisticsPanel extends JPanel
 	
 	
 	public void GUI(){
-		 setLayout(new GridLayout(8,2));
+		 setLayout(new GridLayout(4,2));
 	        JButton countryButton = new JButton("Country Chart");
 	        JButton saveButton=new JButton("Save");
 	      
@@ -71,10 +71,14 @@ public class StatisticsPanel extends JPanel
 	        
 	        JButton ageGroupButton = new JButton ("AgeGroup chart");
 	        JButton saveButtonAge = new JButton("Save");
+	      
 	        
 	        add(ageGroupButton);
 	        add(saveButtonAge);
 	        
+	        JButton casesButton=new JButton("Legal Cases");
+	        
+	        add(casesButton);
 	        
 	        ageGroupButton.addActionListener(new ActionListener() {
 
@@ -82,7 +86,7 @@ public class StatisticsPanel extends JPanel
 				public void actionPerformed(ActionEvent e) {
 					buttonPressed();
 					saveButton.setEnabled(true);
-					countryButton.setEnabled(false);
+					//countryButton.setEnabled(false);
 					
 				}
 				
@@ -134,7 +138,7 @@ public class StatisticsPanel extends JPanel
 				public void actionPerformed(ActionEvent e) {
 					buttonPressed();
 					saveButton.setEnabled(true);
-					countryButton.setEnabled(false);
+					//countryButton.setEnabled(false);
 					
 				}
 
@@ -152,6 +156,18 @@ public class StatisticsPanel extends JPanel
 		
 	        });
 	        
+	        casesButton.addActionListener(new ActionListener() {
+
+				@Override
+				public void actionPerformed(ActionEvent arg0) {
+					Table mainFrame	= new Table(model,casesMap);
+					mainFrame.setVisible( true );
+					
+					
+				}
+	        	
+	        });
+	        
 	}
 	private void printMap() {
 		ArrayList<Integer> output = new ArrayList<Integer>();
@@ -161,7 +177,8 @@ public class StatisticsPanel extends JPanel
 		Iterator it = casesMap.entrySet().iterator();
     	while (it.hasNext()) {
     		Map.Entry pair = (Map.Entry)it.next();
-    		//System.out.println(pair.getKey() + " = " + pair.getValue());
+    		
+    		System.out.println(pair.getKey() + " = " + pair.getValue());
     		
     	}
     	
@@ -188,14 +205,19 @@ public class StatisticsPanel extends JPanel
 		for(int column=6; column < 26 ; column++){
 			for(int row= 0; row< model.dataSize(); row++){
 				String info = model.getData(column,row);
+				String label = model.getLabels(column);
+				if(row == model.dataSize()-1 && !casesMap.containsKey(label))	casesMap.put(label, 0);
 				if(info.equals("YES")){
-					String label = model.getLabels(column);
+					
 					int count = casesMap.containsKey(label) ? casesMap.get(label) : 0;
 					casesMap.put(label, count + 1);
 				}
 			}	
 		}
 	}
+	
+	
+	
 	
 	
 
