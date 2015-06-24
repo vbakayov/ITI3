@@ -71,6 +71,7 @@ class TradeViewerFrame extends JFrame {
     private class WindowCloser extends WindowAdapter {
 
         public void windowClosing(WindowEvent event) {
+        System.out.println(	event.getSource().toString());
             System.exit(0);
         }
         

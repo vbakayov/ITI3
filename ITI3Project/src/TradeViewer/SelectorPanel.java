@@ -288,8 +288,19 @@ class SelectorPanel extends JPanel
 		        			if (record.contains(value2)) activeFiltersMap.get(menu).add(row);}
 	        	}
         		//System.out.println(model.getCountry(0));
+	        	
+	        	
+	        	// int[] selection = model.getTable().getSelectedRows();
+//	        	 ArrayList selection2 = new ArrayList<Integer>();
+//	        	   for (int i = 0; i < selection.length; i++) {
+//	        	     selection[i] = model.getTable().convertRowIndexToModel(selection[i]);
+//	        	     System.out.println("SELECTIO" +selection[i]);
+//	        	     selection2.add( selection[i]);
+//	        	   }
+//	        	
 	        	model.setAvailableRows(filterdata());
 	        	model.select(new ArrayList());
+	        	model.getTable().getSelectionModel().clearSelection();
 	        	
         		
         	}
@@ -313,6 +324,7 @@ class SelectorPanel extends JPanel
         		
         		model.setAvailableRows(filterdata());
         		model.select(new ArrayList());
+        		model.getTable().getSelectionModel().clearSelection();
         		//if not filters active for the menue remove its entries from the hashMap
         		if(activeFiltersMap.get(menu).getActiveFilters().equals(0)){
         			activeFiltersMap.remove(menu);
@@ -387,6 +399,7 @@ class SelectorPanel extends JPanel
     		model.setAvailableRows(filtered);
     		// update the views by executing selection with an empty array
     		model.select(new ArrayList());
+    		model.getTable().getSelectionModel().clearSelection();
 		}     
     }
     

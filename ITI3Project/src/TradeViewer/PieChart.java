@@ -13,6 +13,7 @@ import java.util.Iterator;
 import java.util.Map;
 
 import javax.imageio.ImageIO;
+import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import org.jfree.chart.ChartFactory;
@@ -29,31 +30,44 @@ import org.jfree.data.general.PieDataset;
 import org.jfree.ui.ApplicationFrame;
 import org.jfree.ui.RefineryUtilities;
 
-public class PieChart extends ApplicationFrame  {
+public class PieChart extends JFrame  {
 
-	private static HashMap <String,Integer> countryCountMap;
+	private  HashMap <String,Integer> map;
+	private  JFreeChart chart;
+	private  boolean otherGroup;
 	
 	
-	public PieChart(String title, HashMap<String,Integer> countryCountMap) {
+	public PieChart(String title, HashMap<String,Integer> countryCountMap, boolean otherGroupp) {
 		super(title);
-		this.countryCountMap=countryCountMap;		
-		setContentPane(createDemoPanel());
+		this.map=countryCountMap;	
+		this.otherGroup = otherGroupp;
+	
+		JPanel frame = createDemoPanel();
+		setContentPane(frame);
+		
 	}
 
-private static PieDataset createDataset() {
-	Iterator it = countryCountMap.entrySet().iterator();
+private  PieDataset createDataset() {
+	Iterator it = map.entrySet().iterator();
 	DefaultPieDataset dataset = new DefaultPieDataset();
 	int others=0;
 	while (it.hasNext()) {
 		Map.Entry pair = (Map.Entry)it.next();
 		System.out.println(pair.getKey() + " = " + pair.getValue());
-		if((int)pair.getValue()<3){
-			others=others+(int)pair.getValue();
+		System.out.println("Boolean "+ otherGroup);
+		if (otherGroup){
+			if((int)pair.getValue()<3){
+				others=others+(int)pair.getValue();
+			}
+			else{
+				dataset.setValue((Comparable) pair.getKey(),new Integer( (int) pair.getValue()));
+			}
+			dataset.setValue("Others", others);
 		}
 		else{
+			
 			dataset.setValue((Comparable) pair.getKey(),new Integer( (int) pair.getValue()));
 		}
-		dataset.setValue("Others", others);
 	}
     return dataset;        
 }
@@ -65,9 +79,9 @@ private static PieDataset createDataset() {
  * 
  * @return A chart.
  */
-private static JFreeChart createChart(PieDataset dataset) {
+private  JFreeChart createChart(PieDataset dataset) {
     
-    JFreeChart chart = ChartFactory.createPieChart(
+     chart = ChartFactory.createPieChart(
         "Pie Chart Demo",  // chart title
         dataset,             // data
         true,               // include legend
@@ -83,29 +97,7 @@ private static JFreeChart createChart(PieDataset dataset) {
     PieSectionLabelGenerator gen = new StandardPieSectionLabelGenerator(
             "{0}: {1} ({2})", new DecimalFormat("0"), new DecimalFormat("0%"));
         plot.setLabelGenerator(gen);
-        /*OutputStream output=null;
-        try {
-			output= new FileOutputStream("H:\\output.png");
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-        try {
-			ChartUtilities.writeChartAsPNG(output,chart,600, 800);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}*/
-     BufferedImage image=chart.createBufferedImage(800, 600);
-     try {
-		saveToFile(image);
-	} catch (FileNotFoundException e) {
-		// TODO Auto-generated catch block
-		e.printStackTrace();
-	} catch (IOException e) {
-		// TODO Auto-generated catch block
-		e.printStackTrace();
-	}
+     
     return chart;
     
 }
@@ -115,7 +107,7 @@ private static JFreeChart createChart(PieDataset dataset) {
  * 
  * @return A panel.
  */
-public static JPanel createDemoPanel() {
+public  JPanel createDemoPanel() {
     JFreeChart chart = createChart(createDataset());
     return new ChartPanel(chart);
 }
@@ -127,12 +119,23 @@ public static JPanel createDemoPanel() {
  * 
  */
 
-public static void saveToFile(BufferedImage img)
-	    throws FileNotFoundException, IOException
+public  void saveToFile(String path)
+	    
 	    {
-
-	    File outputfile = new File("C:\\Sample2.png");
-	    ImageIO.write(img, "png", outputfile);
+		
+	  BufferedImage image=chart.createBufferedImage(800, 600);
+	     try {
+	    	 
+	    	 File outputfile = new File(path+".png");
+	 	    ImageIO.write(image, "png", outputfile);
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	   
 	    }
 
 

@@ -159,11 +159,13 @@ class TablePanel extends JPanel
 	    }
 	    public String getColumnName(int col) {
 	    	System.out.println(col);
+	    	
 	        return columnNames.get(col).toString();
 	    }
 	    public Object getValueAt(int row, int col) {
-	    	//System.out.println("ROW+ COL : "+row + "  "+ col +" ");
-	        return data[row][col];
+	    	//Here row and col are view indeces and data is view representaion
+	    	System.out.println("ROW+ COL : "+row + "  "+ col +" "+ data[row][col]);
+	    	return data[row][col];
 	    }
 	    public void setValue(Object value, int row, int col) {
 	        data[row][col] = value;
@@ -199,7 +201,7 @@ class TablePanel extends JPanel
                 int maxIndex = lsm.getMaxSelectionIndex();
                 for (int i = minIndex; i <= maxIndex; i++) {
                     if (lsm.isSelectedIndex(i)) {
-                       selected.add(i);
+                       selected.add(model.getTable().convertRowIndexToModel(i));
                        System.out.println(" " + i + "SIZE"+ selected.size());
                        
                     }
@@ -235,6 +237,8 @@ class TablePanel extends JPanel
 		 scrollPane.getViewport().revalidate();
 		recordTable.repaint();
 	}
+	
+	
 	class IntComparator implements Comparator {
         public int compare(Object o1, Object o2) {
         	

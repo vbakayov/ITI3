@@ -13,6 +13,7 @@ import java.util.Map;
 
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import org.jfree.chart.ChartFactory;
@@ -34,6 +35,8 @@ public class StatisticsPanel extends JPanel
 	//hash map integer-integer(colomn intex, count) for the different cases
 	private HashMap<String, Integer> casesMap = new HashMap<String,Integer>();
 	JPanel chartPanel=new JPanel();
+	private PieChart countryPieChart;
+	private PieChart ageGroupPieChart;
 
 	
 	public StatisticsPanel(Model model) {
@@ -48,14 +51,59 @@ public class StatisticsPanel extends JPanel
 	
 	
 	public void GUI(){
-		 setLayout(new GridLayout(1,2));
+		 setLayout(new GridLayout(8,2));
 	        JButton countryButton = new JButton("Country Chart");
-	        //JButton ageButton=new JButton("Age Chart");
 	        JButton saveButton=new JButton("Save");
-	        countryButton.setPreferredSize(new Dimension(10, 10));
+	      
 	        add(countryButton);
-	        //statisticsPanel.add(ageButton);
 	        add(saveButton);
+	        
+	       // AgeGroups
+//	        Iterator it =  ageGroupsMap.entrySet().iterator();
+//	    	while (it.hasNext()) {
+//	    		Map.Entry pair = (Map.Entry)it.next();
+//	    		System.out.println(pair.getKey() + " = " + pair.getValue());
+//	    		JLabel age = new JLabel((String) pair.getKey());
+//	    		JLabel  value = new JLabel(Integer.toString((int) pair.getValue()));
+//	    		add(age);
+//	    		add(value);
+//	    		}
+	        
+	        JButton ageGroupButton = new JButton ("AgeGroup chart");
+	        JButton saveButtonAge = new JButton("Save");
+	        
+	        add(ageGroupButton);
+	        add(saveButtonAge);
+	        
+	        
+	        ageGroupButton.addActionListener(new ActionListener() {
+
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					buttonPressed();
+					saveButton.setEnabled(true);
+					countryButton.setEnabled(false);
+					
+				}
+				
+				private void buttonPressed() {
+					ageGroupPieChart= new PieChart("Pie Chart",ageGroupsMap,false);
+					setLayout(new BorderLayout());
+				    // add("Center", demo);
+					
+					ageGroupPieChart.pack();
+					RefineryUtilities.centerFrameOnScreen(ageGroupPieChart);
+					ageGroupPieChart.setVisible(true);
+					
+				}
+			
+		
+	        });
+				
+	        
+	        
+	        
+	        
 	        saveButton.addActionListener(new ActionListener() {
 				
 				@Override
@@ -71,7 +119,8 @@ public class StatisticsPanel extends JPanel
 					int userSelection = fileChooser.showSaveDialog(chartPanel);
 					if (userSelection == JFileChooser.APPROVE_OPTION) {
 						File fileToSave = fileChooser.getSelectedFile();
-						//System.out.println("Save as file: " + fileToSave.getAbsolutePath());
+						System.out.println("Save as file: " + fileToSave.getAbsolutePath());
+						countryPieChart.saveToFile(fileToSave.getAbsolutePath());
 					}
 				}
 					
@@ -79,6 +128,8 @@ public class StatisticsPanel extends JPanel
 				
 	        countryButton.addActionListener(new ActionListener() {
 				
+			
+
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					buttonPressed();
@@ -88,13 +139,14 @@ public class StatisticsPanel extends JPanel
 				}
 
 				private void buttonPressed() {
-					PieChart demo = new PieChart("Pie Chart",countryCountMap);
+					System.out.println("INVOKEEE HEREE");
+					countryPieChart= new PieChart("Pie Chart",countryCountMap, true);
 					setLayout(new BorderLayout());
 				    // add("Center", demo);
 					
-					demo.pack();
-					RefineryUtilities.centerFrameOnScreen(demo);
-					demo.setVisible(true);
+					countryPieChart.pack();
+					RefineryUtilities.centerFrameOnScreen(countryPieChart);
+					countryPieChart.setVisible(true);
 					
 				}
 		

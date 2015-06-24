@@ -31,9 +31,13 @@ import javax.swing.JTable;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableRowSorter;
 
+import org.apache.poi.hssf.usermodel.HSSFCell;
+import org.apache.poi.hssf.usermodel.HSSFRow;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
 
@@ -88,17 +92,6 @@ public class Model {
     	System.out.println("FROM MODEL "+ rows.size());
     	selectedRows.clear();
     
-        for (int i = 0; i < rows.size(); i++) {
-        	int row = rows.get(i);
-        	// check if selection is out of range
-        	if ((row < 0) | (row >= dataSize())) {
-                System.err.println("TradeViewerFrame: selection out of range ("+ row + ")");
-                return;
-        	}
-        	// add the row only if it is not already selected
-	      selectedRows.add(row);
-	        //else if (rows.size() == 1) selectedRows.remove(new Integer(row));
-		}
 		// the children are updated
         for (int i = 0; i < children.size(); i++) {
             ViewController kid = (ViewController) children.get(i);
@@ -153,7 +146,7 @@ public class Model {
         //printing number of sheet avilable in workbook
         org.apache.poi.ss.usermodel.Sheet sheet=null;
         sheet = workbook.getSheetAt(0);
-        
+        removeTrailing(sheet);
         //Iterate through each rows one by one
         Iterator<Row> rowIterator = sheet.iterator();
         while (rowIterator.hasNext())
@@ -419,6 +412,32 @@ public class Model {
 	}
 	public JTable getTable(){
 		return recordTable;
+	}
+	
+	private void removeTrailing( Sheet sheet){
+			
+			;
+		  boolean stop = false;
+          boolean nonBlankRowFound;
+          short c;
+          Row lastRow = null;
+          Cell cell = null;
+
+          while (stop == false) {
+              nonBlankRowFound = false;
+              lastRow = sheet.getRow(sheet.getLastRowNum());
+              for (c = lastRow.getFirstCellNum(); c <= lastRow.getLastCellNum(); c++) {
+                  cell = lastRow.getCell(c);
+                  if (cell != null && lastRow.getCell(c).getCellType() != HSSFCell.CELL_TYPE_BLANK) {
+                      nonBlankRowFound = true;
+                  }
+              }
+              if (nonBlankRowFound == true) {
+                  stop = true;
+              } else {
+                  sheet.removeRow(lastRow);
+              }
+          }
 	}
 
 }
