@@ -34,12 +34,16 @@ import javax.swing.table.TableRowSorter;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
+import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 public class Model {
 
@@ -56,6 +60,9 @@ public class Model {
     private ArrayList<Integer> availableRows;
 
 	private JTable recordTable;
+	org.apache.poi.ss.usermodel.Sheet sheet=null;
+
+	private XSSFSheet sheetHSSF;
 
 	
 
@@ -134,6 +141,11 @@ public class Model {
         boolean isHeader=true;
 		try {
 			workbook = WorkbookFactory.create(filename);
+			 //Get the workbook instance for XLS file 
+			 FileInputStream file = new FileInputStream(filename);
+			 XSSFWorkbook workbookHSSF = new XSSFWorkbook(file);
+		    //Get first sheet from the workbook
+		       sheetHSSF = workbookHSSF.getSheetAt(0);
 		} catch (InvalidFormatException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -144,8 +156,13 @@ public class Model {
         System.out.println(workbook);
 
         //printing number of sheet avilable in workbook
-        org.apache.poi.ss.usermodel.Sheet sheet=null;
+        //org.apache.poi.ss.usermodel.Sheet sheet=null;
         sheet = workbook.getSheetAt(0);
+        
+     
+        
+    
+        
         removeTrailing(sheet);
         //Iterate through each rows one by one
         Iterator<Row> rowIterator = sheet.iterator();
@@ -438,6 +455,20 @@ public class Model {
                   sheet.removeRow(lastRow);
               }
           }
+	}
+	
+	
+	public void removeRow( int rowIndex) {
+	    int lastRowNum=sheetHSSF.getLastRowNum();
+	    if(rowIndex>=0&&rowIndex<lastRowNum){
+	       sheetHSSF.shiftRows(rowIndex+1,lastRowNum, -1);
+	    }
+	    if(rowIndex==lastRowNum){
+	    	XSSFRow  removingRow=sheetHSSF.getRow(rowIndex);
+	        if(removingRow!=null){
+	        	sheetHSSF.removeRow(removingRow);
+	        }
+	    }
 	}
 
 }

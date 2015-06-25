@@ -46,6 +46,9 @@ import javax.swing.event.ChangeListener;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 
@@ -78,12 +81,14 @@ class SelectorPanel extends JPanel
 	private HashMap<JMenu, SelectionFilter> activeFiltersMap;
 	private JLabel NameLabel;
 	private JTextField filterText;
+	private JLabel closeLabel;
+	private JTextField filterDateText;
 	public SelectorPanel(Model m) {
 		
 		this.model = m;
 		this.available = model.getAvailableRows();
 		this.selected = new ArrayList<Integer>();
-		this.setLayout(new GridLayout(5,2));
+		this.setLayout(new GridLayout(6,2));
 		this.filtered  = new ArrayList<Integer>()	;
 		this.activeFiltersMap= new HashMap<JMenu, SelectionFilter>();
 		activeFilters= 0;
@@ -200,9 +205,9 @@ class SelectorPanel extends JPanel
 		NameLabel = new JLabel("NAME");
 		NameLabel.setBorder(BorderFactory.createLineBorder(Color.lightGray, 1));
 		NameLabel.setHorizontalAlignment(JLabel.CENTER);
-		NameLabel.setVerticalAlignment(JLabel.CENTER);  
-
-		add(NameLabel);
+		NameLabel.setVerticalAlignment(JLabel.CENTER);
+		
+		
 		
 		filterText = new JTextField();
 		filterText.getDocument().addDocumentListener( new DocumentListener() {
@@ -219,7 +224,39 @@ class SelectorPanel extends JPanel
 				 newFilter();
 			}
         });
+		
+		add(NameLabel);
 		add(filterText);
+		
+		
+		closeLabel = new JLabel("Closing Date");
+		closeLabel.setBorder(BorderFactory.createLineBorder(Color.lightGray, 1));
+		closeLabel.setHorizontalAlignment(JLabel.CENTER);
+		closeLabel.setVerticalAlignment(JLabel.CENTER);
+		
+		filterDateText = new JTextField();
+		filterDateText.getDocument().addDocumentListener( new DocumentListener() {
+			@Override
+			public void changedUpdate(DocumentEvent arg0) {
+				newDateFilter();
+			}
+			@Override
+			public void insertUpdate(DocumentEvent arg0) {
+				newDateFilter();
+			}
+			@Override
+			public void removeUpdate(DocumentEvent arg0) {
+				 newDateFilter();
+			}
+        });
+		
+		add(closeLabel);
+		add(filterDateText);
+		
+		
+		
+		
+		
 		
 		// create and add range sliders and descriptive labels
 		
@@ -251,6 +288,8 @@ class SelectorPanel extends JPanel
 		add (ageRange);
 
 	}
+	
+	
 	
 	// inner class that handles events from the check boxes
     private class CheckBoxListener implements ItemListener {	
@@ -460,6 +499,41 @@ class SelectorPanel extends JPanel
 		// update the views by executing selection with an empty arra
     	model.select(new ArrayList());
     }
+    
+    
+private void newDateFilter() {
+	  ArrayList<Integer> output = new ArrayList<Integer>();
+	  System.out.println("HEREEEE");
+      //If current expression doesn't parse, don't update
+	  DateFormat formatter = new SimpleDateFormat("dd-Mmm-yyyy");
+	  try {
+		Date date = formatter.parse(filterText.getText());
+	     
+		for(int row = 0; row<model.dataSize(); row++){
+				Date dateRecord = formatter.parse((String) model.record(row).get(36));
+				//System.out.println(name + " "+ filterText.getText());
+				if ( dateRecord.equals(date)){
+					System.out.println("It Matches");
+					output.add(row);
+				}
+	     } 
+	     }
+	  catch (ParseException e) {
+		// TODO Auto-generated catch block
+		  System.out.println("FAAAAAAAAILLLLL");
+		//e.printStackTrace();
+	     }
+
+			
+      
+      // update the filtered rows
+		model.setAvailableRows(output);
+		// update the views by executing selection with an empty arra
+  	model.select(new ArrayList());
+  }
+	
+		
+	
     public void update(ArrayList<Integer> availableRows, ArrayList<Integer> selectedRows) {
     	available = availableRows;
         selected = selectedRows;
