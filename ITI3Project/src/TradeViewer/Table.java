@@ -2,6 +2,7 @@ package TradeViewer;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.text.NumberFormat;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -10,6 +11,9 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.table.TableRowSorter;
+
+import TradeViewer.TablePanel.IntComparator;
 
 public class Table extends JFrame {
 	private	JPanel		topPanel;
@@ -17,11 +21,13 @@ public class Table extends JFrame {
 	private	JScrollPane scrollPane;
 	HashMap<String, Integer>casesMap;
 	Model model;
+	private int caseTotal;
 	
-	public Table(Model model, HashMap<String, Integer> casesMap)
+	public Table(Model model, HashMap<String, Integer> casesMap, int caseTotal)
 	{
 		this.casesMap=casesMap;
 		this.model=model;
+		this.caseTotal=caseTotal;
 		// Set the frame characteristics
 		setTitle( "Legal Cases" );
 		setSize(200,300 );
@@ -33,7 +39,7 @@ public class Table extends JFrame {
 	
 	private String[][] convertHashMaptoDoubleArray(){
 		
-		String data[][] = new String [casesMap.size()][2];
+		String data[][] = new String [casesMap.size()][4];
 		int i = 0;
 		System.out.println("Size of CasesMap: "+ casesMap.size());
 		Iterator it = casesMap.entrySet().iterator();
@@ -41,6 +47,14 @@ public class Table extends JFrame {
     		Map.Entry pair = (Map.Entry)it.next();
     		data[i][0] = (String) pair.getKey();
     		data[i][1] =  pair.getValue().toString();
+    		NumberFormat defaultFormat = NumberFormat.getPercentInstance();
+    		defaultFormat.setMinimumFractionDigits(2);
+    		String fromDoubletoPer = defaultFormat.format(Double.parseDouble(pair.getValue().toString())/(model.getData().size()));
+    		String totalCasesPer= defaultFormat.format(Double.parseDouble(pair.getValue().toString())/(caseTotal));
+    		//System.out.println("TOTAL CASES: "+ caseTotal);
+    		data[i][2]= fromDoubletoPer;
+    		data[i][3]=totalCasesPer;
+    		
     		
     		//System.out.println(pair.getKey() + " = " + pair.getValue());
     		i++;
@@ -57,12 +71,11 @@ public class Table extends JFrame {
 				getContentPane().add( topPanel );
 
 				// Create columns names
-				String columnNames[]={"Case Type","Count"};
+				String columnNames[]={"Case Type","Count","Types of Cases/number of clients", "Types of Cases/total cases" };
 						
 
 				// Create a new table instance
 				table = new JTable(convertHashMaptoDoubleArray(), columnNames );
-
 				// Add the table to a scrolling pane
 				scrollPane = new JScrollPane( table );
 				topPanel.add( scrollPane, BorderLayout.CENTER );

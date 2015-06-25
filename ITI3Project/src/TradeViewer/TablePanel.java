@@ -164,7 +164,7 @@ class TablePanel extends JPanel
 	    }
 	    public Object getValueAt(int row, int col) {
 	    	//Here row and col are view indeces and data is view representaion
-	    	System.out.println("ROW+ COL : "+row + "  "+ col +" "+ data[row][col]);
+	    	//System.out.println("ROW+ COL : "+row + "  "+ col +" "+ data[row][col]);
 	    	return data[row][col];
 	    }
 	    public void setValue(Object value, int row, int col) {

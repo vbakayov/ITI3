@@ -160,7 +160,7 @@ public class StatisticsPanel extends JPanel
 
 				@Override
 				public void actionPerformed(ActionEvent arg0) {
-					Table mainFrame	= new Table(model,casesMap);
+					Table mainFrame	= new Table(model,casesMap,totalNumberCases());
 					mainFrame.setVisible( true );
 					
 					
@@ -218,7 +218,17 @@ public class StatisticsPanel extends JPanel
 	
 	
 	
-	
+	private int totalNumberCases(){
+		int total=0;
+		Iterator it = casesMap.entrySet().iterator();
+    	while (it.hasNext()) {
+    		Map.Entry pair = (Map.Entry)it.next();
+    		total+=(int)pair.getValue();
+    	}
+    	return total;
+		
+		
+	}
 	
 
 	@Override
