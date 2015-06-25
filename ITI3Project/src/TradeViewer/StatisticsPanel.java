@@ -113,7 +113,8 @@ public class StatisticsPanel extends JPanel
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					showSaveDialog();
-					model.removeRow(1);
+					
+					model.RemoveROwwriteXLSXFile(76);
 					
 				}
 

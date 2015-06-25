@@ -508,11 +508,11 @@ private void newDateFilter() {
 	  DateFormat formatter = new SimpleDateFormat("dd-Mmm-yyyy");
 	  try {
 		Date date = formatter.parse(filterText.getText());
-	     
+	     System.out.println("GO AFTER FAIL");
 		for(int row = 0; row<model.dataSize(); row++){
 				Date dateRecord = formatter.parse((String) model.record(row).get(36));
 				//System.out.println(name + " "+ filterText.getText());
-				if ( dateRecord.equals(date)){
+				if ( dateRecord.compareTo(date) == 0){
 					System.out.println("It Matches");
 					output.add(row);
 				}

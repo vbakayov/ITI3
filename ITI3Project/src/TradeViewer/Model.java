@@ -41,6 +41,7 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
+import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -62,7 +63,9 @@ public class Model {
 	private JTable recordTable;
 	org.apache.poi.ss.usermodel.Sheet sheet=null;
 
-	private XSSFSheet sheetHSSF;
+	public XSSFSheet sheetHSSF;
+
+	private String filename;
 
 	
 
@@ -110,7 +113,7 @@ public class Model {
 
     	//Create a file  from the xlsx/xls file
     	try{
-        File f=new File(filename);
+        
         String filetype = filename.substring(filename.lastIndexOf('.'), filename.length());
         System.out.println(filetype);
         switch(filetype){
@@ -118,7 +121,7 @@ public class Model {
 				load_csv(filename);
 				break;
 			case ".xlsm":
-				load_xlms(f);
+				load_xlms(filename);
 				break;
 			default :
 				System.out.println("The Inputed format is not supported");
@@ -134,18 +137,24 @@ public class Model {
     	
     
     
-    private void load_xlms(File filename) {
+    private void load_xlms(String filename2) {
     	   //Create Workbook instance holding reference to .xlsx file
     	short max = 0;
+    	FileInputStream file = null;
+    	this.filename= filename2;
         Workbook workbook=null;
         boolean isHeader=true;
 		try {
-			workbook = WorkbookFactory.create(filename);
+			
+			workbook = WorkbookFactory.create(new File(filename2));
+		
 			 //Get the workbook instance for XLS file 
-			 FileInputStream file = new FileInputStream(filename);
+			file = new FileInputStream(filename2);
+			
 			 XSSFWorkbook workbookHSSF = new XSSFWorkbook(file);
 		    //Get first sheet from the workbook
 		       sheetHSSF = workbookHSSF.getSheetAt(0);
+	
 		} catch (InvalidFormatException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -158,11 +167,6 @@ public class Model {
         //printing number of sheet avilable in workbook
         //org.apache.poi.ss.usermodel.Sheet sheet=null;
         sheet = workbook.getSheetAt(0);
-        
-     
-        
-    
-        
         removeTrailing(sheet);
         //Iterate through each rows one by one
         Iterator<Row> rowIterator = sheet.iterator();
@@ -201,7 +205,13 @@ public class Model {
             
         }
         
-        
+       
+		try {
+			file.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
         
     	}
     	
@@ -459,16 +469,54 @@ public class Model {
 	
 	
 	public void removeRow( int rowIndex) {
+		FileOutputStream outFile= null;
+		
+		 
+			// outFile =new FileOutputStream(new File(filename));
+		
 	    int lastRowNum=sheetHSSF.getLastRowNum();
+	    System.out.println(lastRowNum);
 	    if(rowIndex>=0&&rowIndex<lastRowNum){
-	       sheetHSSF.shiftRows(rowIndex+1,lastRowNum, -1);
+	    	sheetHSSF.shiftRows(rowIndex+1,lastRowNum, -1);
+	    	System.out.println("ROW INDEX"+ rowIndex);
 	    }
-	    if(rowIndex==lastRowNum){
-	    	XSSFRow  removingRow=sheetHSSF.getRow(rowIndex);
-	        if(removingRow!=null){
+	   // if(rowIndex==lastRowNum){
+	    	Row  removingRow=sheetHSSF.getRow(rowIndex);
+	    	System.out.println("Removing Row"+removingRow);
+	       // if(removingRow!=null){
+	        	//System.out.println("BLAAAAA");
 	        	sheetHSSF.removeRow(removingRow);
-	        }
-	    }
+	       //}
+	   // }
+	       	
+	
+	      
 	}
+
+	public void RemoveROwwriteXLSXFile(int rowIndex) {
+		 //Read Excel document first
+		try{
+        FileInputStream input_document = new FileInputStream(new File(filename));
+        // convert it into a POI object
+        XSSFWorkbook my_xlsx_workbook = new XSSFWorkbook(input_document); 
+        // Read excel sheet that needs to be updated
+        XSSFSheet my_worksheet = my_xlsx_workbook.getSheetAt(0);
+        // declare a Cell object
+    	Row  removingRow=my_worksheet.getRow(rowIndex);
+    	
+    	my_worksheet.removeRow(removingRow);
+        //important to close InputStream
+        input_document.close();
+        //Open FileOutputStream to write updates
+        FileOutputStream output_file =new FileOutputStream(new File(filename));
+        //write changes
+        my_xlsx_workbook.write(output_file);
+        //close the stream
+        output_file.close(); 
+		}catch(IOException e){
+			e.printStackTrace();
+		}
+}
+
 
 }
