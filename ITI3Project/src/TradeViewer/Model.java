@@ -66,6 +66,7 @@ public class Model {
 	public XSSFSheet sheetHSSF;
 
 	private String filename;
+	private static int numberofTimesRemoved;
 
 	
 
@@ -81,6 +82,7 @@ public class Model {
         dataset = new ArrayList();
         availableRows = new ArrayList();
         selectedRows = new ArrayList();
+        numberofTimesRemoved =  0;
         
         load(filename);
         for(int row = 0; row < dataSize(); row++) availableRows.add(row);
@@ -99,7 +101,7 @@ public class Model {
     // of the records in the dataset) to the ArrayList of selected rows
     public void select(ArrayList<Integer> rows) {
     	// add the rows to the ArrayList of selected rows
-    	System.out.println("FROM MODEL "+ rows.size());
+    	//System.out.println("FROM MODEL "+ rows.size());
     	selectedRows.clear();
     
 		// the children are updated
@@ -467,15 +469,66 @@ public class Model {
           }
 	}
 	
+	public void CopyRowXLSXFile (){
+		
+		FileInputStream output;
+	
+		try {
+			output = new FileInputStream(new File("H:\\Book1.xlsm"));
+			
+		XSSFWorkbook workbook2 = new XSSFWorkbook(output); 
+		XSSFSheet worksheet2 = workbook2.getSheetAt(0);
+		int lastRowNumCopy = worksheet2.getLastRowNum();
+    //	XSSFRow row = my_worksheet.getRow(rowIndex);
+    	//XSSFRow row2 =worksheet2.createRow(lastRowNumCopy+1);
+		for( int rowIndex= 0 ; rowIndex< availableRows.size(); rowIndex++){
+			XSSFRow row2 =worksheet2.createRow(lastRowNumCopy+rowIndex+1);
+			for(int column =0; column<labels.size(); column++){   		  				
+    			String value = (String) (((ArrayList) dataset.get(availableRows.get(rowIndex))).get(column));   		
+    			row2.createCell(column).setCellValue(value);
+    			System.out.println("CELL IS "+row2.getCell(column).toString());;
+    			
+    	
+    		}
+			removeRowsFromDataSet(availableRows.get(rowIndex));
+    	}
+    	FileOutputStream out = 
+                new FileOutputStream(new File("H:\\Book1.xlsm"));
+        workbook2.write(out);
+        out.close();
+        System.out.println("Excel written successfully..");
+    	
+		
+		
+		
+			}
+    	catch (FileNotFoundException e) {
+			System.out.println("Bravo na Viktor");
+			e.printStackTrace();
+		} catch (IOException e) {
+			System.out.println("Viktor '>>>' StackOverflow");
+			e.printStackTrace();
+		}
+		
+	}
 	
 	
+
+	private void removeRowsFromDataSet(int integer) {
+		
+		System.out.println("INDEDEX" + integer);
+		dataset.remove(integer-numberofTimesRemoved);
+		numberofTimesRemoved++;
+		System.out.println("SIZEEEE IS  "+ dataset.size());
+	}
 
 	public void RemoveROwwriteXLSXFile(int rowIndex) {
 		 //Read Excel document first
 		try{
-        FileInputStream input_document = new FileInputStream(new File(filename));
+        FileInputStream input_document = new FileInputStream(new File(filename)); 
         // convert it into a POI object
         XSSFWorkbook my_xlsx_workbook = new XSSFWorkbook(input_document); 
+      
         // Read excel sheet that needs to be updated
         XSSFSheet my_worksheet = my_xlsx_workbook.getSheetAt(0);
         // declare a Cell object
@@ -483,6 +536,7 @@ public class Model {
     	int lastRowNum=my_worksheet.getLastRowNum();
         if(rowIndex>=0&&rowIndex<lastRowNum){
         	my_worksheet.shiftRows(rowIndex+1,lastRowNum, -1);
+        	
         }
         if(rowIndex==lastRowNum){
         	Row  removingRow=my_worksheet.getRow(rowIndex);
@@ -494,6 +548,7 @@ public class Model {
         input_document.close();
         //Open FileOutputStream to write updates
         FileOutputStream output_file =new FileOutputStream(new File(filename));
+       
         //write changes
         my_xlsx_workbook.write(output_file);
         //close the stream

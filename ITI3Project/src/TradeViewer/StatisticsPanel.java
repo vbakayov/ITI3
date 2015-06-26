@@ -39,7 +39,7 @@ public class StatisticsPanel extends JPanel
 	private PieChart ageGroupPieChart;
 	private JButton saveButton;
 	private JButton saveButtonAge;
-
+	private JButton deleteButton;
 	
 	public StatisticsPanel(Model model) {
 		this.model = model;
@@ -79,9 +79,11 @@ public class StatisticsPanel extends JPanel
 	        add(saveButtonAge);
 	        
 	        JButton casesButton=new JButton("Legal Cases");
+	        JButton deleteButton = new JButton("Remove rows");
+	        
 	        
 	        add(casesButton);
-	        
+	        add(deleteButton);
 	        ageGroupButton.addActionListener(new ActionListener() {
 
 				@Override
@@ -114,7 +116,16 @@ public class StatisticsPanel extends JPanel
 	        saveButton.setEnabled(false);
 	        saveButtonAge.addActionListener( new CustomButtonListener());
 	        saveButtonAge.setEnabled(false);
-				
+	        deleteButton.addActionListener(new ActionListener()
+	        {
+
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					
+					model.CopyRowXLSXFile();
+				}
+	        	
+	        });
 	        countryButton.addActionListener(new ActionListener() {
 				
 			
@@ -232,9 +243,13 @@ public class StatisticsPanel extends JPanel
 				showSaveDialog(countryPieChart);
 			if(e.getSource() == saveButtonAge)
 				showSaveDialog(ageGroupPieChart);
-			
-			model.RemoveROwwriteXLSXFile(5);
-			
+			//if(e.getSource()== deleteButton){
+			    //model.RemoveROwwriteXLSXFile(1);
+
+				//model.CopyRowXLSXFile(1);
+				
+				
+			//}
 		}
 
 		

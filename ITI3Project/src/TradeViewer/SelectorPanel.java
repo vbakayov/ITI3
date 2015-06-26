@@ -525,7 +525,7 @@ private void newDateFilter() {
 	     } 
 	     }
 	  catch (ParseException e) {	
-		  System.out.println("FAAAAAAAAILLLLL");		
+		 // System.out.println("FAAAAAAAAILLLLL");		
 	   }
 	  
 	  if(allRows ){
