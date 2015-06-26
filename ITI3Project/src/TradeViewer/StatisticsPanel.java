@@ -37,6 +37,8 @@ public class StatisticsPanel extends JPanel
 	JPanel chartPanel=new JPanel();
 	private PieChart countryPieChart;
 	private PieChart ageGroupPieChart;
+	private JButton saveButton;
+	private JButton saveButtonAge;
 
 	
 	public StatisticsPanel(Model model) {
@@ -53,7 +55,7 @@ public class StatisticsPanel extends JPanel
 	public void GUI(){
 		 setLayout(new GridLayout(4,2));
 	        JButton countryButton = new JButton("Country Chart");
-	        JButton saveButton=new JButton("Save");
+	         saveButton=new JButton("Save");
 	      
 	        add(countryButton);
 	        add(saveButton);
@@ -70,7 +72,7 @@ public class StatisticsPanel extends JPanel
 //	    		}
 	        
 	        JButton ageGroupButton = new JButton ("AgeGroup chart");
-	        JButton saveButtonAge = new JButton("Save");
+	        saveButtonAge = new JButton("Save");
 	      
 	        
 	        add(ageGroupButton);
@@ -85,7 +87,7 @@ public class StatisticsPanel extends JPanel
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					buttonPressed();
-					saveButton.setEnabled(true);
+					   saveButtonAge.setEnabled(true);
 					//countryButton.setEnabled(false);
 					
 				}
@@ -108,29 +110,10 @@ public class StatisticsPanel extends JPanel
 	        
 	        
 	        
-	        saveButton.addActionListener(new ActionListener() {
-				
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					showSaveDialog();
-					
-					model.RemoveROwwriteXLSXFile(76);
-					
-				}
-
-				private void showSaveDialog() {
-					JFileChooser fileChooser = new JFileChooser();
-					fileChooser.setDialogTitle("Specify a file to save");
-
-					int userSelection = fileChooser.showSaveDialog(chartPanel);
-					if (userSelection == JFileChooser.APPROVE_OPTION) {
-						File fileToSave = fileChooser.getSelectedFile();
-						System.out.println("Save as file: " + fileToSave.getAbsolutePath());
-						countryPieChart.saveToFile(fileToSave.getAbsolutePath());
-					}
-				}
-					
-	        });
+	        saveButton.addActionListener( new CustomButtonListener());
+	        saveButton.setEnabled(false);
+	        saveButtonAge.addActionListener( new CustomButtonListener());
+	        saveButtonAge.setEnabled(false);
 				
 	        countryButton.addActionListener(new ActionListener() {
 				
@@ -239,6 +222,36 @@ public class StatisticsPanel extends JPanel
 		// TODO Auto-generated method stub
 		
 	}
+	
+	
+	class CustomButtonListener implements  ActionListener {
+		
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			if(e.getSource()== saveButton)
+				showSaveDialog(countryPieChart);
+			if(e.getSource() == saveButtonAge)
+				showSaveDialog(ageGroupPieChart);
+			
+			model.RemoveROwwriteXLSXFile(5);
+			
+		}
+
+		
+		private void showSaveDialog(PieChart inputChart) {
+			
+			JFileChooser fileChooser = new JFileChooser();
+			fileChooser.setDialogTitle("Specify a file to save");
+
+			int userSelection = fileChooser.showSaveDialog(chartPanel);
+			if (userSelection == JFileChooser.APPROVE_OPTION) {
+				File fileToSave = fileChooser.getSelectedFile();
+				System.out.println("Save as file: " + fileToSave.getAbsolutePath());
+				inputChart.saveToFile(fileToSave.getAbsolutePath());
+			}
+		}
+			
+    };
 
 	   
 

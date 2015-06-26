@@ -504,28 +504,35 @@ class SelectorPanel extends JPanel
 private void newDateFilter() {
 	  ArrayList<Integer> output = new ArrayList<Integer>();
 	  System.out.println("HEREEEE");
-      //If current expression doesn't parse, don't update
-	  DateFormat formatter = new SimpleDateFormat("dd-Mmm-yyyy");
+	  boolean allRows = true;
+	  
+	  
+	  
+      //filter on whole date object
+	  DateFormat formatter = new SimpleDateFormat("dd-MMM-yyyy");
 	  try {
-		Date date = formatter.parse(filterText.getText());
-	     System.out.println("GO AFTER FAIL");
+		System.out.println(filterDateText.getText());
+		Date date = formatter.parse(filterDateText.getText());
+	    System.out.println(date);
 		for(int row = 0; row<model.dataSize(); row++){
 				Date dateRecord = formatter.parse((String) model.record(row).get(36));
 				//System.out.println(name + " "+ filterText.getText());
-				if ( dateRecord.compareTo(date) == 0){
+				if ( dateRecord.before(date)){
 					System.out.println("It Matches");
 					output.add(row);
+					allRows= false;
 				}
 	     } 
 	     }
-	  catch (ParseException e) {
-		// TODO Auto-generated catch block
-		  System.out.println("FAAAAAAAAILLLLL");
-		//e.printStackTrace();
-	     }
-
-			
-      
+	  catch (ParseException e) {	
+		  System.out.println("FAAAAAAAAILLLLL");		
+	   }
+	  
+	  if(allRows ){
+		  for(int row = 0; row<model.dataSize(); row++)
+			  output.add(row);
+	}
+ 
       // update the filtered rows
 		model.setAvailableRows(output);
 		// update the views by executing selection with an empty arra

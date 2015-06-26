@@ -468,30 +468,7 @@ public class Model {
 	}
 	
 	
-	public void removeRow( int rowIndex) {
-		FileOutputStream outFile= null;
-		
-		 
-			// outFile =new FileOutputStream(new File(filename));
-		
-	    int lastRowNum=sheetHSSF.getLastRowNum();
-	    System.out.println(lastRowNum);
-	    if(rowIndex>=0&&rowIndex<lastRowNum){
-	    	sheetHSSF.shiftRows(rowIndex+1,lastRowNum, -1);
-	    	System.out.println("ROW INDEX"+ rowIndex);
-	    }
-	   // if(rowIndex==lastRowNum){
-	    	Row  removingRow=sheetHSSF.getRow(rowIndex);
-	    	System.out.println("Removing Row"+removingRow);
-	       // if(removingRow!=null){
-	        	//System.out.println("BLAAAAA");
-	        	sheetHSSF.removeRow(removingRow);
-	       //}
-	   // }
-	       	
 	
-	      
-	}
 
 	public void RemoveROwwriteXLSXFile(int rowIndex) {
 		 //Read Excel document first
@@ -502,9 +479,17 @@ public class Model {
         // Read excel sheet that needs to be updated
         XSSFSheet my_worksheet = my_xlsx_workbook.getSheetAt(0);
         // declare a Cell object
-    	Row  removingRow=my_worksheet.getRow(rowIndex);
-    	
-    	my_worksheet.removeRow(removingRow);
+   
+    	int lastRowNum=my_worksheet.getLastRowNum();
+        if(rowIndex>=0&&rowIndex<lastRowNum){
+        	my_worksheet.shiftRows(rowIndex+1,lastRowNum, -1);
+        }
+        if(rowIndex==lastRowNum){
+        	Row  removingRow=my_worksheet.getRow(rowIndex);
+            if(removingRow!=null){
+            	my_worksheet.removeRow(removingRow);
+            }
+        }
         //important to close InputStream
         input_document.close();
         //Open FileOutputStream to write updates
