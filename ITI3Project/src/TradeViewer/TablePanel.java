@@ -158,7 +158,7 @@ class TablePanel extends JPanel
 	        return data.length;
 	    }
 	    public String getColumnName(int col) {
-	    	System.out.println(col);
+	    	//System.out.println(col);
 	    	
 	        return columnNames.get(col).toString();
 	    }

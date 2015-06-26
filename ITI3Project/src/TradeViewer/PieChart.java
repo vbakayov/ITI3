@@ -35,10 +35,12 @@ public class PieChart extends JFrame  {
 	private  HashMap <String,Integer> map;
 	private  JFreeChart chart;
 	private  boolean otherGroup;
+	String title;
 	
 	
 	public PieChart(String title, HashMap<String,Integer> countryCountMap, boolean otherGroupp) {
 		super(title);
+		this.title=title;
 		this.map=countryCountMap;	
 		this.otherGroup = otherGroupp;
 	
@@ -53,8 +55,8 @@ private  PieDataset createDataset() {
 	int others=0;
 	while (it.hasNext()) {
 		Map.Entry pair = (Map.Entry)it.next();
-		System.out.println(pair.getKey() + " = " + pair.getValue());
-		System.out.println("Boolean "+ otherGroup);
+		//System.out.println(pair.getKey() + " = " + pair.getValue());
+		//System.out.println("Boolean "+ otherGroup);
 		if (otherGroup){
 			if((int)pair.getValue()<3){
 				others=others+(int)pair.getValue();
@@ -82,7 +84,7 @@ private  PieDataset createDataset() {
 private  JFreeChart createChart(PieDataset dataset) {
     
      chart = ChartFactory.createPieChart(
-        "Pie Chart Demo",  // chart title
+        title,  // chart title
         dataset,             // data
         true,               // include legend
         true,

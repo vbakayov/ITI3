@@ -41,7 +41,7 @@ public class Table extends JFrame {
 		
 		String data[][] = new String [casesMap.size()][4];
 		int i = 0;
-		System.out.println("Size of CasesMap: "+ casesMap.size());
+		//System.out.println("Size of CasesMap: "+ casesMap.size());
 		Iterator it = casesMap.entrySet().iterator();
     	while (it.hasNext()) {
     		Map.Entry pair = (Map.Entry)it.next();

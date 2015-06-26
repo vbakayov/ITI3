@@ -93,7 +93,7 @@ public class StatisticsPanel extends JPanel
 				}
 				
 				private void buttonPressed() {
-					ageGroupPieChart= new PieChart("Pie Chart",ageGroupsMap,false);
+					ageGroupPieChart= new PieChart("Age Groups",ageGroupsMap,false);
 					setLayout(new BorderLayout());
 				    // add("Center", demo);
 					
@@ -128,8 +128,8 @@ public class StatisticsPanel extends JPanel
 				}
 
 				private void buttonPressed() {
-					System.out.println("INVOKEEE HEREE");
-					countryPieChart= new PieChart("Pie Chart",countryCountMap, true);
+					//System.out.println("INVOKEEE HEREE");
+					countryPieChart= new PieChart("Country of Origin",countryCountMap, true);
 					setLayout(new BorderLayout());
 				    // add("Center", demo);
 					
@@ -163,7 +163,7 @@ public class StatisticsPanel extends JPanel
     	while (it.hasNext()) {
     		Map.Entry pair = (Map.Entry)it.next();
     		
-    		System.out.println(pair.getKey() + " = " + pair.getValue());
+    		//System.out.println(pair.getKey() + " = " + pair.getValue());
     		
     	}
     	
