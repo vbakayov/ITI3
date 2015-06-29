@@ -25,6 +25,7 @@ package TradeViewer;
 import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableModel;
 import javax.swing.table.AbstractTableModel;
@@ -129,16 +130,21 @@ class TablePanel extends JPanel
 		private ArrayList columnNames = model.getLabel();
 	    private Object[][] data;
 	    
+	
 	    // override getColumnClass to return our chosen class type - 
 	    // getColumnClass has to return Double in order to create a bar chart
-        @Override  
-        public Class getColumnClass(int columnIndex) {
-        	//System.out.println("Index is"+ columnIndex);
-        	if (columnIndex ==2)
+        public Class<?> getColumnClass(int column) {
+        	System.out.println("Index is"+ column);
+        	if (column ==2)
         		return java.lang.Double.class;
-        	else 
-        		return java.lang.String.class; 
-		}
+	        Class<?> returnValue;
+	        if ((column >= 0) && (column < getColumnCount())) {
+	          returnValue = getValueAt(0, column).getClass();
+	        } else {
+	          returnValue = Object.class;
+	        }
+	        return returnValue;
+	      }
 	    // fills the data array with the records that pass the currently set filters
 	    public void load() {
 	    	//System.out.println(model.getLabel().size());

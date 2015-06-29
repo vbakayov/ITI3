@@ -11,6 +11,9 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.RowSorter;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
 import TradeViewer.TablePanel.IntComparator;
@@ -30,7 +33,9 @@ public class Table extends JFrame {
 		this.caseTotal=caseTotal;
 		// Set the frame characteristics
 		setTitle( "Legal Cases" );
-		setSize(200,300 );
+		setSize(400,400 );
+		  // here's the part where i center the jframe on screen
+		setLocationRelativeTo(null);
 		setBackground( Color.gray );
 		initTable();
 
@@ -73,9 +78,27 @@ public class Table extends JFrame {
 				// Create columns names
 				String columnNames[]={"Case Type","Count","Types of Cases/number of clients", "Types of Cases/total cases" };
 						
-
+				Object rows[][] = convertHashMaptoDoubleArray();
+				
+				TableModel model = new DefaultTableModel(rows, columnNames) {
+				      public Class<?> getColumnClass(int column) {
+				        Class<?> returnValue;
+				        if ((column >= 0) && (column < getColumnCount())) {
+				          returnValue = getValueAt(0, column).getClass();
+				        } else {
+				          returnValue = Object.class;
+				        }
+				        return returnValue;
+				      }};
+				      
+				      
+				      
 				// Create a new table instance
-				table = new JTable(convertHashMaptoDoubleArray(), columnNames );
+				table = new JTable(model );
+				
+				RowSorter<TableModel> sorter = new TableRowSorter<TableModel>(model);
+			    table.setRowSorter(sorter);
+			
 				// Add the table to a scrolling pane
 				scrollPane = new JScrollPane( table );
 				topPanel.add( scrollPane, BorderLayout.CENTER );

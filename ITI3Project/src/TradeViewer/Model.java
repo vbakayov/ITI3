@@ -66,7 +66,7 @@ public class Model {
 	public XSSFSheet sheetHSSF;
 
 	private String filename;
-	private static int numberofTimesRemoved;
+	//private static int numberofTimesRemoved;
 
 	
 
@@ -82,7 +82,7 @@ public class Model {
         dataset = new ArrayList();
         availableRows = new ArrayList();
         selectedRows = new ArrayList();
-        numberofTimesRemoved =  0;
+       
         
         load(filename);
         for(int row = 0; row < dataSize(); row++) availableRows.add(row);
@@ -474,7 +474,7 @@ public class Model {
 		FileInputStream output;
 	
 		try {
-			output = new FileInputStream(new File("H:\\Book1.xlsm"));
+			output = new FileInputStream(new File("C:\\Users\\Vik\\Desktop\\Book1.xlsm"));
 			
 		XSSFWorkbook workbook2 = new XSSFWorkbook(output); 
 		XSSFSheet worksheet2 = workbook2.getSheetAt(0);
@@ -495,7 +495,7 @@ public class Model {
 			//removeRowsFromDataSet(availableRows.get(rowIndex));
     	}
     	FileOutputStream out = 
-                new FileOutputStream(new File("H:\\Book1.xlsm"));
+                new FileOutputStream(new File("C:\\Users\\Vik\\Desktop\\Book1.xlsm"));
         workbook2.write(out);
         out.close();
         System.out.println("Excel written successfully..");
@@ -516,12 +516,16 @@ public class Model {
 	
 	
 
-	private void removeRowsFromDataSet(int integer) {
+	public void removeRowsFromDataSet() {
+		int numberofTimesRemoved =  0;
+		for( int rowIndex= 0 ; rowIndex< availableRows.size(); rowIndex++){
+		System.out.println("INDEDEX" + rowIndex);
+//		dataset.remove(integer-numberofTimesRemoved);
 		
-		System.out.println("INDEDEX" + integer);
-		dataset.remove(integer-numberofTimesRemoved);
+		dataset.remove((int) availableRows.get(rowIndex)-numberofTimesRemoved);
 		numberofTimesRemoved++;
 		System.out.println("SIZEEEE IS  "+ dataset.size());
+		}
 	}
 
 	public void RemoveROwwriteXLSXFile(int rowIndex) {

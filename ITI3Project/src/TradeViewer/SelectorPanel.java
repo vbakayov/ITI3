@@ -38,6 +38,8 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
 import java.awt.*;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 
@@ -83,12 +85,14 @@ class SelectorPanel extends JPanel
 	private JTextField filterText;
 	private JLabel closeLabel;
 	private JTextField filterDateText;
+	private JCheckBox violanceCheckBox;
+	private JCheckBox casesCheckBox;
 	public SelectorPanel(Model m) {
 		
 		this.model = m;
 		this.available = model.getAvailableRows();
 		this.selected = new ArrayList<Integer>();
-		this.setLayout(new GridLayout(8,2));
+		this.setLayout(new GridLayout(7,2));
 		this.filtered  = new ArrayList<Integer>()	;
 		this.activeFiltersMap= new HashMap<JMenu, SelectionFilter>();
 		activeFilters= 0;
@@ -184,6 +188,9 @@ class SelectorPanel extends JPanel
 		add(CountrySegmentMenuBar);
 		
 		// Cases Menue
+		//Union or Intersection
+		casesCheckBox = new JCheckBox();
+	
 		CasesMenu = new JMenu("Selection Menu");
 		CasesMenu.setName("Case");
 		CasesMenu.setBorder(BorderFactory.createLineBorder(Color.lightGray, 1));
@@ -191,7 +198,10 @@ class SelectorPanel extends JPanel
 		
 		casesDateMenuBar = new JMenuBar();		
 		casesDateMenuBar.add("MIDDLE", CasesMenu);
+		casesDateMenuBar.add(casesCheckBox);
 		casesDateMenuBar.setBorder(BorderFactory.createLineBorder(Color.lightGray, 1));
+		
+
 		
 		for (String str : casesList) {
 			JCheckBoxMenuItem cb = new JCheckBoxMenuItem(str);
@@ -215,7 +225,8 @@ class SelectorPanel extends JPanel
 		
 		
 		
-		filterText = new JTextField();
+		filterText = new HintTextField("Enter Name Here");
+		filterText.setFont(new Font("Courier", Font.BOLD,12));
 		filterText.getDocument().addDocumentListener( new DocumentListener() {
 			@Override
 			public void changedUpdate(DocumentEvent arg0) {
@@ -240,7 +251,10 @@ class SelectorPanel extends JPanel
 		closeLabel.setHorizontalAlignment(JLabel.CENTER);
 		closeLabel.setVerticalAlignment(JLabel.CENTER);
 		
-		filterDateText = new JTextField();
+		filterDateText = new HintTextField("Example 01-Jun-2015");
+		
+		//create new Font
+        filterDateText.setFont(new Font("Courier", Font.BOLD,12));
 		filterDateText.getDocument().addDocumentListener( new DocumentListener() {
 			@Override
 			public void changedUpdate(DocumentEvent arg0) {
@@ -294,7 +308,7 @@ class SelectorPanel extends JPanel
 		add (ageLabel);
 		add (ageRange);
 		
-		
+		violanceCheckBox = new JCheckBox();
 		
 		ViolenceMenu = new JMenu("Selection Menu");
 		ViolenceMenu.setName("Violence");
@@ -303,6 +317,7 @@ class SelectorPanel extends JPanel
 		
 		ViolenceMenuBar = new JMenuBar();		
 		ViolenceMenuBar.add("MIDDLE", ViolenceMenu);
+		ViolenceMenuBar.add(violanceCheckBox);
 		ViolenceMenuBar.setBorder(BorderFactory.createLineBorder(Color.lightGray, 1));
 		
 		for (String str : violenceList) {
@@ -319,7 +334,18 @@ class SelectorPanel extends JPanel
 		add(violenceLabel);
 		add(ViolenceMenuBar);
 		
-		
+	//	violanceCheckBox = new JCheckBox();
+	//	casesCheckBox = new JCheckBox();
+		  
+	
+	//	casesCheckBox.addItemListener(new CheckBoxListener ());
+		//casesCheckBox.add("RIGHT" , CasesMenu);
+	//	add(casesCheckBox);
+	
+	//	violanceCheckBox.addItemListener(new CheckBoxListener());
+		//casesCheckBox.add("RIGHT" , CasesMenu);
+	//	add(violanceCheckBox);
+	
 
 	}
 	
@@ -336,8 +362,7 @@ class SelectorPanel extends JPanel
     		JPopupMenu fromParent = (JPopupMenu)source.getParent();
     		JMenu menu = (JMenu)fromParent.getInvoker();	
     		///"YES" for range values 
-    		value2 = (menu.getName() == "Violence")? "YES" : source.getText();
-    		value3=(menu.getName() == "Case")? "YES" : source.getText();
+    		value2 = (menu.getName() == "Violence" ||menu.getName() == "Case")? "YES" : source.getText();
     		int indexColumn =  model.getIndexOfLabel(source.getText());
     		
     		//HashMap to track the active menus
@@ -352,36 +377,18 @@ class SelectorPanel extends JPanel
         		//increment the number of filters for the corresponding menu
         		 activeFiltersMap.get(menu).incrementActiveFilters() ;
         		
-        		//iterate the data, add all items that match the criteria to its menu entries list
-	        	for (int row = 0; row < model.dataSize(); row++) {
-		        		ArrayList record = model.record(row);
-		        		if(menu.getName() == "Violence"){
-		        			//System.out.println("THE INDEX IS "+ indexColumn+record.get(indexColumn) );
-		        			if(record.get(indexColumn).equals( value2) ) activeFiltersMap.get(menu).add(row);
-		        		}else{
-		        			if (record.contains(value2)) activeFiltersMap.get(menu).add(row);}
-	        	}
-	        	
+
 	        	for (int row = 0; row < model.dataSize(); row++) {
 	        		ArrayList record = model.record(row);
-	        		if(menu.getName() == "Case"){
-	        			//System.out.println("THE INDEX IS "+ indexColumn+record.get(indexColumn) );
-	        			if(record.get(indexColumn).equals( value3) ) activeFiltersMap.get(menu).add(row);
+	        		if(menu.getName() == "Case" || menu.getName() == "Violence" ){
+		        		if(record.get(indexColumn).equals( value2) ) activeFiltersMap.get(menu).add(row);
 	        		}else{
-	        			if (record.contains(value3)) activeFiltersMap.get(menu).add(row);}
+	        			if (record.contains(value2)) activeFiltersMap.get(menu).add(row);}
         	}
 	        	
-        		//System.out.println(model.getCountry(0));
+        		
+
 	        	
-	        	
-	        	// int[] selection = model.getTable().getSelectedRows();
-//	        	 ArrayList selection2 = new ArrayList<Integer>();
-//	        	   for (int i = 0; i < selection.length; i++) {
-//	        	     selection[i] = model.getTable().convertRowIndexToModel(selection[i]);
-//	        	     System.out.println("SELECTIO" +selection[i]);
-//	        	     selection2.add( selection[i]);
-//	        	   }
-//	        	
 	        	model.setAvailableRows(filterdata());
 	        	model.select(new ArrayList());
 	        	model.getTable().getSelectionModel().clearSelection();
@@ -528,6 +535,7 @@ class SelectorPanel extends JPanel
      * the text box.
      */
     private void newFilter() {
+    	if(!filterText.getText().equals( "Enter Name Here")){
         ArrayList<Integer> output = new ArrayList<Integer>();
         //If current expression doesn't parse, don't update.
         for(int row = 0; row<model.dataSize(); row++){
@@ -544,14 +552,13 @@ class SelectorPanel extends JPanel
 		// update the views by executing selection with an empty arra
     	model.select(new ArrayList());
     }
-    
+    }
     
 private void newDateFilter() {
+	if(!filterDateText.getText().equals("Example 01-Jun-2015")){
 	  ArrayList<Integer> output = new ArrayList<Integer>();
 	  System.out.println("HEREEEE");
 	  boolean allRows = true;
-	  
-	  
 	  
       //filter on whole date object
 	  DateFormat formatter = new SimpleDateFormat("dd-MMM-yyyy");
@@ -559,6 +566,7 @@ private void newDateFilter() {
 		System.out.println(filterDateText.getText());
 		Date date = formatter.parse(filterDateText.getText());
 	    System.out.println(date);
+	    filterDateText.setBackground(Color.green);
 		for(int row = 0; row<model.dataSize(); row++){
 				Date dateRecord = formatter.parse((String) model.record(row).get(36));
 				//System.out.println(name + " "+ filterText.getText());
@@ -570,7 +578,7 @@ private void newDateFilter() {
 	     } 
 	     }
 	  catch (ParseException e) {	
-		 // System.out.println("FAAAAAAAAILLLLL");		
+		 // filterDateText.setBackground(Color.RED);
 	   }
 	  
 	  if(allRows ){
@@ -579,16 +587,50 @@ private void newDateFilter() {
 	}
  
       // update the filtered rows
-		model.setAvailableRows(output);
+	model.setAvailableRows(output);
 		// update the views by executing selection with an empty arra
   	model.select(new ArrayList());
+  	
+		}
   }
-	
-		
+class HintTextField extends JTextField implements FocusListener {
+
+	  private final String hint;
+	  private boolean showingHint;
+
+	  public HintTextField(final String hint) {
+	    super(hint);
+	    this.hint = hint;
+	    this.showingHint = true;
+	    super.addFocusListener(this);
+	  }
+
+	  @Override
+	  public void focusGained(FocusEvent e) {
+	    if(this.getText().isEmpty()) {
+	      super.setText("");
+	      showingHint = false;
+	    }
+	  }
+	  @Override
+	  public void focusLost(FocusEvent e) {
+	    if(this.getText().isEmpty()) {
+	      super.setText(hint);
+	      super.setBackground(Color.WHITE);
+	      showingHint = true;
+	    }
+	  }
+
+	  @Override
+	  public String getText() {
+	    return showingHint ? "" : super.getText();
+	  }
+}
 	
     public void update(ArrayList<Integer> availableRows, ArrayList<Integer> selectedRows) {
     	available = availableRows;
         selected = selectedRows;
     }
 	
+
 }

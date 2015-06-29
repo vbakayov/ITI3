@@ -50,12 +50,22 @@ class TradeViewerFrame extends JFrame {
         // the border is added so that the edges of the 
         // components do not cover the scatterplot
         dataPanel.setBorder(BorderFactory.createLineBorder(Color.decode("#F0F0F0"), 4));
+        
+        
+        JSplitPane splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT,dataPanel, tablePanel);
+        splitPane.setOneTouchExpandable(true);
+        splitPane.setDividerLocation(250);
+
+        //Provide minimum sizes for the two components in the split pane
+        Dimension minimumSize = new Dimension(100, 200);
+        dataPanel.setMinimumSize(minimumSize);
+        tablePanel.setMinimumSize(minimumSize);
 
         // prep component layout
         Container contentPane = getContentPane();
         contentPane.setLayout(new BorderLayout());
-        contentPane.add("North",dataPanel);
-        contentPane.add("Center", tablePanel);
+       // contentPane.add("North",dataPanel);
+        contentPane.add("Center", splitPane);
 
         final int DEFAULT_FRAME_WIDTH = 900;
         final int DEFAULT_FRAME_HEIGHT = 700;
