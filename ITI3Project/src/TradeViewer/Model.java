@@ -479,10 +479,12 @@ public class Model {
 		XSSFWorkbook workbook2 = new XSSFWorkbook(output); 
 		XSSFSheet worksheet2 = workbook2.getSheetAt(0);
 		int lastRowNumCopy = worksheet2.getLastRowNum();
+		System.out.println("Last "+lastRowNumCopy);
     //	XSSFRow row = my_worksheet.getRow(rowIndex);
     	//XSSFRow row2 =worksheet2.createRow(lastRowNumCopy+1);
 		for( int rowIndex= 0 ; rowIndex< availableRows.size(); rowIndex++){
 			XSSFRow row2 =worksheet2.createRow(lastRowNumCopy+rowIndex+1);
+			System.out.println("DATASET SIZE"+dataset.size());
 			for(int column =0; column<labels.size(); column++){   		  				
     			String value = (String) (((ArrayList) dataset.get(availableRows.get(rowIndex))).get(column));   		
     			row2.createCell(column).setCellValue(value);
@@ -490,7 +492,7 @@ public class Model {
     			
     	
     		}
-			removeRowsFromDataSet(availableRows.get(rowIndex));
+			//removeRowsFromDataSet(availableRows.get(rowIndex));
     	}
     	FileOutputStream out = 
                 new FileOutputStream(new File("H:\\Book1.xlsm"));

@@ -60,14 +60,14 @@ class SelectorPanel extends JPanel
 	private JRangeSlider xRange, yRange, cIDRange, pIDRange, ageRange, dtmRange,
 						 amountRange, fullnameRange, indexRange;
 	// menu bars with menus containing check boxes for the categorical attributes
-	private JMenuBar AgeGroupMenuBar, CountrySegmentMenuBar, casesDateMenuBar;
-	private JMenu ageMenu, customerMenu, CasesMenu;
+	private JMenuBar AgeGroupMenuBar, CountrySegmentMenuBar, casesDateMenuBar, ViolenceMenuBar;
+	private JMenu ageMenu, customerMenu, CasesMenu, ViolenceMenu;
 	// descriptive labels
 	private JLabel xLabel, yLabel, cIDLabel, pIDLabel, ageLabel, 
 				   dtmLabel, amountLabel, fullnameLabel, indexLabel,	   
-				   AgeGroupLabel, CountrySegmentLabel, casesLabel;
+				   AgeGroupLabel, CountrySegmentLabel, casesLabel, violenceLabel;
 	// used for creating the check boxes
-	private ArrayList<String> AgeGroupList, countrySegmentList, casesList;
+	private ArrayList<String> AgeGroupList, countrySegmentList, casesList, violenceList;
     // used for filtering the points
     private ArrayList<Integer> available;
     // used for multiple selection of points
@@ -88,7 +88,7 @@ class SelectorPanel extends JPanel
 		this.model = m;
 		this.available = model.getAvailableRows();
 		this.selected = new ArrayList<Integer>();
-		this.setLayout(new GridLayout(6,2));
+		this.setLayout(new GridLayout(8,2));
 		this.filtered  = new ArrayList<Integer>()	;
 		this.activeFiltersMap= new HashMap<JMenu, SelectionFilter>();
 		activeFilters= 0;
@@ -124,7 +124,13 @@ class SelectorPanel extends JPanel
 		
 		Collections.sort(countrySegmentList);
 		
-
+		violenceList = new ArrayList<String>();
+		for (int column = 26 ; column <32 ; column ++){
+			String columnName = model.getLabels(column);
+			//System.out.println(columnName);
+			violenceList.add(columnName);
+		}
+		Collections.sort(violenceList);
 		
 		// create and add the menu bars to the panel (along with their descriptive labels)
 		
@@ -258,6 +264,7 @@ class SelectorPanel extends JPanel
 		
 		
 		
+		
 		// create and add range sliders and descriptive labels
 		
 		// X
@@ -286,6 +293,33 @@ class SelectorPanel extends JPanel
         
 		add (ageLabel);
 		add (ageRange);
+		
+		
+		
+		ViolenceMenu = new JMenu("Selection Menu");
+		ViolenceMenu.setName("Violence");
+		ViolenceMenu.setBorder(BorderFactory.createLineBorder(Color.lightGray, 1));
+		ViolenceMenu.setBorderPainted(true);
+		
+		ViolenceMenuBar = new JMenuBar();		
+		ViolenceMenuBar.add("MIDDLE", ViolenceMenu);
+		ViolenceMenuBar.setBorder(BorderFactory.createLineBorder(Color.lightGray, 1));
+		
+		for (String str : violenceList) {
+			JCheckBoxMenuItem vn = new JCheckBoxMenuItem(str);
+			vn.addItemListener(new CheckBoxListener ());
+			ViolenceMenu.add(vn);
+		}
+		
+		violenceLabel = new JLabel("Violence Cases");
+		violenceLabel.setBorder(BorderFactory.createLineBorder(Color.lightGray, 1));
+		violenceLabel.setHorizontalAlignment(JLabel.CENTER);
+        violenceLabel.setVerticalAlignment(JLabel.CENTER);  
+
+		add(violenceLabel);
+		add(ViolenceMenuBar);
+		
+		
 
 	}
 	
@@ -297,12 +331,13 @@ class SelectorPanel extends JPanel
     	public void itemStateChanged(ItemEvent event) {
     		//get the JCheckBox which triggered the event
     		JCheckBoxMenuItem source = (JCheckBoxMenuItem) event.getSource() ;
-    		String value2 ;
+    		String value2, value3;
     		//find the menue the CheckBox belongs to
     		JPopupMenu fromParent = (JPopupMenu)source.getParent();
     		JMenu menu = (JMenu)fromParent.getInvoker();	
     		///"YES" for range values 
-    		value2 = (menu.getName() == "Case")? "YES" : source.getText();
+    		value2 = (menu.getName() == "Violence")? "YES" : source.getText();
+    		value3=(menu.getName() == "Case")? "YES" : source.getText();
     		int indexColumn =  model.getIndexOfLabel(source.getText());
     		
     		//HashMap to track the active menus
@@ -320,12 +355,22 @@ class SelectorPanel extends JPanel
         		//iterate the data, add all items that match the criteria to its menu entries list
 	        	for (int row = 0; row < model.dataSize(); row++) {
 		        		ArrayList record = model.record(row);
-		        		if(menu.getName() == "Case"){
+		        		if(menu.getName() == "Violence"){
 		        			//System.out.println("THE INDEX IS "+ indexColumn+record.get(indexColumn) );
 		        			if(record.get(indexColumn).equals( value2) ) activeFiltersMap.get(menu).add(row);
 		        		}else{
 		        			if (record.contains(value2)) activeFiltersMap.get(menu).add(row);}
 	        	}
+	        	
+	        	for (int row = 0; row < model.dataSize(); row++) {
+	        		ArrayList record = model.record(row);
+	        		if(menu.getName() == "Case"){
+	        			//System.out.println("THE INDEX IS "+ indexColumn+record.get(indexColumn) );
+	        			if(record.get(indexColumn).equals( value3) ) activeFiltersMap.get(menu).add(row);
+	        		}else{
+	        			if (record.contains(value3)) activeFiltersMap.get(menu).add(row);}
+        	}
+	        	
         		//System.out.println(model.getCountry(0));
 	        	
 	        	
