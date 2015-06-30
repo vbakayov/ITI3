@@ -2,11 +2,24 @@ package TradeViewer;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Toolkit;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.DataFlavor;
+import java.awt.datatransfer.Transferable;
+import java.awt.datatransfer.UnsupportedFlavorException;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.InputStream;
+import java.io.Reader;
+import java.io.StringBufferInputStream;
+import java.io.StringReader;
 import java.text.NumberFormat;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+import javax.swing.AbstractAction;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -89,7 +102,16 @@ public class Table extends JFrame {
 				          returnValue = Object.class;
 				        }
 				        return returnValue;
-				      }};
+				      }
+				      
+				      @Override
+				      public boolean isCellEditable(int row, int column) {
+				         //all cells false
+				         return false;
+				      }
+				
+				
+				};
 				      
 				      
 				      
@@ -102,6 +124,101 @@ public class Table extends JFrame {
 				// Add the table to a scrolling pane
 				scrollPane = new JScrollPane( table );
 				topPanel.add( scrollPane, BorderLayout.CENTER );
+				CopyTable();
 	}
+	
+	
+	public void CopyTable(){
+	//	table.add
+          table.getActionMap().put("copy", new AbstractAction() {
+              @Override
+              public void actionPerformed(ActionEvent e) {
+            	  
+                  int[] row = table.getSelectedRows();
+                  StringBuilder sb = new StringBuilder();
+                  sb.append("<table border=1 width=100%>");
+                  for(int roww= 0 ; roww<table.getSelectedRowCount(); roww++){
+                	  
+                 sb.append("<tr>");
+                  for (int col = 0; col < table.getColumnCount(); col++) {
+                      sb.append("<td>");
+                      sb.append(table.getValueAt(row[roww], col).toString());
+                      sb.append("</td>");
+                    
+                  }
+                  sb.append("</tr>");
+                  }
+                  sb.append("</table>");
+                  Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+                  clipboard.setContents(new HtmlSelection(sb.toString()), null);
+              }
+          });
+          
+
+	}
+
+	 private static class HtmlSelection implements Transferable {
+
+	        private static ArrayList htmlFlavors = new ArrayList();
+
+	        static {
+
+	            try {
+
+	                htmlFlavors.add(new DataFlavor("text/html;class=java.lang.String"));
+
+	                htmlFlavors.add(new DataFlavor("text/html;class=java.io.Reader"));
+
+	                htmlFlavors.add(new DataFlavor("text/html;charset=unicode;class=java.io.InputStream"));
+
+	            } catch (ClassNotFoundException ex) {
+
+	                ex.printStackTrace();
+
+	            }
+
+	        }
+
+	        private String html;
+
+	        public HtmlSelection(String html) {
+
+	            this.html = html;
+
+	        }
+
+	        public DataFlavor[] getTransferDataFlavors() {
+
+	            return (DataFlavor[]) htmlFlavors.toArray(new DataFlavor[htmlFlavors.size()]);
+
+	        }
+
+	        public boolean isDataFlavorSupported(DataFlavor flavor) {
+
+	            return htmlFlavors.contains(flavor);
+
+	        }
+
+	        public Object getTransferData(DataFlavor flavor) throws UnsupportedFlavorException {
+
+	            if (String.class.equals(flavor.getRepresentationClass())) {
+
+	                return html;
+
+	            } else if (Reader.class.equals(flavor.getRepresentationClass())) {
+
+	                return new StringReader(html);
+
+	            } else if (InputStream.class.equals(flavor.getRepresentationClass())) {
+
+	                return new StringBufferInputStream(html);
+
+	            }
+
+	            throw new UnsupportedFlavorException(flavor);
+
+	        }
+
+	    }
 
 }
