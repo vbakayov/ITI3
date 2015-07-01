@@ -104,38 +104,44 @@ class SelectorPanel extends JPanel
 		// the lists are sorted so that the check boxes appear in alphabetical order
 		AgeGroupList = new ArrayList<String>();		
 		for (int row = 0; row < model.dataSize(); row++) {
-        		String AgeGroup = (String) model.record(row).get(3);
+        		String AgeGroup = (String) model.record(row).get(model.getPosition("Age Group"));
         		if (!AgeGroupList.contains( AgeGroup))
         			AgeGroupList.add( AgeGroup);
 		}
 		Collections.sort(AgeGroupList);
 		
 		//those are fixed
-		casesList = new ArrayList<String>();
-		for (int column = 6 ; column <25 ; column ++){
-			String columnName = model.getLabels(column);
-			//System.out.println(columnName);
-			casesList.add(columnName);
-		}
-		Collections.sort(casesList);
+		
+		
+	
 		
 		countrySegmentList = new ArrayList<String>();		
 		for (int row = 0; row < model.dataSize(); row++) {
-        		String countrySegment = (String) model.record(row).get(4);
+        		String countrySegment = (String) model.record(row).get(model.getPosition("Country"));
         		if (!countrySegmentList.contains(countrySegment))
         			countrySegmentList.add(countrySegment);
 		}
 		
 		Collections.sort(countrySegmentList);
 		
+		casesList = new ArrayList<String>();
 		violenceList = new ArrayList<String>();
-		for (int column = 26 ; column <32 ; column ++){
-			String columnName = model.getLabels(column);
+		
+		String columnName="";
+		for (int column = 0 ; column <model.getDataType().size() ; column ++){
+			if(model.getDataType().get(column).equals("Violence")){
+				columnName = model.getLabels(column);
 			//System.out.println(columnName);
 			violenceList.add(columnName);
+			}
+			if(model.getDataType().get(column).equals("Case")){
+				columnName = model.getLabels(column);
+				//System.out.println(columnName);
+				casesList.add(columnName);
+			}
 		}
 		Collections.sort(violenceList);
-		
+		Collections.sort(casesList);
 		// create and add the menu bars to the panel (along with their descriptive labels)
 		
 		// Ageee
