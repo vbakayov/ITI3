@@ -199,7 +199,8 @@ public class StatisticsPanel extends JPanel
 	}
 	//fixed 
 	private void getCaseCount(){
-		for(int column=6; column < 26 ; column++){
+		for (int column = 0 ; column <model.getDataType().size() ; column ++){
+			if(model.getDataType().get(column).equals("Case")){
 			for(int row= 0; row< model.dataSize(); row++){
 				String info = model.getData(column,row);
 				String label = model.getLabels(column);
@@ -209,7 +210,8 @@ public class StatisticsPanel extends JPanel
 					int count = casesMap.containsKey(label) ? casesMap.get(label) : 0;
 					casesMap.put(label, count + 1);
 				}
-			}	
+			}
+			}
 		}
 	}
 	

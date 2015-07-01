@@ -59,6 +59,8 @@ public class Model {
     // contains only the rows from the original dataset that pass the currently set filters -
     // filtering is achieved by making all views use this dataset instead of the default one
     private ArrayList<Integer> availableRows;
+    //stores the type of the headers e.g cases, violence, outcomes
+    private ArrayList<String> dataType;
 
 	private JTable recordTable;
 	org.apache.poi.ss.usermodel.Sheet sheet=null;
@@ -80,6 +82,7 @@ public class Model {
         labels = new ArrayList();
         types = new ArrayList();
         dataset = new ArrayList();
+        dataType=new ArrayList();
         availableRows = new ArrayList();
         selectedRows = new ArrayList();
        
@@ -146,6 +149,7 @@ public class Model {
     	this.filename= filename2;
         Workbook workbook=null;
         boolean isHeader=true;
+        long isType=0;
 		try {
 			
 			workbook = WorkbookFactory.create(new File(filename2));
@@ -187,6 +191,7 @@ public class Model {
                 if (isHeader){
                 	labels.add(cell.toString());
                 }
+                if(isType==1) dataType.add(cell.toString());
                 else{
                 rowArray.add(cell.toString());
                 //Check the cell type and format accordingly
@@ -202,12 +207,14 @@ public class Model {
                    
                 }
         }
-            if(!isHeader) dataset.add(rowArray);
+            if(!isHeader && isType!=1) 
+            	dataset.add(rowArray);
             isHeader= false;
+            isType++;
+            
+            
             
         }
-        
-       
 		try {
 			file.close();
 		} catch (IOException e) {
@@ -384,16 +391,14 @@ public class Model {
     }
     
     public String getCountry(int index){
-    	return ((ArrayList)dataset.get(index)).get(4).toString();
+    	return ((ArrayList)dataset.get(index)).get(getPosition("Country")).toString();
     }
     
     public String getAgeGroup(int index){
-    	return ((ArrayList)dataset.get(index)).get(3).toString();
+    	return ((ArrayList)dataset.get(index)).get(getPosition("Age Group")).toString();
     }
     
-    public String getNaima(int index){
-    	return ((ArrayList)dataset.get(48)).get(2).toString();
-    }
+
 
     public void printRow(int rowNumber) {
         if (rowNumber >= dataset.size()) {
@@ -417,6 +422,10 @@ public class Model {
 		return labels;
 	}
 	
+	
+	public ArrayList getDataType(){
+		return dataType;
+	}
 	public int getIndexOfLabel(String itemName)
 	{
 	    for (int i = 0; i < labels.size(); i++)
@@ -469,6 +478,14 @@ public class Model {
           }
 	}
 	
+	
+	public int getPosition(String type){
+		int index=0;
+		for(int i=0;i<dataType.size();i++){
+			if(type.equals(dataType.get(i))) index = i;
+				}
+		return index;
+	}
 	public void CopyRowXLSXFile (){
 		
 		FileInputStream output;
