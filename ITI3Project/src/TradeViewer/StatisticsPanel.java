@@ -14,6 +14,7 @@ import java.util.Map;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import org.jfree.chart.ChartFactory;
@@ -121,10 +122,19 @@ public class StatisticsPanel extends JPanel
 
 				@Override
 				public void actionPerformed(ActionEvent e) {
+					//0 for yes 1 for no
+					int returnValue = showConfurmBoxes();
+					if(returnValue == 0){
+						String absolutePath = showDeletionFileChooser() ;
+						if(absolutePath != null);
+						model.CopyRowXLSXFile(absolutePath);
+						//model.RemoveROwwriteXLSXFile(); 
+						//model.removeRowsFromDataSet();
+						
+					}
 					
-					model.CopyRowXLSXFile();
-					model.removeRowsFromDataSet();
 				}
+
 	        	
 	        });
 	        countryButton.addActionListener(new ActionListener() {
@@ -268,8 +278,38 @@ public class StatisticsPanel extends JPanel
 		}
 			
     };
+    
+    private int showConfurmBoxes(){
+    	//Custom button text
+    	int n;
+    	Object[] options = {"Yes, please",
+    	                    "No, thanks",
+    	                    };
+    	n = JOptionPane.showOptionDialog(null,
+    	    "Are you sure you want to remove all rows you currently see?",
+    	    "A Silly Question",
+    	    JOptionPane.YES_NO_CANCEL_OPTION,
+    	    JOptionPane.QUESTION_MESSAGE,
+    	    null,
+    	    options,
+    	    options[1]);
+    	
+    	return n;
+    }
 
-	   
+    private String showDeletionFileChooser() {
+		
+    	JFileChooser fileChooser = new JFileChooser();
+		fileChooser.setDialogTitle("Specify a file to save");
+
+		int userSelection = fileChooser.showSaveDialog(chartPanel);
+		if (userSelection == JFileChooser.APPROVE_OPTION) {
+			File fileToSave = fileChooser.getSelectedFile();
+			return fileToSave.getAbsolutePath();
+			
+		}
+		return null;
+	}
 
 }
 
