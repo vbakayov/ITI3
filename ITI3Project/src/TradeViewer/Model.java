@@ -64,7 +64,8 @@ public class Model {
 	org.apache.poi.ss.usermodel.Sheet sheet=null;
 
 	public XSSFSheet sheetHSSF;
-
+	
+	private ArrayList<String> dataType;
 	private String filename;
 	//private static int numberofTimesRemoved;
 
@@ -80,6 +81,7 @@ public class Model {
         labels = new ArrayList();
         types = new ArrayList();
         dataset = new ArrayList();
+        dataType=new ArrayList();
         availableRows = new ArrayList();
         selectedRows = new ArrayList();
        
@@ -140,12 +142,13 @@ public class Model {
     
     
     private void load_xlms(String filename2) {
-    	   //Create Workbook instance holding reference to .xlsx file
+ 	   //Create Workbook instance holding reference to .xlsx file
     	short max = 0;
     	FileInputStream file = null;
     	this.filename= filename2;
         Workbook workbook=null;
         boolean isHeader=true;
+        long isType=0;
 		try {
 			
 			workbook = WorkbookFactory.create(new File(filename2));
@@ -187,6 +190,7 @@ public class Model {
                 if (isHeader){
                 	labels.add(cell.toString());
                 }
+                if(isType==1) dataType.add(cell.toString());
                 else{
                 rowArray.add(cell.toString());
                 //Check the cell type and format accordingly
@@ -202,12 +206,11 @@ public class Model {
                    
                 }
         }
-            if(!isHeader) dataset.add(rowArray);
+            if(!isHeader && isType!=1) 
+            	dataset.add(rowArray);
             isHeader= false;
-            
+            isType++;
         }
-        
-       
 		try {
 			file.close();
 		} catch (IOException e) {
@@ -216,6 +219,7 @@ public class Model {
 		}
         
     	}
+    	
     	
 		
 	
@@ -572,6 +576,16 @@ public class Model {
 			e.printStackTrace();
 		}
 	}
-
+	 public ArrayList getDataType(){
+			return dataType;
+		}
+	 
+	 public int getPosition(String type){
+			int index=0;
+			for(int i=0;i<dataType.size();i++){
+				if(type.equals(dataType.get(i))) index = i;
+					}
+			return index;
+		}
 
 }

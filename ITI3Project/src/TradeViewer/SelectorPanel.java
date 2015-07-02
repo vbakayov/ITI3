@@ -626,7 +626,7 @@ class HintTextField extends JTextField implements FocusListener {
 	      showingHint = true;
 	    }
 	  }
-
+	 
 	  @Override
 	  public String getText() {
 	    return showingHint ? "" : super.getText();
