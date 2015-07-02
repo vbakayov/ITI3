@@ -2,6 +2,7 @@ package TradeViewer;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.DataFlavor;
@@ -9,6 +10,7 @@ import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.ImageObserver;
 import java.io.InputStream;
 import java.io.Reader;
 import java.io.StringBufferInputStream;
@@ -38,16 +40,18 @@ public class Table extends JFrame {
 	HashMap<String, Integer>casesMap;
 	Model model;
 	private int caseTotal;
+	private String[] columnNames;
 	
-	public Table(Model model, HashMap<String, Integer> casesMap, int caseTotal)
+	public Table(String tableName, Model model, HashMap<String, Integer> casesMap, int caseTotal, String[] columnNames)
 	{
 		this.casesMap=casesMap;
 		this.model=model;
+		this.columnNames= columnNames;
 		this.caseTotal=caseTotal;
 		// Set the frame characteristics
-		setTitle( "Legal Cases" );
-		setSize(400,400 );
+		setTitle( tableName );
 		  // here's the part where i center the jframe on screen
+		setSize(400,400);
 		setLocationRelativeTo(null);
 		setBackground( Color.gray );
 		initTable();
@@ -89,7 +93,7 @@ public class Table extends JFrame {
 				getContentPane().add( topPanel );
 
 				// Create columns names
-				String columnNames[]={"Case Type","Count","Types of Cases/number of clients", "Types of Cases/total cases" };
+				//String columnNames[]={"Case Type","Count","Types of Cases/number of clients", "Types of Cases/total cases" };
 						
 				Object rows[][] = convertHashMaptoDoubleArray();
 				
@@ -117,6 +121,7 @@ public class Table extends JFrame {
 				      
 				// Create a new table instance
 				table = new JTable(model );
+				//setSize((new Dimension(table.getWidth(),table.getHeight()));
 				
 				RowSorter<TableModel> sorter = new TableRowSorter<TableModel>(model);
 			    table.setRowSorter(sorter);

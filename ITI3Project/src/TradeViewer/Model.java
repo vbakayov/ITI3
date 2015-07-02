@@ -428,7 +428,7 @@ public class Model {
 	   
 	    	String string = labels.get(i).toString();
 	       if (itemName.equals(string)){
-	        	System.out.println("INDEX OF"+ itemName + labels.get(i));
+	        	//System.out.println("INDEX OF"+ itemName + labels.get(i));
 	            return i;
 	        }
 	    }

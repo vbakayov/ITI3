@@ -32,27 +32,67 @@ public class StatisticsPanel extends JPanel
 	
 	private Model model;
 	public HashMap <String,Integer> countryCountMap = new HashMap<String,Integer>();
+	public HashMap <String,Integer> localAMap = new HashMap<String,Integer>();
 	private HashMap<String, Integer> ageGroupsMap = new HashMap<String,Integer>();
 	//hash map integer-integer(colomn intex, count) for the different cases
 	private HashMap<String, Integer> casesMap = new HashMap<String,Integer>();
+	//indexes asalym applicaton-refugee status, asalym app-refused,asalym appeal- No appeal, asalym appeal- outstanding
+	//fresh claim for asylum- No appeal,fresh claim for asylum- outstanding
+	private int[] outcomesCount= new int[7];
 	JPanel chartPanel=new JPanel();
 	private PieChart countryPieChart;
 	private PieChart ageGroupPieChart;
 	private JButton saveButton;
 	private JButton saveButtonAge;
 	private JButton deleteButton;
+	private JButton localAButton;
+	private JButton outcomesButton;
+	
 	
 	public StatisticsPanel(Model model) {
 		this.model = model;
 		populateMap();
 		countAgeGroups();
 		getCaseCount();
+		getLocalACount();
+		getOutcomesCount();
 		printMap();
 		GUI();
+		
+		
 	}
 	
 	
 	
+	private void getOutcomesCount() {
+		int indexColAsylum= model.getIndexOfLabel("Asylum Application");
+		int indexColAppeal= model.getIndexOfLabel("Asylum Appeal");
+		int indexColFreshClaim= model.getIndexOfLabel("Fresh Claim for Asylum");
+	
+					
+			for(int row= 0; row< model.dataSize(); row++){
+				String Asylum  = model.getData(indexColAsylum,row);
+				System.out.println(Asylum);
+				String Appeal  = model.getData(indexColAppeal,row);
+				String FreshClaim  = model.getData(indexColFreshClaim,row);
+				if(Asylum.equals("refugee status"))outcomesCount[0]++;
+				if(Asylum.equals("refused")) outcomesCount[1]++;
+				if(Appeal.equals("refused")) outcomesCount[2]++;
+				if(Appeal.equals("no appeal")) outcomesCount[3]++;
+				if(Appeal.equals("outstanding")) outcomesCount[4]++;
+				if(FreshClaim.equals("no appeal")) outcomesCount[5]++;
+				if(FreshClaim.equals("outstanding")) outcomesCount[6]++;
+				
+			}
+			
+			for(int i=0;i<outcomesCount.length;i++){
+				System.out.println("Yet another print statement because we are cool "+outcomesCount[i]);
+			}
+		
+	}
+
+
+
 	public void GUI(){
 		 setLayout(new GridLayout(4,2));
 	        JButton countryButton = new JButton("Country Chart");
@@ -81,10 +121,13 @@ public class StatisticsPanel extends JPanel
 	        
 	        JButton casesButton=new JButton("Legal Cases");
 	        JButton deleteButton = new JButton("Remove rows");
-	        
+	        JButton localAButton = new JButton("Local Autority");
+	        JButton outcomesButton = new JButton("Cases Outcomes");      
 	        
 	        add(casesButton);
 	        add(deleteButton);
+	        add(localAButton);
+	        add(outcomesButton);
 	        ageGroupButton.addActionListener(new ActionListener() {
 
 				@Override
@@ -108,9 +151,34 @@ public class StatisticsPanel extends JPanel
 			
 		
 	        });
+	        
+	        localAButton.addActionListener(new ActionListener(){
+
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					buttonPressed();
+					
+				}
 				
+				private void buttonPressed() {
+					String[] arrayColumn = {"Local Authority", "Count"};
+					Table LocalATable	= new Table("Local Authority",model,localAMap,totalNumberCases(localAMap), arrayColumn);
+					LocalATable.setVisible( true );
+					
+				}
+			
+		
+	        });
 	        
-	        
+				
+	        outcomesButton.addActionListener(new ActionListener(){
+	        	@Override
+				public void actionPerformed(ActionEvent e) {
+	        		OutcomesPanel outcomes = new OutcomesPanel (outcomesCount);
+	        		outcomes.setVisible(true);
+				}
+	        	
+	        });
 	        
 	        
 	        saveButton.addActionListener( new CustomButtonListener());
@@ -167,7 +235,8 @@ public class StatisticsPanel extends JPanel
 
 				@Override
 				public void actionPerformed(ActionEvent arg0) {
-					Table mainFrame	= new Table(model,casesMap,totalNumberCases());
+					String[] arrayColumn = {"Case Type","Count","Types of Cases/number of clients", "Types of Cases/total cases" };
+					Table mainFrame	= new Table("Legal Cases",model,casesMap,totalNumberCases(casesMap), arrayColumn);
 					mainFrame.setVisible( true );
 					
 					
@@ -181,11 +250,11 @@ public class StatisticsPanel extends JPanel
     
     	//iterate on  the menus
     	//Iterator it = countryCountMap.entrySet().iterator();
-		Iterator it = casesMap.entrySet().iterator();
+		Iterator it = localAMap.entrySet().iterator();
     	while (it.hasNext()) {
     		Map.Entry pair = (Map.Entry)it.next();
     		
-    		//System.out.println(pair.getKey() + " = " + pair.getValue());
+    		System.out.println(pair.getKey() + " = " + pair.getValue());
     		
     	}
     	
@@ -207,6 +276,22 @@ public class StatisticsPanel extends JPanel
 			 ageGroupsMap.put(country, count + 1);
 		}
 	}
+	private void getLocalACount(){
+		for (int column = 0 ; column <model.getDataType().size() ; column ++){
+			if(model.getDataType().get(column).equals("Local")){
+			for(int row= 0; row< model.dataSize(); row++){
+				String local  = model.getData(column,row);
+				if(local != ""){
+					int count = localAMap.containsKey(local) ? localAMap.get(local) : 0;
+					localAMap.put(local, count + 1);
+				}
+			}
+			}
+		}
+	}
+
+	
+	
 	//fixed 
 	private void getCaseCount(){
 		for (int column = 0 ; column <model.getDataType().size() ; column ++){
@@ -227,9 +312,9 @@ public class StatisticsPanel extends JPanel
 	
 	
 	
-	private int totalNumberCases(){
+	private int totalNumberCases(HashMap map){
 		int total=0;
-		Iterator it = casesMap.entrySet().iterator();
+		Iterator it = map.entrySet().iterator();
     	while (it.hasNext()) {
     		Map.Entry pair = (Map.Entry)it.next();
     		total+=(int)pair.getValue();
