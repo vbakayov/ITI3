@@ -49,16 +49,29 @@ public class PieChart extends JFrame  {
 		
 	}
 
+	private int sumValues(){
+		int sum=0;
+		for (int f : map.values()) {
+		    sum += f;
+		}
+		return sum;
+	}
+
 private  PieDataset createDataset() {
+	
 	Iterator it = map.entrySet().iterator();
 	DefaultPieDataset dataset = new DefaultPieDataset();
+	int total = sumValues();
+	int fivePersent = (int)(total*(5.0f/100.0f));
+	//System.out.println("The total is  "+ total + "and 5% is "+ k);
 	int others=0;
 	while (it.hasNext()) {
 		Map.Entry pair = (Map.Entry)it.next();
 		//System.out.println(pair.getKey() + " = " + pair.getValue());
 		//System.out.println("Boolean "+ otherGroup);
 		if (otherGroup){
-			if((int)pair.getValue()<3){
+			
+			if((int)pair.getValue()<fivePersent){
 				others=others+(int)pair.getValue();
 			}
 			else{

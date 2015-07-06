@@ -7,9 +7,7 @@ package TradeViewer;
  *
  *	@author matthew
  *
- *	Modified by Dobromir Dobrev - 1103606 
- *  to meet the specified requirements, such as
- *  multiple selection and filtering of the data.
+ *
  */
  
 // Note: multiple selection is implemented by:
