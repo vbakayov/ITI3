@@ -134,7 +134,7 @@ class TablePanel extends JPanel
 	    // override getColumnClass to return our chosen class type - 
 	    // getColumnClass has to return Double in order to create a bar chart
         public Class<?> getColumnClass(int column) {
-        	System.out.println("Index is"+ column);
+        	//System.out.println("Index is"+ column);
         	if (column ==2)
         		return java.lang.Double.class;
 	        Class<?> returnValue;

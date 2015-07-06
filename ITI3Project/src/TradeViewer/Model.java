@@ -119,9 +119,6 @@ public class Model {
         String filetype = filename.substring(filename.lastIndexOf('.'), filename.length());
         System.out.println(filetype);
         switch(filetype){
-			case ".csv":
-				load_csv(filename);
-				break;
 			case ".xlsm":
 				load_xlms(filename);
 				break;
@@ -220,34 +217,6 @@ public class Model {
     	
     	
 		
-	
-
-	void load_csv(String filename){
-      FileReader fileReader;
-      BufferedReader buffer;
-      String line;
-      try {
-          fileReader = new FileReader(new File(filename));
-          buffer = new BufferedReader(fileReader);
-
-          // read labels line
-         // readHeader(buffer.readLine(), labels);
-          // read the types line
-         // readHeader(buffer.readLine(), types);
-          while ((line = buffer.readLine()) != null) {
-              // now read a line of data
-              readALine(line);
-          }
-          // close the file
-          fileReader.close();
-      } catch (FileNotFoundException e) {
-          System.out.println("File not found when loading graph");
-
-      } catch (IOException e) {
-          System.out.println("IO exception when loading graph");
-      }
-    }
-
     void readHeader(String line, ArrayList headers) {
         // create a tokenizer to parse the line
         StringTokenizer segmentedLine = new StringTokenizer(line, ",");
@@ -491,13 +460,13 @@ public class Model {
     			String value = (String) (((ArrayList) dataset.get(availableRows.get(rowIndex))).get(column));   		
     			row2.createCell(column).setCellValue(value);
     			System.out.println("CELL IS "+row2.getCell(column).toString());;
-    			
-    	
-    		}  
+	
+    		}
+			RemoveROwwriteXLSXFile(availableRows.get(rowIndex));
     	}
 		
-		for( int row= availableRows.size()-1 ; row>= 0; row--)
-			RemoveROwwriteXLSXFile(availableRows.get(row));
+		//for( int row= availableRows.size()-1 ; row>= 0; row--)
+			//RemoveROwwriteXLSXFile(availableRows.get(row));
 		
     	FileOutputStream out = 
                 new FileOutputStream(new File(absolutePath));

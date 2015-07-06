@@ -16,6 +16,7 @@ import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
@@ -36,9 +37,15 @@ public class StatisticsPanel extends JPanel
 	private HashMap<String, Integer> ageGroupsMap = new HashMap<String,Integer>();
 	//hash map integer-integer(colomn intex, count) for the different cases
 	private HashMap<String, Integer> casesMap = new HashMap<String,Integer>();
+	
+	//hash map for counting the barChart violance data
+	private HashMap<String,TupleViolence> violenceMap = new HashMap<String,TupleViolence>();
 	//indexes asalym applicaton-refugee status, asalym app-refused,asalym appeal- No appeal, asalym appeal- outstanding
 	//fresh claim for asylum- No appeal,fresh claim for asylum- outstanding
 	private int[] outcomesCount= new int[7];
+	
+	//count gender
+	private int[] genderCount = new int [2];
 	JPanel chartPanel=new JPanel();
 	private PieChart countryPieChart;
 	private PieChart ageGroupPieChart;
@@ -47,15 +54,16 @@ public class StatisticsPanel extends JPanel
 	private JButton deleteButton;
 	private JButton localAButton;
 	private JButton outcomesButton;
+	private JButton barChartButton;
 	
 	
 	public StatisticsPanel(Model model) {
 		this.model = model;
 		populateMap();
-		countAgeGroups();
 		getCaseCount();
 		getLocalACount();
 		getOutcomesCount();
+		getViolenceCount();
 		printMap();
 		GUI();
 		
@@ -68,11 +76,9 @@ public class StatisticsPanel extends JPanel
 		int indexColAsylum= model.getIndexOfLabel("Asylum Application");
 		int indexColAppeal= model.getIndexOfLabel("Asylum Appeal");
 		int indexColFreshClaim= model.getIndexOfLabel("Fresh Claim for Asylum");
-	
 					
 			for(int row= 0; row< model.dataSize(); row++){
 				String Asylum  = model.getData(indexColAsylum,row);
-				System.out.println(Asylum);
 				String Appeal  = model.getData(indexColAppeal,row);
 				String FreshClaim  = model.getData(indexColFreshClaim,row);
 				if(Asylum.equals("refugee status"))outcomesCount[0]++;
@@ -85,16 +91,18 @@ public class StatisticsPanel extends JPanel
 				
 			}
 			
-			for(int i=0;i<outcomesCount.length;i++){
-				System.out.println("Yet another print statement because we are cool "+outcomesCount[i]);
-			}
+			//for(int i=0;i<outcomesCount.length;i++){
+				//System.out.println("Yet another print statement because we are cool "+outcomesCount[i]);
+			//}
 		
 	}
 
 
 
 	public void GUI(){
-		 setLayout(new GridLayout(4,2));
+		 setLayout(new GridLayout(5,2));
+		 JPanel labelsText=new JPanel();
+		 labelsText.setLayout(new GridLayout(2,1));
 	        JButton countryButton = new JButton("Country Chart");
 	         saveButton=new JButton("Save");
 	      
@@ -122,12 +130,26 @@ public class StatisticsPanel extends JPanel
 	        JButton casesButton=new JButton("Legal Cases");
 	        JButton deleteButton = new JButton("Remove rows");
 	        JButton localAButton = new JButton("Local Autority");
-	        JButton outcomesButton = new JButton("Cases Outcomes");      
+	        JButton outcomesButton = new JButton("Cases Outcomes");
+	        JButton barChartButton = new JButton("Bar Chart");
 	        
 	        add(casesButton);
 	        add(deleteButton);
 	        add(localAButton);
 	        add(outcomesButton);
+	        add(barChartButton);
+	        add(labelsText);
+	        
+	        JLabel label2= new JLabel("Female");
+			JTextField text2 = new JTextField(Integer.toString(genderCount[1]));
+			text2.setEnabled(false);
+			labelsText.add(label2);
+			labelsText.add(text2);
+			JLabel label3= new JLabel("Male");
+			JTextField text3 = new JTextField(Integer.toString(genderCount[0]))	;
+			text3.setEnabled(false);
+			labelsText.add(label3);
+			labelsText.add(text3);
 	        ageGroupButton.addActionListener(new ActionListener() {
 
 				@Override
@@ -244,17 +266,27 @@ public class StatisticsPanel extends JPanel
 	        	
 	        });
 	        
+	        barChartButton.addActionListener(new ActionListener() {
+				
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					BarChart barChart=new BarChart(model,violenceMap,"Violence Bar Chart");
+					barChart.pack();
+					RefineryUtilities.centerFrameOnScreen(barChart);
+					barChart.setVisible(true);
+					
+				}
+			});
+	        
 	}
 	private void printMap() {
-		ArrayList<Integer> output = new ArrayList<Integer>();
-    
     	//iterate on  the menus
     	//Iterator it = countryCountMap.entrySet().iterator();
-		Iterator it = localAMap.entrySet().iterator();
+		Iterator it = violenceMap.entrySet().iterator();
     	while (it.hasNext()) {
     		Map.Entry pair = (Map.Entry)it.next();
     		
-    		System.out.println(pair.getKey() + " = " + pair.getValue());
+    		System.out.println(pair.getKey() + " = " + pair.getValue().toString());
     		
     	}
     	
@@ -262,20 +294,27 @@ public class StatisticsPanel extends JPanel
 	}
 
 	private void populateMap(){
+		 int indexGenderColumn = model.getIndexOfLabel("Gender");
+		 System.out.println(indexGenderColumn);
 		for(int i =0; i< model.dataSize(); i++){
 			String country = model.getCountry(i);
+			String ageGroup = model.getAgeGroup(i);
+			
 			int count = countryCountMap.containsKey(country) ? countryCountMap.get(country) : 0;
 			countryCountMap.put(country, count + 1);
+			
+			int count2 =  ageGroupsMap.containsKey(ageGroup) ?  ageGroupsMap.get(ageGroup) : 0;
+			 ageGroupsMap.put(ageGroup, count2 + 1);
+			 
+			String gender = model.getData(indexGenderColumn, i);
+			System.out.println(gender);
+			if(gender.equals("Male"))  genderCount[0] ++;
+			if(gender.equals("Female")) genderCount[1]++;
 		}
 	}
 	
-	private void countAgeGroups(){
-		for(int i =0; i< model.dataSize(); i++){
-			String country = model.getAgeGroup(i);
-			int count =  ageGroupsMap.containsKey(country) ?  ageGroupsMap.get(country) : 0;
-			 ageGroupsMap.put(country, count + 1);
-		}
-	}
+
+	
 	private void getLocalACount(){
 		for (int column = 0 ; column <model.getDataType().size() ; column ++){
 			if(model.getDataType().get(column).equals("Local")){
@@ -309,6 +348,31 @@ public class StatisticsPanel extends JPanel
 			}
 		}
 	}
+	
+	
+	private void getViolenceCount(){
+		for (int column = 0 ; column <model.getDataType().size() ; column ++){
+			if(model.getDataType().get(column).equals("Violence")){
+			for(int row= 0; row< model.dataSize(); row++){
+				String info = model.getData(column,row);
+				String label = model.getLabels(column);
+				if(!violenceMap.containsKey(label)) violenceMap.put(label, new TupleViolence(0,0));
+				if(row == model.dataSize()-1 && !violenceMap.containsKey(label))	violenceMap.put(label, new TupleViolence(0,0));
+				if(info.equals("YES")){
+					
+					violenceMap.get(label).incrementYes();
+					violenceMap.put(label, violenceMap.get(label));
+				}
+				if(info.equals("NO")){
+					violenceMap.get(label).incrementNo();
+					violenceMap.put(label, violenceMap.get(label));
+					
+				}
+			}
+			}
+		}
+	}
+	
 	
 	
 	

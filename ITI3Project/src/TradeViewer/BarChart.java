@@ -6,6 +6,9 @@ import javax.swing.JPanel;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GradientPaint;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
@@ -22,10 +25,12 @@ import org.jfree.ui.ApplicationFrame;
 import org.jfree.ui.RefineryUtilities;
 
 public class BarChart  extends JFrame {
-
-	
-	public BarChart(String title){
+	private Model model;
+	private HashMap myMap;
+	public BarChart(Model model,HashMap<String,TupleViolence> myMap,String title){
 		super(title);
+		this.myMap=myMap;
+		this.model=model;
 	    JPanel frame = createPanel();
 	    frame. setPreferredSize(new Dimension(500, 270));
 		setContentPane(frame);
@@ -49,38 +54,22 @@ public class BarChart  extends JFrame {
     private CategoryDataset createDataset() {
         
         // row keys...
-        final String series1 = "First";
-        final String series2 = "Second";
-        final String series3 = "Third";
-
-        // column keys...
-        final String category1 = "Category 1";
-        final String category2 = "Category 2";
-        final String category3 = "Category 3";
-        final String category4 = "Category 4";
-        final String category5 = "Category 5";
-
-        // create the dataset...
+        final String series1 = "Yes";
+        final String series2 = "No";
         final DefaultCategoryDataset dataset = new DefaultCategoryDataset();
 
-        dataset.addValue(1.0, series1, category1);
-        dataset.addValue(4.0, series1, category2);
-        dataset.addValue(3.0, series1, category3);
-        dataset.addValue(5.0, series1, category4);
-        dataset.addValue(5.0, series1, category5);
+        // column keys...
+        Iterator it = myMap.entrySet().iterator();
+    	while (it.hasNext()) {
+    		Map.Entry pair = (Map.Entry)it.next();
+    		
+    		System.out.println(pair.getKey() + " = " + pair.getValue().toString());
+    		dataset.addValue(((TupleViolence) pair.getValue()).getYesValue(),series1,pair.getKey().toString());
+    		dataset.addValue(((TupleViolence) pair.getValue()).getNoValue(),series2,pair.getKey().toString());
+    		
+    	}
+      
 
-        dataset.addValue(5.0, series2, category1);
-        dataset.addValue(7.0, series2, category2);
-        dataset.addValue(6.0, series2, category3);
-        dataset.addValue(8.0, series2, category4);
-        dataset.addValue(4.0, series2, category5);
-
-        dataset.addValue(4.0, series3, category1);
-        dataset.addValue(3.0, series3, category2);
-        dataset.addValue(2.0, series3, category3);
-        dataset.addValue(3.0, series3, category4);
-        dataset.addValue(6.0, series3, category5);
-        
         return dataset;
         
     }
@@ -89,7 +78,7 @@ private JFreeChart createChart(final CategoryDataset dataset) {
         
         // create the chart...
         final JFreeChart chart = ChartFactory.createBarChart(
-            "Bar Chart Demo",         // chart title
+            "Bar Chart Violence",         // chart title
             "Category",               // domain axis label
             "Value",                  // range axis label
             dataset,                  // data
