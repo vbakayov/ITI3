@@ -9,8 +9,11 @@ package TradeViewer;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.IOException;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.event.*;
 
@@ -45,8 +48,24 @@ class TradeViewerFrame extends JFrame {
         
         // contains the record panel and the selector panel 
         JPanel dataPanel = new JPanel(new GridLayout(1,2));
-        dataPanel.add(statisticsPanel);
-        dataPanel.add(selectorPanel);
+        
+        JPanel logo=new JPanel();
+		 BufferedImage myPicture = null;
+		try {
+			myPicture = ImageIO.read(new File("logo.png"));
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		 JLabel picLabel = new JLabel(new ImageIcon(myPicture));
+
+		
+		 logo.setLayout(new GridLayout(1,1));
+		 logo.add(picLabel);
+		
+		 dataPanel.add(statisticsPanel);
+		 dataPanel.add(logo);
+	     dataPanel.add(selectorPanel);
         // the border is added so that the edges of the 
         // components do not cover the scatterplot
         dataPanel.setBorder(BorderFactory.createLineBorder(Color.decode("#F0F0F0"), 4));

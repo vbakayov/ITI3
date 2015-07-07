@@ -5,12 +5,17 @@ import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+import javax.imageio.ImageIO;
+import javax.print.DocFlavor.URL;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
@@ -101,11 +106,11 @@ public class StatisticsPanel extends JPanel
 
 
 	public void GUI(){
-		 setLayout(new GridLayout(5,2));
+		 setLayout(new GridLayout(6,2));
 		 JPanel labelsText=new JPanel();
 		 labelsText.setLayout(new GridLayout(2,1));
-	        JButton countryButton = new JButton("Country Chart");
-	         saveButton=new JButton("Save");
+	     JButton countryButton = new JButton("Country Chart");
+	     saveButton=new JButton("Save");
 	      
 	        add(countryButton);
 	        add(saveButton);
