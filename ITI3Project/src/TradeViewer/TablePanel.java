@@ -70,7 +70,24 @@ class TablePanel extends JPanel
 		recordDataModel = new RecordTableModel();
 		recordDataModel.load();
 		// create table
-		recordTable = new JTable(recordDataModel);
+		recordTable = new JTable(recordDataModel){
+		    //Implement table cell tool tips.           
+            public String getToolTipText(MouseEvent e) {
+                String tip = null;
+                java.awt.Point p = e.getPoint();
+                int rowIndex = rowAtPoint(p);
+                int colIndex = columnAtPoint(p);
+
+                try {
+                    tip = getValueAt(rowIndex, colIndex).toString();
+                } catch (RuntimeException e1) {
+                    //catch null pointer exception if mouse is over an empty line
+                }
+
+                return tip;
+            
+        };
+		};
 		recordTable.setPreferredScrollableViewportSize(new Dimension(500, 150));
 		// enable multiple selection 
 		recordTable.setRowSelectionAllowed(true);
@@ -133,6 +150,8 @@ class TablePanel extends JPanel
 	
 	    // override getColumnClass to return our chosen class type - 
 	    // getColumnClass has to return Double in order to create a bar chart
+	    
+	    
         public Class<?> getColumnClass(int column) {
         	//System.out.println("Index is"+ column);
         	if (column ==2)
@@ -170,7 +189,8 @@ class TablePanel extends JPanel
 	    }
 	    public Object getValueAt(int row, int col) {
 	    	//Here row and col are view indeces and data is view representaion
-	    	//System.out.println("ROW+ COL : "+row + "  "+ col +" "+ data[row][col]);
+	    	//System.out.println("ROW+ COL : "+row + "  "+ col +" ");
+	    	//System.out.println(data[row][col]);
 	    	return data[row][col];
 	    }
 	    public void setValue(Object value, int row, int col) {

@@ -106,7 +106,7 @@ public class StatisticsPanel extends JPanel
 
 
 	public void GUI(){
-		 setLayout(new GridLayout(6,2));
+		 setLayout(new GridLayout(5,2));
 		 JPanel labelsText=new JPanel();
 		 labelsText.setLayout(new GridLayout(2,1));
 	     JButton countryButton = new JButton("Country Chart");
