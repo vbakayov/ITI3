@@ -85,8 +85,7 @@ class SelectorPanel extends JPanel
 	private JTextField filterText;
 	private JLabel closeLabel;
 	private JTextField filterDateText;
-	private JCheckBox violanceCheckBox;
-	private JCheckBox casesCheckBox;
+
 	public SelectorPanel(Model m) {
 		
 		this.model = m;
@@ -195,7 +194,7 @@ class SelectorPanel extends JPanel
 		
 		// Cases Menue
 		//Union or Intersection
-		casesCheckBox = new JCheckBox();
+		
 	
 		CasesMenu = new JMenu("Selection Menu");
 		CasesMenu.setName("Case");
@@ -204,7 +203,7 @@ class SelectorPanel extends JPanel
 		
 		casesDateMenuBar = new JMenuBar();		
 		casesDateMenuBar.add("MIDDLE", CasesMenu);
-		casesDateMenuBar.add(casesCheckBox);
+		
 		casesDateMenuBar.setBorder(BorderFactory.createLineBorder(Color.lightGray, 1));
 		
 
@@ -314,7 +313,7 @@ class SelectorPanel extends JPanel
 		add (ageLabel);
 		add (ageRange);
 		
-		violanceCheckBox = new JCheckBox();
+	
 		
 		ViolenceMenu = new JMenu("Selection Menu");
 		ViolenceMenu.setName("Violence");
@@ -323,7 +322,6 @@ class SelectorPanel extends JPanel
 		
 		ViolenceMenuBar = new JMenuBar();		
 		ViolenceMenuBar.add("MIDDLE", ViolenceMenu);
-		ViolenceMenuBar.add(violanceCheckBox);
 		ViolenceMenuBar.setBorder(BorderFactory.createLineBorder(Color.lightGray, 1));
 		
 		for (String str : violenceList) {

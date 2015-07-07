@@ -100,6 +100,8 @@ public class Model {
     	// add the rows to the ArrayList of selected rows
     	//System.out.println("FROM MODEL "+ rows.size());
     	selectedRows.clear();
+    	
+    
     
 		// the children are updated
         for (int i = 0; i < children.size(); i++) {
@@ -443,13 +445,14 @@ public class Model {
 	
 		try {
 			output = new FileInputStream(new File(absolutePath));
-			
+		
+			//open exel document	
 		XSSFWorkbook workbook2 = new XSSFWorkbook(output); 
 		XSSFSheet worksheet2 = workbook2.getSheetAt(0);
 		int lastRowNumCopy = worksheet2.getLastRowNum();
 		System.out.println("Last "+lastRowNumCopy);
-    //	XSSFRow row = my_worksheet.getRow(rowIndex);
-    	//XSSFRow row2 =worksheet2.createRow(lastRowNumCopy+1);
+		
+		//copy the information from the avaiable rows to the output file
 		for( int rowIndex= 0 ; rowIndex< availableRows.size(); rowIndex++){
 			XSSFRow row2 =worksheet2.createRow(lastRowNumCopy+rowIndex+1);
 			System.out.println("DATASET SIZE"+dataset.size());
@@ -462,18 +465,26 @@ public class Model {
     	}
 		
 		Collections.sort(availableRows);
-		
+		//remove rows from the spreadsheet original data 
 		for( int row= availableRows.size()-1 ; row>= 0; row--)
 			RemoveROwwriteXLSXFile(availableRows.get(row)+2);
-		
+//		
     	FileOutputStream out = 
                 new FileOutputStream(new File(absolutePath));
         workbook2.write(out);
         out.close();
         System.out.println("Excel written successfully..");
     	
-		
-		
+        //remove the available rows from the programs' data model
+        removeRowsFromDataSet();
+		//clear all available rows
+        availableRows.clear();
+        
+        // update all children
+        for (int i = 0; i < children.size(); i++) {
+            ViewController kid = (ViewController) children.get(i);
+            kid.update(availableRows, selectedRows);
+        }   
 		
 			}
     	catch (FileNotFoundException e) {
@@ -497,6 +508,10 @@ public class Model {
 		dataset.remove((int) availableRows.get(rowIndex)-numberofTimesRemoved);
 		numberofTimesRemoved++;
 		System.out.println("SIZEEEE IS  "+ dataset.size());
+		for(int i =0 ; i<availableRows.size(); i++){
+			System.out.println("Index of available rows"+ availableRows.get(i));
+		}
+		//select(new ArrayList());
 		}
 	}
 
