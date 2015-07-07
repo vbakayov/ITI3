@@ -20,10 +20,6 @@ package TradeViewer;
 //	     they work with an ArrayList of integers instead of with a single integer.
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.ListIterator;
-import java.util.StringTokenizer;
 
 import javax.swing.JTable;
 import javax.swing.table.AbstractTableModel;
@@ -43,6 +39,7 @@ import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import java.util.*;
 
 public class Model {
 
@@ -462,11 +459,12 @@ public class Model {
     			System.out.println("CELL IS "+row2.getCell(column).toString());;
 	
     		}
-			RemoveROwwriteXLSXFile(availableRows.get(rowIndex));
     	}
 		
-		//for( int row= availableRows.size()-1 ; row>= 0; row--)
-			//RemoveROwwriteXLSXFile(availableRows.get(row));
+		Collections.sort(availableRows);
+		
+		for( int row= availableRows.size()-1 ; row>= 0; row--)
+			RemoveROwwriteXLSXFile(availableRows.get(row)+2);
 		
     	FileOutputStream out = 
                 new FileOutputStream(new File(absolutePath));
