@@ -49,8 +49,7 @@ public class StatisticsPanel extends JPanel
 	//fresh claim for asylum- No appeal,fresh claim for asylum- outstanding
 	private int[] outcomesCount= new int[7];
 	
-	//count gender
-	private int[] genderCount = new int [2];
+	
 	JPanel chartPanel=new JPanel();
 	private PieChart countryPieChart;
 	private PieChart ageGroupPieChart;
@@ -60,8 +59,7 @@ public class StatisticsPanel extends JPanel
 	private JButton localAButton;
 	private JButton outcomesButton;
 	private JButton barChartButton;
-	private JLabel femaleTextField;
-	private JLabel maleTextField;
+	
 	private JButton loadmoreData;
 	
 	public StatisticsPanel(Model model) {
@@ -69,7 +67,7 @@ public class StatisticsPanel extends JPanel
 		
 		
 		
-		calculateGenderCount();
+		
 		printMap();
 		GUI();
 		
@@ -106,9 +104,11 @@ public class StatisticsPanel extends JPanel
 
 
 	public void GUI(){
-		 setLayout(new GridLayout(6,2));
-		 JPanel labelsText=new JPanel();
-		 labelsText.setLayout(new GridLayout(2,1));
+		 setLayout(new GridLayout(5,2));
+		 JPanel labelsText1=new JPanel();
+		 labelsText1.setLayout(new GridLayout(1,1));
+		 JPanel labelsText2=new JPanel();
+		 labelsText2.setLayout(new GridLayout(1,1));
 	     JButton countryButton = new JButton("Country Chart");
 	     saveButton=new JButton("Save");
 	      
@@ -146,16 +146,8 @@ public class StatisticsPanel extends JPanel
 	        add(outcomesButton);
 	        add(barChartButton);
 	        add(loadmoreData);
-	        add(labelsText);
 	        
-	        JLabel label2= new JLabel("Female");
-			femaleTextField = new JLabel(Integer.toString(genderCount[1]));
-			labelsText.add(label2);
-			labelsText.add(femaleTextField);
-			JLabel label3= new JLabel("Male");
-			maleTextField = new JLabel(Integer.toString(genderCount[0]))	;
-			labelsText.add(label3);
-			labelsText.add(maleTextField);
+	        
 	        ageGroupButton.addActionListener(new ActionListener() {
 
 				@Override
@@ -344,18 +336,7 @@ public class StatisticsPanel extends JPanel
 		}
 	}
 	
-	private void calculateGenderCount(){
-		 int indexGenderColumn = model.getIndexOfLabel("Gender");
-		 genderCount = new int[2];
-		 System.out.println(indexGenderColumn);
-		for(int i =0; i< model.dataSize(); i++){
-			String gender = model.getData(indexGenderColumn, i);
-			if(gender.equals("Male"))  genderCount[0] ++;
-			if(gender.equals("Female")) genderCount[1]++;
-			
-		}
-		
-	}
+	
 	
 
 	
@@ -513,9 +494,7 @@ public class StatisticsPanel extends JPanel
 
 	@Override
 	public void delete(boolean delete) {
-		calculateGenderCount();
-		femaleTextField.setText(Integer.toString(genderCount[1]));
-		maleTextField.setText(Integer.toString(genderCount[0]));
+		
 		
 	}
 

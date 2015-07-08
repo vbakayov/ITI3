@@ -63,7 +63,7 @@ class SelectorPanel extends JPanel
 						 amountRange, fullnameRange, indexRange;
 	// menu bars with menus containing check boxes for the categorical attributes
 	private JMenuBar AgeGroupMenuBar, CountrySegmentMenuBar, casesDateMenuBar, ViolenceMenuBar;
-	private JMenu ageMenu, customerMenu, CasesMenu, ViolenceMenu;
+	private JMenu ageMenu, countryMenu, CasesMenu, ViolenceMenu;
 	// descriptive labels
 	private JLabel xLabel, yLabel, cIDLabel, pIDLabel, ageLabel, 
 				   dtmLabel, amountLabel, fullnameLabel, indexLabel,	   
@@ -145,7 +145,7 @@ class SelectorPanel extends JPanel
 		
 		// Ageee
 		ageMenu = new JMenu("Selection Menu");
-		ageMenu.setName("Ageee");
+		ageMenu.setName("Age Group");
 		ageMenu.setBorder(BorderFactory.createLineBorder(Color.lightGray, 1));
 		ageMenu.setBorderPainted(true);
 		
@@ -170,18 +170,19 @@ class SelectorPanel extends JPanel
 		
 		
 		// CountryMenue
-		customerMenu = new JMenu("Selection Menu");
-		customerMenu.setBorder(BorderFactory.createLineBorder(Color.lightGray, 1));
-		customerMenu.setBorderPainted(true);
+		countryMenu = new JMenu("Selection Menu");
+		countryMenu.setBorder(BorderFactory.createLineBorder(Color.lightGray, 1));
+		countryMenu.setName("Country");
+		countryMenu.setBorderPainted(true);
 		
 		CountrySegmentMenuBar = new JMenuBar();		
-		CountrySegmentMenuBar.add("MIDDLE", customerMenu);
+		CountrySegmentMenuBar.add("MIDDLE", countryMenu);
 		CountrySegmentMenuBar.setBorder(BorderFactory.createLineBorder(Color.lightGray, 1));
 		
 		for (String str : countrySegmentList) {
 			JCheckBoxMenuItem cb = new JCheckBoxMenuItem(str);
 			cb.addItemListener(new CheckBoxListener ());
-			customerMenu.add(cb);
+			countryMenu.add(cb);
 		} 
 		
 		CountrySegmentLabel = new JLabel("Country");
@@ -386,9 +387,17 @@ class SelectorPanel extends JPanel
 	        		ArrayList record = model.record(row);
 	        		if(menu.getName() == "Case" || menu.getName() == "Violence" ){
 		        		if(record.get(indexColumn).equals( value2) ) activeFiltersMap.get(menu).add(row);
-	        		}else{
-	        			if (record.contains(value2)) activeFiltersMap.get(menu).add(row);}
+	        		}
+	        		else if (menu.getName() == "Country"){
+	        			int indexCountry = model.getIndexOfLabel("Country of Origin");
+	        			if (record.get(indexCountry).equals( value2)) activeFiltersMap.get(menu).add(row);}
+	        		else if (menu.getName() == "Age Group")
+	        		{
+	        			int indexAge = model.getIndexOfLabel("Age Group");
+	        			if (record.get(indexAge).equals( value2)) activeFiltersMap.get(menu).add(row);
+	        		}
         	}
+    	
 	        	
         		
 

@@ -391,7 +391,6 @@ public class Model {
 	
 	private void removeTrailing( Sheet sheet){
 			
-			;
 		  boolean stop = false;
           boolean nonBlankRowFound;
           short c;
