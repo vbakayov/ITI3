@@ -24,6 +24,7 @@ class TradeViewerFrame extends JFrame {
     private ScatterplotPanel scatterplotPanel;
     private TablePanel tablePanel;
     private SelectorPanel selectorPanel;
+    private LogoStuff logoStuff;
     private StatisticsPanel statisticsPanel;
     private Model model;
     
@@ -38,6 +39,8 @@ class TradeViewerFrame extends JFrame {
     //    scatterplotPanel = new ScatterplotPanel(model);
     //    model.addChild(scatterplotPanel);
         statisticsPanel=new StatisticsPanel(model);
+        
+       
        
     	
         model.addChild(statisticsPanel);
@@ -45,26 +48,15 @@ class TradeViewerFrame extends JFrame {
         model.addChild(tablePanel);
         selectorPanel = new SelectorPanel(model);
         model.addChild(selectorPanel);
+        logoStuff = new LogoStuff(model);
+        model.addChild(logoStuff);
         
         // contains the record panel and the selector panel 
         JPanel dataPanel = new JPanel(new GridLayout(1,2));
         
-        JPanel logo=new JPanel();
-		 BufferedImage myPicture = null;
-		try {
-			myPicture = ImageIO.read(new File("logo.png"));
-		} catch (IOException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-		 JLabel picLabel = new JLabel(new ImageIcon(myPicture));
-
-		
-		 logo.setLayout(new GridLayout(1,1));
-		 logo.add(picLabel);
-		
+       
 		 dataPanel.add(statisticsPanel);
-		 dataPanel.add(logo);
+		 dataPanel.add(logoStuff);
 	     dataPanel.add(selectorPanel);
         // the border is added so that the edges of the 
         // components do not cover the scatterplot
@@ -73,7 +65,7 @@ class TradeViewerFrame extends JFrame {
         
         JSplitPane splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT,dataPanel, tablePanel);
         splitPane.setOneTouchExpandable(true);
-        splitPane.setDividerLocation(250);
+        splitPane.setDividerLocation(200);
 
         //Provide minimum sizes for the two components in the split pane
         Dimension minimumSize = new Dimension(100, 200);

@@ -635,6 +635,12 @@ class HintTextField extends JTextField implements FocusListener {
     	available = availableRows;
         selected = selectedRows;
     }
+
+	@Override
+	public void delete(boolean delete) {
+		// TODO Auto-generated method stub
+		
+	}
 	
 
 }

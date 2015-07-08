@@ -279,4 +279,10 @@ class TablePanel extends JPanel
         }
     }
 
+	@Override
+	public void delete(boolean delete) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

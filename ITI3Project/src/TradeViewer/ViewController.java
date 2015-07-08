@@ -11,5 +11,7 @@ import java.util.ArrayList;
 
 public interface ViewController {
 	public void update (ArrayList<Integer> availableRows, ArrayList<Integer> selectedRows);
+	
+	public void delete(boolean delete);
 }
 

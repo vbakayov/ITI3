@@ -60,9 +60,9 @@ public class StatisticsPanel extends JPanel
 	private JButton localAButton;
 	private JButton outcomesButton;
 	private JButton barChartButton;
-	private JTextField femaleTextField;
-	private JTextField maleTextField;
-	
+	private JLabel femaleTextField;
+	private JLabel maleTextField;
+	private JButton loadmoreData;
 	
 	public StatisticsPanel(Model model) {
 		this.model = model;
@@ -106,7 +106,7 @@ public class StatisticsPanel extends JPanel
 
 
 	public void GUI(){
-		 setLayout(new GridLayout(5,2));
+		 setLayout(new GridLayout(6,2));
 		 JPanel labelsText=new JPanel();
 		 labelsText.setLayout(new GridLayout(2,1));
 	     JButton countryButton = new JButton("Country Chart");
@@ -138,22 +138,22 @@ public class StatisticsPanel extends JPanel
 	        JButton localAButton = new JButton("Local Autority");
 	        JButton outcomesButton = new JButton("Cases Outcomes");
 	        JButton barChartButton = new JButton("Bar Chart");
+	        JButton loadmoreData = new JButton("Load Closed Cases");
 	        
 	        add(casesButton);
 	        add(deleteButton);
 	        add(localAButton);
 	        add(outcomesButton);
 	        add(barChartButton);
+	        add(loadmoreData);
 	        add(labelsText);
 	        
 	        JLabel label2= new JLabel("Female");
-			femaleTextField = new JTextField(Integer.toString(genderCount[1]));
-			femaleTextField.setEnabled(false);
+			femaleTextField = new JLabel(Integer.toString(genderCount[1]));
 			labelsText.add(label2);
 			labelsText.add(femaleTextField);
 			JLabel label3= new JLabel("Male");
-			maleTextField = new JTextField(Integer.toString(genderCount[0]))	;
-			maleTextField.setEnabled(false);
+			maleTextField = new JLabel(Integer.toString(genderCount[0]))	;
 			labelsText.add(label3);
 			labelsText.add(maleTextField);
 	        ageGroupButton.addActionListener(new ActionListener() {
@@ -225,14 +225,14 @@ public class StatisticsPanel extends JPanel
 					//0 for yes 1 for no
 					int returnValue = showConfurmBoxes();
 					if(returnValue == 0){
-						String absolutePath = showDeletionFileChooser() ;
-						if(absolutePath != null);
-						model.CopyRowXLSXFile(absolutePath);
+						String absolutePath = showFileChooser() ;
+						if(absolutePath != null){
+							model.CopyRowXLSXFile(absolutePath);
+							model.notifyDelete();
 						//model.RemoveROwwriteXLSXFile(); 
 						//model.removeRowsFromDataSet();
-						calculateGenderCount();
-						femaleTextField.setText(Integer.toString(genderCount[1]));
-						maleTextField.setText(Integer.toString(genderCount[0]));
+						
+						}
 					}
 					
 				}
@@ -294,6 +294,23 @@ public class StatisticsPanel extends JPanel
 				}
 			});
 	        
+	        
+	       loadmoreData.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				System.out.println("DataSize "+model.dataSize());
+				String path = showFileChooser();
+				if(path != null){
+					model.load(path, false);
+					model.refreshView();
+					System.out.println("DataSize2 "+model.dataSize());
+				}
+				
+			}
+	    	   
+	       });
+	        
 	}
 	private void printMap() {
     	//iterate on  the menus
@@ -333,7 +350,6 @@ public class StatisticsPanel extends JPanel
 		 System.out.println(indexGenderColumn);
 		for(int i =0; i< model.dataSize(); i++){
 			String gender = model.getData(indexGenderColumn, i);
-			System.out.println(gender);
 			if(gender.equals("Male"))  genderCount[0] ++;
 			if(gender.equals("Female")) genderCount[1]++;
 			
@@ -469,7 +485,7 @@ public class StatisticsPanel extends JPanel
     	                    };
     	n = JOptionPane.showOptionDialog(null,
     	    "Are you sure you want to remove all rows you currently see?",
-    	    "A Silly Question",
+    	    "Verify",
     	    JOptionPane.YES_NO_CANCEL_OPTION,
     	    JOptionPane.QUESTION_MESSAGE,
     	    null,
@@ -479,7 +495,7 @@ public class StatisticsPanel extends JPanel
     	return n;
     }
 
-    private String showDeletionFileChooser() {
+    private String showFileChooser() {
 		
     	JFileChooser fileChooser = new JFileChooser();
 		fileChooser.setDialogTitle("Specify a file to save");
@@ -491,6 +507,16 @@ public class StatisticsPanel extends JPanel
 			
 		}
 		return null;
+	}
+
+
+
+	@Override
+	public void delete(boolean delete) {
+		calculateGenderCount();
+		femaleTextField.setText(Integer.toString(genderCount[1]));
+		maleTextField.setText(Integer.toString(genderCount[0]));
+		
 	}
 
 }

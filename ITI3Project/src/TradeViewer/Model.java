@@ -81,7 +81,7 @@ public class Model {
         selectedRows = new ArrayList();
        
         
-        load(filename);
+        load(filename,true);
         for(int row = 0; row < dataSize(); row++) availableRows.add(row);
     }
 
@@ -110,7 +110,7 @@ public class Model {
         }   
     }
     
-    void load(String filename) {
+    void load(String filename, Boolean addLabels) {
 
     	//Create a file  from the xlsx/xls file
     	try{
@@ -119,7 +119,7 @@ public class Model {
         System.out.println(filetype);
         switch(filetype){
 			case ".xlsm":
-				load_xlms(filename);
+				load_xlms(filename,addLabels);
 				break;
 			default :
 				System.out.println("The Inputed format is not supported");
@@ -135,7 +135,7 @@ public class Model {
     	
     
     
-    private void load_xlms(String filename2) {
+    protected void load_xlms(String filename2, Boolean addLabels) {
  	   //Create Workbook instance holding reference to .xlsx file
     	short max = 0;
     	FileInputStream file = null;
@@ -181,10 +181,10 @@ public class Model {
             for(int cn=0; cn< max; cn++) {
             	//System.out.println(row.getLastCellNum());
                 Cell cell = row.getCell(cn, Row.CREATE_NULL_AS_BLANK);
-                if (isHeader){
+                if (isHeader && addLabels ){
                 	labels.add(cell.toString());
                 }
-                if(isType==1) dataType.add(cell.toString());
+                if(isType==1 && addLabels) dataType.add(cell.toString());
                 else{
                 rowArray.add(cell.toString());
                 //Check the cell type and format accordingly
@@ -216,27 +216,6 @@ public class Model {
     	
     	
 		
-    void readHeader(String line, ArrayList headers) {
-        // create a tokenizer to parse the line
-        StringTokenizer segmentedLine = new StringTokenizer(line, ",");
-        // put the elements in the ArrayList Line
-        while (segmentedLine.hasMoreTokens()) {
-            headers.add(segmentedLine.nextToken());
-        }
-    }
-
-    void readALine(String line) {
-        // create an ArrayList to hold the elements
-        ArrayList row = new ArrayList();
-        // create a tokenizer to parse the line
-        StringTokenizer segmentedLine = new StringTokenizer(line, ",");
-        // put the elements in the ArrayList Line
-        while (segmentedLine.hasMoreTokens()) {
-            row.add(segmentedLine.nextToken());
-        }
-        // put the row into the dataset
-        dataset.add(row);
-    }
 
     /* accessing methods */
     public ArrayList labels() {
@@ -361,9 +340,6 @@ public class Model {
     	return ((ArrayList)dataset.get(index)).get(3).toString();
     }
     
-    public String getNaima(int index){
-    	return ((ArrayList)dataset.get(48)).get(2).toString();
-    }
 
     public void printRow(int rowNumber) {
         if (rowNumber >= dataset.size()) {
@@ -567,5 +543,25 @@ public class Model {
 					}
 			return index;
 		}
+
+	public void notifyDelete() {
+		 for (int i = 0; i < children.size(); i++) {
+	            ViewController kid = (ViewController) children.get(i);
+	            kid.delete(true);
+	        }   
+		
+	}
+	
+	public void refreshView(){
+		availableRows.clear();
+		for(int row = 0; row < dataSize(); row++) availableRows.add(row);
+		select(new ArrayList());
+	    
+		for (int i = 0; i < children.size(); i++) {
+            ViewController kid = (ViewController) children.get(i);
+            kid.delete(true);
+		}
+		
+	}
 
 }

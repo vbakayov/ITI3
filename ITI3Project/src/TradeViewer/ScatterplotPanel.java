@@ -182,5 +182,11 @@ class ScatterplotPanel extends JPanel
         scatterplotView.loadData(xAxisIndex, yAxisIndex);
         
     }
+
+	@Override
+	public void delete(boolean delete) {
+		// TODO Auto-generated method stub
+		
+	}
     
 } // end ScatterplotPanel
