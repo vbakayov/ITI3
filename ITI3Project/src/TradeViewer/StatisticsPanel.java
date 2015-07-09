@@ -2,12 +2,14 @@ package TradeViewer;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.Frame;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -15,13 +17,20 @@ import java.util.Map;
 
 import javax.imageio.ImageIO;
 import javax.print.DocFlavor.URL;
+import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JDialog;
 import javax.swing.JFileChooser;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JProgressBar;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
+import javax.swing.SwingWorker;
 
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
@@ -62,6 +71,7 @@ public class StatisticsPanel extends JPanel
 	
 	private JButton loadmoreData;
 	
+	
 	public StatisticsPanel(Model model) {
 		this.model = model;
 		
@@ -73,7 +83,9 @@ public class StatisticsPanel extends JPanel
 		
 	}
 	
+
 	
+
 	
 	private void getOutcomesCount() {
 		outcomesCount=new int[7];
@@ -219,10 +231,23 @@ public class StatisticsPanel extends JPanel
 					if(returnValue == 0){
 						String absolutePath = showFileChooser() ;
 						if(absolutePath != null){
-							model.CopyRowXLSXFile(absolutePath);
-							model.notifyDelete();
-						//model.RemoveROwwriteXLSXFile(); 
-						//model.removeRowsFromDataSet();
+							System.out.println("HEREEEE");
+//							MyThread myRunnable = new MyThread(absolutePath);
+//							Thread myThread = new Thread(myRunnable);
+//							myThread.start();
+							new GuiWorker(absolutePath).execute();
+							
+
+						
+							System.out.println("Second");
+							//myThread.start();
+							System.out.println("AFTEEEER");
+						
+							//myThread.interrupt();
+		
+							
+							
+						
 						
 						}
 					}
@@ -497,6 +522,58 @@ public class StatisticsPanel extends JPanel
 		
 		
 	}
+	
+
+
+class GuiWorker extends SwingWorker<Integer, Integer> {
+
+	  /*
+	  * This should just create a frame that will hold a progress bar until the
+	  * work is done. Once done, it should remove the progress bar from the dialog
+	  * and add a label saying the task complete.
+	  */
+
+	  private JFrame frame = new JFrame();
+	  private JDialog dialog = new JDialog(frame, "Deletion in Progress", true);
+	  private JProgressBar progressBar = new JProgressBar();
+	private String absolutePath;
+
+
+	  public GuiWorker(String absolutePath) {
+		  this.absolutePath = absolutePath;
+	    progressBar.setString("In Progress");
+	    progressBar.setStringPainted(true);
+	    progressBar.setIndeterminate(true);
+	    dialog.getContentPane().add(progressBar);
+	    dialog.setPreferredSize(new Dimension(200, 200));
+	    dialog.setLocationRelativeTo(null);
+	    dialog.setAlwaysOnTop(true);
+	    dialog.pack();
+	    dialog.setModal( false );
+	    dialog.setVisible(true);
+	  }
+
+	  @Override
+	  protected Integer doInBackground() throws Exception {
+	    System.out.println( "GuiWorker.doInBackground" );
+	    model.CopyRowXLSXFile(absolutePath);
+		model.notifyDelete();
+	    return 0;
+	  }
+
+	  @Override
+	  protected void done() {
+	    System.out.println("done");
+	    JLabel label = new JLabel("Task Completed");
+	    dialog.getContentPane().remove(progressBar);
+	    dialog.getContentPane().add(label);
+	    dialog.getContentPane().validate();
+	    dialog.dispose();
+	  }
+
+	}
+	
+	
 
 }
 
