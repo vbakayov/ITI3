@@ -504,7 +504,7 @@ public class StatisticsPanel extends JPanel
     private String showFileChooser() {
 		
     	JFileChooser fileChooser = new JFileChooser();
-		fileChooser.setDialogTitle("Specify a file to save");
+		fileChooser.setDialogTitle("Specify a file");
 
 		int userSelection = fileChooser.showSaveDialog(chartPanel);
 		if (userSelection == JFileChooser.APPROVE_OPTION) {

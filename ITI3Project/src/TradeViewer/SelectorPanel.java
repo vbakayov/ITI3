@@ -236,10 +236,11 @@ class SelectorPanel extends JPanel
 		filterText.getDocument().addDocumentListener( new DocumentListener() {
 			@Override
 			public void changedUpdate(DocumentEvent arg0) {
-				newFilter();
+				//newFilter();
+				System.out.println("first");
 			}
 			@Override
-			public void insertUpdate(DocumentEvent arg0) {
+			public void insertUpdate(DocumentEvent arg0) {		
 				newFilter();
 			}
 			@Override
@@ -548,14 +549,14 @@ class SelectorPanel extends JPanel
      * the text box.
      */
     private void newFilter() {
-    	if(!filterText.getText().equals( "Enter Name Here")){
+    	if(!filterText.getText().equals( "Enter Name Here") && !filterText.getText().equals("")){
         ArrayList<Integer> output = new ArrayList<Integer>();
         //If current expression doesn't parse, don't update.
         for(int row = 0; row<model.dataSize(); row++){
 			String name = (String) model.record(row).get(0);
 			System.out.println(name + " "+ filterText.getText());
 			if ( name.toLowerCase().contains(filterText.getText().toLowerCase())){
-				System.out.println("It Matches");
+				//System.out.println("It Matches");
 				output.add(row);
 			}
 			
@@ -568,7 +569,7 @@ class SelectorPanel extends JPanel
     }
     
 private void newDateFilter() {
-	if(!filterDateText.getText().equals("Example 01-Jun-2015")){
+	if(!filterDateText.getText().equals("Example 01-Jun-2015") && !filterDateText.getText().equals("")){
 	  ArrayList<Integer> output = new ArrayList<Integer>();
 	  System.out.println("HEREEEE");
 	  boolean allRows = true;
