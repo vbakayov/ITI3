@@ -10,6 +10,8 @@ import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.image.ImageObserver;
 import java.io.InputStream;
 import java.io.Reader;
@@ -27,6 +29,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.RowSorter;
+import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
@@ -91,23 +94,30 @@ public class Table extends JFrame {
 				topPanel = new JPanel();
 				topPanel.setLayout( new BorderLayout() );
 				getContentPane().add( topPanel );
-
-				// Create columns names
-				//String columnNames[]={"Case Type","Count","Types of Cases/number of clients", "Types of Cases/total cases" };
-						
+				
 				Object rows[][] = convertHashMaptoDoubleArray();
 				
 				TableModel model = new DefaultTableModel(rows, columnNames) {
-				      public Class<?> getColumnClass(int column) {
-				        Class<?> returnValue;
-				        if ((column >= 0) && (column < getColumnCount())) {
-				          returnValue = getValueAt(0, column).getClass();
-				        } else {
-				          returnValue = Object.class;
+				      /**
+					 * 
+					 */
+					private static final long serialVersionUID = 1L;
+
+					public Class<?> getColumnClass(int column) {
+						 switch (column) {
+				            case 0:
+				                return String.class;
+				            case 1:
+				            	System.out.println("IT IS CASEEE ONEEE");
+				                return Integer.class;
+				            case 2:
+				                return	String.class;
+				            case 3:
+				                return String.class;
+				            default:
+				                return String.class;
 				        }
-				        return returnValue;
-				      }
-				      
+					}
 				      @Override
 				      public boolean isCellEditable(int row, int column) {
 				         //all cells false
@@ -123,8 +133,9 @@ public class Table extends JFrame {
 				table = new JTable(model );
 				//setSize((new Dimension(table.getWidth(),table.getHeight()));
 				
-				RowSorter<TableModel> sorter = new TableRowSorter<TableModel>(model);
-			    table.setRowSorter(sorter);
+	
+			    table.setAutoCreateRowSorter(true);
+			    table.addMouseListener( new MyMouseListener());
 			
 				// Add the table to a scrolling pane
 				scrollPane = new JScrollPane( table );
@@ -161,6 +172,39 @@ public class Table extends JFrame {
           
 
 	}
+	
+	class MyMouseListener implements MouseListener{
+		@Override
+		public void mouseReleased(MouseEvent arg0) {
+		    if(SwingUtilities.isRightMouseButton(arg0)){
+		        System.out.println("RIGHT CLICK");
+		    }
+		}
+
+		@Override
+		public void mouseClicked(MouseEvent arg0) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void mouseEntered(MouseEvent arg0) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void mouseExited(MouseEvent arg0) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void mousePressed(MouseEvent arg0) {
+			// TODO Auto-generated method stub
+			
+		}
+		}
 
 	 private static class HtmlSelection implements Transferable {
 

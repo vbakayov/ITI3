@@ -11,6 +11,7 @@ import java.util.ArrayList;
 
 
 
+
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
@@ -97,14 +98,8 @@ public class LogoStuff extends JPanel implements ViewController {
 	
 	
 	private void initPictureLogo(){
-		 BufferedImage myPicture = null;
-			try {
-				myPicture = ImageIO.read(new File("logo.png"));
-			} catch (IOException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
-			 picLabel = new JLabel(new ImageIcon(myPicture));
+		 ClassLoader loader = this.getClass().getClassLoader();
+		 picLabel = new JLabel(new ImageIcon(loader.getResource("logo.png")));
 	}
 
 
@@ -120,8 +115,7 @@ public class LogoStuff extends JPanel implements ViewController {
 
 	@Override
 	public void delete(boolean delete) {
-		//System.out.println("NOTIFEEEEEEEED");
-		//System.out.println(delete);
+		
 		 count.setText(Integer.toString(model.dataSize()));
 		 calculateGenderCount();
 		femaleTextField.setText(Integer.toString(genderCount[1]));

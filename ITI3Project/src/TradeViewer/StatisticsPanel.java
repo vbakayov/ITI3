@@ -62,8 +62,7 @@ public class StatisticsPanel extends JPanel
 	JPanel chartPanel=new JPanel();
 	private PieChart countryPieChart;
 	private PieChart ageGroupPieChart;
-	private JButton saveButton;
-	private JButton saveButtonAge;
+
 	private JButton deleteButton;
 	private JButton localAButton;
 	private JButton outcomesButton;
@@ -116,34 +115,22 @@ public class StatisticsPanel extends JPanel
 
 
 	public void GUI(){
-		 setLayout(new GridLayout(5,2));
+		 setLayout(new GridLayout(4,2));
 		 JPanel labelsText1=new JPanel();
 		 labelsText1.setLayout(new GridLayout(1,1));
 		 JPanel labelsText2=new JPanel();
 		 labelsText2.setLayout(new GridLayout(1,1));
 	     JButton countryButton = new JButton("Country Chart");
-	     saveButton=new JButton("Save");
+	
 	      
 	        add(countryButton);
-	        add(saveButton);
-	        
-	       // AgeGroups
-//	        Iterator it =  ageGroupsMap.entrySet().iterator();
-//	    	while (it.hasNext()) {
-//	    		Map.Entry pair = (Map.Entry)it.next();
-//	    		System.out.println(pair.getKey() + " = " + pair.getValue());
-//	    		JLabel age = new JLabel((String) pair.getKey());
-//	    		JLabel  value = new JLabel(Integer.toString((int) pair.getValue()));
-//	    		add(age);
-//	    		add(value);
-//	    		}
 	        
 	        JButton ageGroupButton = new JButton ("AgeGroup chart");
-	        saveButtonAge = new JButton("Save");
+	      
 	      
 	        
 	        add(ageGroupButton);
-	        add(saveButtonAge);
+	       
 	        
 	        JButton casesButton=new JButton("Legal Cases");
 	        JButton deleteButton = new JButton("Remove rows");
@@ -165,9 +152,6 @@ public class StatisticsPanel extends JPanel
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					buttonPressed();
-					   saveButtonAge.setEnabled(true);
-					//countryButton.setEnabled(false);
-					
 				}
 				
 				private void buttonPressed() {
@@ -217,10 +201,7 @@ public class StatisticsPanel extends JPanel
 	        });
 	        
 	        
-	        saveButton.addActionListener( new CustomButtonListener());
-	        saveButton.setEnabled(false);
-	        saveButtonAge.addActionListener( new CustomButtonListener());
-	        saveButtonAge.setEnabled(false);
+
 	        deleteButton.addActionListener(new ActionListener()
 	        {
 
@@ -262,10 +243,7 @@ public class StatisticsPanel extends JPanel
 
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					buttonPressed();
-					saveButton.setEnabled(true);
-					//countryButton.setEnabled(false);
-					
+					buttonPressed();				
 				}
 
 				private void buttonPressed() {
@@ -450,39 +428,10 @@ public class StatisticsPanel extends JPanel
 	}
 	
 	
-	class CustomButtonListener implements  ActionListener {
-		
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			if(e.getSource()== saveButton)
-				showSaveDialog(countryPieChart);
-			if(e.getSource() == saveButtonAge)
-				showSaveDialog(ageGroupPieChart);
-			//if(e.getSource()== deleteButton){
-			    //model.RemoveROwwriteXLSXFile(1);
-
-				//model.CopyRowXLSXFile(1);
-				
-				
-			//}
-		}
+	
 
 		
-		private void showSaveDialog(PieChart inputChart) {
-			
-			JFileChooser fileChooser = new JFileChooser();
-			fileChooser.setDialogTitle("Specify a file to save");
-
-			int userSelection = fileChooser.showSaveDialog(chartPanel);
-			if (userSelection == JFileChooser.APPROVE_OPTION) {
-				File fileToSave = fileChooser.getSelectedFile();
-				System.out.println("Save as file: " + fileToSave.getAbsolutePath());
-				inputChart.saveToFile(fileToSave.getAbsolutePath());
-			}
-		}
-			
-    };
-    
+	
     private int showConfurmBoxes(){
     	//Custom button text
     	int n;
