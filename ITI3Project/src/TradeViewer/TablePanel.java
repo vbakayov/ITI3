@@ -88,7 +88,7 @@ class TablePanel extends JPanel
             
         };
 		};
-		recordTable.setPreferredScrollableViewportSize(new Dimension(500, 150));
+		//recordTable.setPreferredScrollableViewportSize(new Dimension(500, 150));
 		// enable multiple selection 
 		recordTable.setRowSelectionAllowed(true);
 		
@@ -131,6 +131,7 @@ class TablePanel extends JPanel
 	    setLayout(new BorderLayout());
 	    add("Center", scrollPane);
 	    add("West", rowHeightSlider);
+	   
 	}
 	
 	// Inner class for the table model.

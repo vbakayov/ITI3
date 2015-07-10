@@ -16,7 +16,9 @@ import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
 import javax.swing.JTextField;
 
 public class LogoStuff extends JPanel implements ViewController {
@@ -59,7 +61,7 @@ public class LogoStuff extends JPanel implements ViewController {
 		 labelsText.add(count);
 		 
 		 
-		 c.gridx = 1;
+		 c.gridx = 2;
 		 c.gridy = 1;
 		 c.gridwidth = 2;
 		 //c.fill = GridBagConstraints.CENTER;
@@ -86,12 +88,17 @@ public class LogoStuff extends JPanel implements ViewController {
 		maleTextField = new JLabel(Integer.toString(genderCount[0]));
 		labelsMale.add(maleTextField);
 		
+		JLabel label4 = new JLabel("       ");
 		c.gridx=2;
+		add(label4,c);
+		
+		c.gridx=3;
 		c.gridy=2;
 		c.fill = GridBagConstraints.EAST;
 		
 		add(labelsMale,c);
-		 
+		
+		
 		
 	}
 	
@@ -136,6 +143,8 @@ public class LogoStuff extends JPanel implements ViewController {
 		}
 		
 	}
+	
+
 
 
 }

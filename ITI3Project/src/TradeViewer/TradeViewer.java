@@ -53,6 +53,7 @@ public class TradeViewer {
 		// switch to the Web Look And Feel
 
 		frame = new TradeViewerFrame(fc.getSelectedFile().toString());
+		//frame.pack();
 	}	
 	else System.exit(0); // exit program if the file chooser dialog box for is closed
 	
