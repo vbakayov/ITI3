@@ -177,6 +177,7 @@ public class Table extends JFrame {
 				 int countSelectedRows = table.getSelectedRowCount();
 				 int countRowsToBeCopied;
 				 int[] row ;
+				 //if not selection copy two whole availabvle data
 				 if (countSelectedRows ==0){
 					  row =  new int [table.getRowCount()];
 					 for(int i = 0 ; i< table.getRowCount() ; i++)
@@ -189,16 +190,23 @@ public class Table extends JFrame {
 				 
                   StringBuilder sb = new StringBuilder();
                   sb.append("<table border=1 width=100%>");
-                  for(int roww= 0 ; roww<countRowsToBeCopied; roww++){
-                	  
-                 sb.append("<tr>");
-                  for (int col = 0; col < table.getColumnCount(); col++) {
-                      sb.append("<td>");
-                      sb.append(table.getValueAt(row[roww], col).toString());
-                      sb.append("</td>");
-                    
+                  //header
+                  sb.append("<tr>");
+                  for (int col = 0; col < table.getColumnCount(); col++){
+                	  sb.append("<th>");
+                	  sb.append(columnNames[col]);
+                	  sb.append("</th>");
                   }
                   sb.append("</tr>");
+                  //datarows
+                  for(int roww= 0 ; roww<countRowsToBeCopied; roww++){  
+                	  sb.append("<tr>");
+                	  for (int col = 0; col < table.getColumnCount(); col++) {
+                		  sb.append("<td>");
+                		  sb.append(table.getValueAt(row[roww], col).toString());
+                		  sb.append("</td>");
+                		  }
+                	  sb.append("</tr>");
                   }
                   sb.append("</table>");
                   Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
@@ -323,19 +331,21 @@ public class Table extends JFrame {
 			public void actionPerformed(ActionEvent arg0) {
 				 System.out.println("Selected: " + arg0.getActionCommand());  
 				 String selected = arg0.getActionCommand();
-				 if(selected.equals("Copy")){
+				 
+				 if(selected.equals("Copy"))
 					 CopyTable();
-				 } if(selected.equals("Save as PNG")){
+				 
+				 if(selected.equals("Save as PNG")){
 					 String path = showFileChooser();
-					 String fileName = path.substring(path.lastIndexOf('\\')+1, path.length());
-					 BufferedImage image = createImage(table);
-					 File outputfile = new File(path+ ".png");
-					 try {
-						ImageIO.write(image, "png", outputfile);
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
-
+					 if (path != null){
+						 BufferedImage image = createImage(table);
+						 File outputfile = new File(path+ ".png");
+						 try {
+							 ImageIO.write(image, "png", outputfile);
+						 } catch (IOException e) {
+							 e.printStackTrace();
+						 }
+					 }
 
 				 }
 			}

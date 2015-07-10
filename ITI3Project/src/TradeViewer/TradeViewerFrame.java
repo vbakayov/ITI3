@@ -1,11 +1,6 @@
 package TradeViewer;
 
-/*	
- *	modified by Dobromir Dobrev - 1103606 
- *  in order to add the selector panel and table view,
- *  remove the redundant list panel and record panel
- *  and improve the layout
- */
+
 
 import java.awt.*;
 import java.awt.event.*;
@@ -35,15 +30,8 @@ class TradeViewerFrame extends JFrame {
         model = new Model(filename);
         addWindowListener(new WindowCloser());
         
-
-        // add the main Swing components
-    //    scatterplotPanel = new ScatterplotPanel(model);
-    //    model.addChild(scatterplotPanel);
-        statisticsPanel=new StatisticsPanel(model);
         
-       
-       
-    	
+        statisticsPanel=new StatisticsPanel(model,this);
         model.addChild(statisticsPanel);
         tablePanel = new TablePanel(model);
         model.addChild(tablePanel);
@@ -52,16 +40,7 @@ class TradeViewerFrame extends JFrame {
         logoStuff = new LogoStuff(model);
         model.addChild(logoStuff);
         
-        // contains the record panel and the selector panel 
-//        JPanel dataPanel = new JPanel(new GridLayout(1,2));
-//        
-//       
-//		 dataPanel.add(statisticsPanel);
-//		 dataPanel.add(logoStuff);
-//	     dataPanel.add(selectorPanel);
-//        // the border is added so that the edges of the 
-//        // components do not cover the scatterplot
-//        dataPanel.setBorder(BorderFactory.createLineBorder(Color.decode("#F0F0F0"), 4));
+      
 //        
 //        
        
@@ -94,14 +73,6 @@ class TradeViewerFrame extends JFrame {
         splitPane2.setMinimumSize(minimumSize2);
         logoStuff.setMinimumSize(minimumSize2);
         
-      
-      
-      
-       
-//        contentPane2.setMinimumSize(minimumSize);
-//        tablePanel.setMinimumSize(minimumSize);
-        
-       // contentPane.add(contentPane2);
        add( splitPane);
         
         
@@ -111,7 +82,6 @@ class TradeViewerFrame extends JFrame {
         setSize(dim.width-350,dim.height-200);
      
         setTitle("Legal Services Agency Viewer");
-        //Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
         setLocation(dim.width/2-getSize().width/2, dim.height/2-getSize().height/2);
         setVisible(true);
 

@@ -69,10 +69,12 @@ public class StatisticsPanel extends JPanel
 	private JButton barChartButton;
 	
 	private JButton loadmoreData;
+	private TradeViewerFrame frame;
 	
 	
-	public StatisticsPanel(Model model) {
+	public StatisticsPanel(Model model, TradeViewerFrame tradeViewerFrame) {
 		this.model = model;
+		this.frame = tradeViewerFrame;
 		
 		
 		
@@ -213,23 +215,8 @@ public class StatisticsPanel extends JPanel
 						String absolutePath = showFileChooser() ;
 						if(absolutePath != null){
 							System.out.println("HEREEEE");
-//							MyThread myRunnable = new MyThread(absolutePath);
-//							Thread myThread = new Thread(myRunnable);
-//							myThread.start();
 							new GuiWorker(absolutePath).execute();
-							
 
-						
-							System.out.println("Second");
-							//myThread.start();
-							System.out.println("AFTEEEER");
-						
-							//myThread.interrupt();
-		
-							
-							
-						
-						
 						}
 					}
 					
@@ -296,7 +283,7 @@ public class StatisticsPanel extends JPanel
 			public void actionPerformed(ActionEvent e) {
 				System.out.println("DataSize "+model.dataSize());
 				String path = showFileChooser();
-				if(path != null){
+				if(path != null  && validateFileType(path)){
 					model.load(path, false);
 					model.refreshView();
 					System.out.println("DataSize2 "+model.dataSize());
@@ -520,6 +507,16 @@ class GuiWorker extends SwingWorker<Integer, Integer> {
 	    dialog.dispose();
 	  }
 
+	}
+
+	private boolean validateFileType(String filePath){
+		String fileType = filePath.substring(filePath.lastIndexOf('.'), filePath.length());
+		if(fileType.equals(".xlsm"))
+			return true;
+		
+		JOptionPane.showMessageDialog(frame, "The Inputed format is not supported.\n"+
+				" The file is not with .xlsm extension!");
+		return false;
 	}
 	
 	

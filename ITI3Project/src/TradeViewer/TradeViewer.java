@@ -16,6 +16,7 @@ import java.io.File;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.filechooser.FileFilter;
 
@@ -50,10 +51,14 @@ public class TradeViewer {
 	// create the TradeViewerFrame
 	TradeViewerFrame frame;
 	if (returned == JFileChooser.APPROVE_OPTION) {
-		// switch to the Web Look And Feel
-
-		frame = new TradeViewerFrame(fc.getSelectedFile().toString());
-		//frame.pack();
+		String filePath = fc.getSelectedFile().toString();
+		String fileType = filePath.substring(filePath.lastIndexOf('.'), filePath.length());
+	
+		frame = new TradeViewerFrame(filePath);
+		if(!fileType.equals(".xlsm"))
+			JOptionPane.showMessageDialog(frame, "The Inputed format is not supported.\n"+
+												" The file is not with .xlsm extension!");
+		
 	}	
 	else System.exit(0); // exit program if the file chooser dialog box for is closed
 	
