@@ -95,7 +95,7 @@ class TablePanel extends JPanel
 		recordTable.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 		ListSelectionModel selection= recordTable.getSelectionModel();
 		selection.addListSelectionListener(new RecordTableListener());
-		//recordTable.setAutoCreateRowSorter(true);
+		recordTable.setAutoCreateRowSorter(false);
 	//	 TableRowSorter trs = new TableRowSorter(recordTable);
 		
 		
@@ -109,12 +109,12 @@ class TablePanel extends JPanel
 		// disable auto resizing so that the columns do not become very shrunk
 		recordTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 		// enable row sorting
-		 TableRowSorter trs = new TableRowSorter(recordDataModel);
-		 trs.setComparator(2, new IntComparator());
-		 recordTable.setRowSorter(trs);
+//		 TableRowSorter trs = new TableRowSorter(recordDataModel);
+//		 trs.setComparator(2, new IntComparator());
+//		 recordTable.setRowSorter(trs);
 		 model.setTable(recordTable);
 	
-		recordTable.setAutoCreateRowSorter(true);
+	//	recordTable.setAutoCreateRowSorter(true);
 
 
 		
