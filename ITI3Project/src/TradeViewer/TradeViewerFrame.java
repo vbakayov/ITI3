@@ -31,7 +31,7 @@ class TradeViewerFrame extends JFrame {
         addWindowListener(new WindowCloser());
         
         
-        statisticsPanel=new StatisticsPanel(model,this);
+        statisticsPanel=new StatisticsPanel(model);
         model.addChild(statisticsPanel);
         tablePanel = new TablePanel(model);
         model.addChild(tablePanel);

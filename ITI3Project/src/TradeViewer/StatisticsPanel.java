@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.TreeMap;
 
 import javax.imageio.ImageIO;
 import javax.print.DocFlavor.URL;
@@ -54,9 +55,7 @@ public class StatisticsPanel extends JPanel
 	
 	//hash map for counting the barChart violance data
 	private HashMap<String,TupleViolence> violenceMap = new HashMap<String,TupleViolence>();
-	//indexes asalym applicaton-refugee status, asalym app-refused,asalym appeal- No appeal, asalym appeal- outstanding
-	//fresh claim for asylum- No appeal,fresh claim for asylum- outstanding
-	private int[] outcomesCount= new int[7];
+	private ArrayList<Map> outcomesCategories = new ArrayList<Map>();
 	
 	
 	JPanel chartPanel=new JPanel();
@@ -69,13 +68,12 @@ public class StatisticsPanel extends JPanel
 	private JButton barChartButton;
 	
 	private JButton loadmoreData;
-	private TradeViewerFrame frame;
+
 	
 	
-	public StatisticsPanel(Model model, TradeViewerFrame tradeViewerFrame) {
+	public StatisticsPanel(Model model) {
 		this.model = model;
-		this.frame = tradeViewerFrame;
-		
+	
 		
 		
 		
@@ -89,28 +87,38 @@ public class StatisticsPanel extends JPanel
 
 	
 	private void getOutcomesCount() {
-		outcomesCount=new int[7];
+		outcomesCategories.clear();
+
 		int indexColAsylum= model.getIndexOfLabel("Asylum Application");
 		int indexColAppeal= model.getIndexOfLabel("Asylum Appeal");
 		int indexColFreshClaim= model.getIndexOfLabel("Fresh Claim for Asylum");
-					
-			for(int row= 0; row< model.dataSize(); row++){
-				String Asylum  = model.getData(indexColAsylum,row);
-				String Appeal  = model.getData(indexColAppeal,row);
-				String FreshClaim  = model.getData(indexColFreshClaim,row);
-				if(Asylum.equals("refugee status"))outcomesCount[0]++;
-				if(Asylum.equals("refused")) outcomesCount[1]++;
-				if(Appeal.equals("refused")) outcomesCount[2]++;
-				if(Appeal.equals("no appeal")) outcomesCount[3]++;
-				if(Appeal.equals("outstanding")) outcomesCount[4]++;
-				if(FreshClaim.equals("no appeal")) outcomesCount[5]++;
-				if(FreshClaim.equals("outstanding")) outcomesCount[6]++;
-				
-			}
+		
+		Map<String, Integer> numAsylum = new TreeMap<String, Integer>();
+		Map<String, Integer> numApeal = new TreeMap<String, Integer>();
+		Map<String, Integer> numFreshClaim = new TreeMap<String, Integer>();
 			
-			//for(int i=0;i<outcomesCount.length;i++){
-				//System.out.println("Yet another print statement because we are cool "+outcomesCount[i]);
-			//}
+		for(int row= 0; row< model.dataSize(); row++){
+			String Asylum  = model.getData(indexColAsylum,row);
+			String Appeal  = model.getData(indexColAppeal,row);
+			String FreshClaim  = model.getData(indexColFreshClaim,row);
+			
+			if(Asylum != "")
+			 if (!numAsylum.containsKey(Asylum) ) numAsylum.put(Asylum, 1);
+			 else{numAsylum.put(Asylum, numAsylum.get(Asylum) + 1);}
+			
+			if(Appeal!= "")
+			 if (!numApeal.containsKey(Appeal))  numApeal.put(Appeal, 1);
+			 else{ numApeal.put(Appeal,  numApeal.get(Appeal) + 1);}
+			 
+			if(FreshClaim != "")
+			 if (!numFreshClaim.containsKey(FreshClaim)) numFreshClaim.put(FreshClaim, 1);
+			 else{numFreshClaim.put(FreshClaim, numFreshClaim.get(FreshClaim) + 1);}	
+		}
+		
+		
+		outcomesCategories.add(numAsylum);
+		outcomesCategories.add(numApeal);
+		outcomesCategories.add(numFreshClaim);
 		
 	}
 
@@ -196,8 +204,11 @@ public class StatisticsPanel extends JPanel
 	        	@Override
 				public void actionPerformed(ActionEvent e) {
 	        		getOutcomesCount();
-	        		OutcomesPanel outcomes = new OutcomesPanel (outcomesCount);
-	        		outcomes.setVisible(true);
+	        		StackedBarChart chart = new StackedBarChart ("Cases Outcomes Bar Chart",outcomesCategories);
+	        		chart.pack();
+					RefineryUtilities.centerFrameOnScreen(chart);
+					chart.setVisible(true);
+					
 				}
 	        	
 	        });
@@ -237,10 +248,7 @@ public class StatisticsPanel extends JPanel
 					//System.out.println("INVOKEEE HEREE");
 					populateMap();
 					countryPieChart= new PieChart("Country of Origin",countryCountMap, true);
-					setLayout(new BorderLayout());
-					
-				    // add("Center", demo);
-					
+					//setLayout(new BorderLayout());
 					countryPieChart.pack();
 					RefineryUtilities.centerFrameOnScreen(countryPieChart);
 					countryPieChart.setVisible(true);
@@ -513,8 +521,7 @@ class GuiWorker extends SwingWorker<Integer, Integer> {
 		String fileType = filePath.substring(filePath.lastIndexOf('.'), filePath.length());
 		if(fileType.equals(".xlsm"))
 			return true;
-		
-		JOptionPane.showMessageDialog(frame, "The Inputed format is not supported.\n"+
+		MessageInfo.processMessage("The Inputed format is not supported.\n"+
 				" The file is not with .xlsm extension!");
 		return false;
 	}

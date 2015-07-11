@@ -19,14 +19,16 @@ package TradeViewer;
  *  =>  The default color of the bars in the same class has been altered so that 
  *      it fits better the overall Look And Feel of the program.
  *  
- *  @author Dobromir Dobrev - 1103606
+ *  
  */
 
 import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
 import javax.swing.table.TableCellRenderer;
+import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableRowSorter;
@@ -88,6 +90,13 @@ class TablePanel extends JPanel
             
         };
 		};
+		
+		 ToolTipHeader header = new ToolTipHeader(recordTable.getColumnModel());
+		 Object[] myArray =model.getLabel().toArray(new String[model.getLabel().size()]);
+		 String[] stringArray = Arrays.copyOf(myArray, myArray.length, String[].class);
+		    header.setToolTipStrings( stringArray);
+		    //header.setToolTipText("Default ToolTip TEXT");
+		    recordTable.setTableHeader(header);
 		//recordTable.setPreferredScrollableViewportSize(new Dimension(500, 150));
 		// enable multiple selection 
 		recordTable.setRowSelectionAllowed(true);
@@ -285,5 +294,35 @@ class TablePanel extends JPanel
 		// TODO Auto-generated method stub
 		
 	}
+	
+	class ToolTipHeader extends JTableHeader {
+	    String[] toolTips;
+
+	    public ToolTipHeader(TableColumnModel model) {
+	      super(model);
+	    }
+
+	    public String getToolTipText(MouseEvent e) {
+	      int col = columnAtPoint(e.getPoint());
+	      int modelCol = getTable().convertColumnIndexToModel(col);
+	      String retStr;
+	      try {
+	        retStr = toolTips[modelCol];
+	      } catch (NullPointerException ex) {
+	        retStr = "";
+	      } catch (ArrayIndexOutOfBoundsException ex) {
+	        retStr = "";
+	      }
+	      if (retStr.length() < 1) {
+	        retStr = super.getToolTipText(e);
+	      }
+	      return retStr;
+	    }
+
+	    public void setToolTipStrings(String[] toolTips) {
+	      this.toolTips = toolTips;
+	    }
+	  }
+	
 
 }

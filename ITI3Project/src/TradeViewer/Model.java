@@ -62,6 +62,8 @@ public class Model {
 	
 	private ArrayList<String> dataType;
 	private String filename;
+
+	private MessageInfo messageGui;
 	//private static int numberofTimesRemoved;
 
 	
@@ -79,6 +81,7 @@ public class Model {
         dataType=new ArrayList();
         availableRows = new ArrayList();
         selectedRows = new ArrayList();
+        messageGui= new MessageInfo(null);
        
         
         load(filename,true);

@@ -1,5 +1,7 @@
 package TradeViewer;
 
+import java.awt.Color;
+import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
@@ -47,54 +49,40 @@ public class LogoStuff extends JPanel implements ViewController {
 		 c.gridx = 1;
 		 c.gridy = 0;
 		 c.weighty=1.0;
-		 c.gridwidth = 2; 
+		 c.gridwidth = 3; 
 		
 		 add(picLabel,c);
 		 
-		 JPanel labelsText=new JPanel();
-		 labelsText.setLayout(new GridLayout(1,2));
-		 label = new JLabel("COUNT TOTAL: ");
-		 count = new JLabel(Integer.toString(model.dataSize()));
-		 
-		
-		 labelsText.add(label);
-		 labelsText.add(count);
-		 
-		 
-		 c.gridx = 2;
+		 count = new JLabel("TOTAL: "+ Integer.toString(model.dataSize()));
+		 count.setFont(new Font("Helvetica", Font.BOLD, 15));
+		 count.setForeground(Color.darkGray);
+
+		 c.gridx = 1;
 		 c.gridy = 1;
-		 c.gridwidth = 2;
-		 //c.fill = GridBagConstraints.CENTER;
-		 
-		 add(labelsText,c);
-		
-		 JPanel labelsFemale=new JPanel();
-		 labelsFemale.setLayout(new GridLayout(1,2));
-		 
-		 JPanel labelsMale=new JPanel();
-		 labelsMale.setLayout(new GridLayout(1,2));
-		 JLabel label2= new JLabel("Female: ");
-		 labelsFemale.add(label2);
-		 femaleTextField = new JLabel(Integer.toString(genderCount[1]));
-		 labelsFemale.add(femaleTextField);
-		 
-		c.gridx=0;
-		c.gridy=2;
-		add(labelsFemale,c);
+		 c.fill = GridBagConstraints.CENTER;
+		 add(count,c);
 		
 
-		JLabel label3= new JLabel("Male: ");
-		labelsMale.add(label3);
-		maleTextField = new JLabel(Integer.toString(genderCount[0]));
+	
+		 femaleTextField = new JLabel("Female: "+ Integer.toString(genderCount[1])+ "   ");
+		 femaleTextField.setFont(new Font("Courier New", Font.PLAIN, 14));
+	
+		
+		
+		maleTextField = new JLabel( "   "+ "Male: " + Integer.toString(genderCount[0]));
+		maleTextField.setFont(new Font("Courier New", Font.PLAIN, 14));  
+		
+		JPanel labelsMale=new JPanel();
+		 labelsMale.setLayout(new GridLayout(1,2));
+		labelsMale.add(femaleTextField);
 		labelsMale.add(maleTextField);
 		
-		JLabel label4 = new JLabel("       ");
-		c.gridx=2;
-		add(label4,c);
+//		JLabel label4 = new JLabel("       ");
+//		c.gridx=2;
+//		add(label4,c);
 		
-		c.gridx=3;
+		c.gridx=1;
 		c.gridy=2;
-		c.fill = GridBagConstraints.EAST;
 		
 		add(labelsMale,c);
 		

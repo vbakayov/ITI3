@@ -144,7 +144,7 @@ class SelectorPanel extends JPanel
 		// create and add the menu bars to the panel (along with their descriptive labels)
 		
 		// Ageee
-		ageMenu = new JMenu("Selection Menu");
+		ageMenu = new JMenu("Selection Menu Age       ");
 		ageMenu.setName("Age Group");
 		ageMenu.setBorder(BorderFactory.createLineBorder(Color.lightGray, 1));
 		ageMenu.setBorderPainted(true);
@@ -165,12 +165,12 @@ class SelectorPanel extends JPanel
 		 AgeGroupLabel.setVerticalAlignment(JLabel.CENTER);
         
         add( AgeGroupLabel);
-		add(AgeGroupMenuBar);
+		add("Center",AgeGroupMenuBar);
 		
 		
 		
 		// CountryMenue
-		countryMenu = new JMenu("Selection Menu");
+		countryMenu = new JMenu("Selection Menu Country  ");
 		countryMenu.setBorder(BorderFactory.createLineBorder(Color.lightGray, 1));
 		countryMenu.setName("Country");
 		countryMenu.setBorderPainted(true);
@@ -197,7 +197,7 @@ class SelectorPanel extends JPanel
 		//Union or Intersection
 		
 	
-		CasesMenu = new JMenu("Selection Menu");
+		CasesMenu = new JMenu("Selection Menu Cases   ");
 		CasesMenu.setName("Case");
 		CasesMenu.setBorder(BorderFactory.createLineBorder(Color.lightGray, 1));
 		CasesMenu.setBorderPainted(true);
@@ -215,7 +215,7 @@ class SelectorPanel extends JPanel
 			CasesMenu.add(cb);
 		}
 		
-		casesLabel = new JLabel("CASES");
+		casesLabel = new JLabel("Cases");
 		casesLabel.setBorder(BorderFactory.createLineBorder(Color.lightGray, 1));
 		casesLabel.setHorizontalAlignment(JLabel.CENTER);
         casesLabel.setVerticalAlignment(JLabel.CENTER);  
@@ -224,14 +224,14 @@ class SelectorPanel extends JPanel
 		add(casesDateMenuBar);
 		
 		
-		NameLabel = new JLabel("NAME");
+		NameLabel = new JLabel("Name");
 		NameLabel.setBorder(BorderFactory.createLineBorder(Color.lightGray, 1));
 		NameLabel.setHorizontalAlignment(JLabel.CENTER);
 		NameLabel.setVerticalAlignment(JLabel.CENTER);
 		
 		
 		
-		filterText = new HintTextField("Enter Name Here");
+		filterText = new HintTextField("Enter Name");
 		filterText.setFont(new Font("Courier", Font.BOLD,12));
 		filterText.getDocument().addDocumentListener( new DocumentListener() {
 			@Override
@@ -258,7 +258,7 @@ class SelectorPanel extends JPanel
 		closeLabel.setHorizontalAlignment(JLabel.CENTER);
 		closeLabel.setVerticalAlignment(JLabel.CENTER);
 		
-		filterDateText = new HintTextField("Example 01-Jun-2015");
+		filterDateText = new HintTextField("Ex. 01-Jun-2015");
 		
 		//create new Font
         filterDateText.setFont(new Font("Courier", Font.BOLD,12));
@@ -317,14 +317,20 @@ class SelectorPanel extends JPanel
 		
 	
 		
-		ViolenceMenu = new JMenu("Selection Menu");
+		ViolenceMenu = new JMenu("Selection Menu Violence");
 		ViolenceMenu.setName("Violence");
 		ViolenceMenu.setBorder(BorderFactory.createLineBorder(Color.lightGray, 1));
 		ViolenceMenu.setBorderPainted(true);
+	//	ViolenceMenu.setAlignmentX(CENTER_ALIGNMENT);
+	//	ViolenceMenu.setAlignmentY(CENTER_ALIGNMENT);
 		
 		ViolenceMenuBar = new JMenuBar();		
 		ViolenceMenuBar.add("MIDDLE", ViolenceMenu);
 		ViolenceMenuBar.setBorder(BorderFactory.createLineBorder(Color.lightGray, 1));
+
+		ViolenceMenuBar.setAlignmentX(JMenuBar.CENTER_ALIGNMENT);
+		ViolenceMenuBar.setAlignmentY(JMenuBar.CENTER_ALIGNMENT);
+	
 		
 		for (String str : violenceList) {
 			JCheckBoxMenuItem vn = new JCheckBoxMenuItem(str);
@@ -335,8 +341,8 @@ class SelectorPanel extends JPanel
 		violenceLabel = new JLabel("Violence Cases");
 		violenceLabel.setBorder(BorderFactory.createLineBorder(Color.lightGray, 1));
 		violenceLabel.setHorizontalAlignment(JLabel.CENTER);
-        violenceLabel.setVerticalAlignment(JLabel.CENTER);  
-
+		violenceLabel.setVerticalAlignment(JLabel.CENTER);  
+	
 		add(violenceLabel);
 		add(ViolenceMenuBar);
 		
@@ -489,12 +495,6 @@ class SelectorPanel extends JPanel
 	        		parseD(record.get(2)) > ageRange.getHighValue())
 		        	passFilters = false;
 	        	
-
-//	        	// filter for INDEX
-//	        	// omit the 'T' at the beginning and parse a double from the rest of the string
-//	        	double value = Double.parseDouble(((String) record.get(11)).substring(1));
-//	        	if (value < indexRange.getLowValue() || value > indexRange.getHighValue())
-//		        	passFilters = false;
 
 	        	if (passFilters) filtered.add(row);
 	        			

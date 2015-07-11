@@ -14,10 +14,14 @@ package TradeViewer;
 import java.io.File;
 
 import javax.swing.UIManager;
+import javax.swing.UIManager.LookAndFeelInfo;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
+
+import com.alee.laf.WebLookAndFeel;
+
 import javax.swing.filechooser.FileFilter;
 
 
@@ -30,8 +34,20 @@ public class TradeViewer {
 	// the user is most used to selecting which file to open with a dialog box 
 	// that has the system native Look And Feel - and so the file chooser
 	// dialog box uses the native Look And Feel of his/her system.
-	UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());	
+	//UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		
+		try {
+		    for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
+		        if ("Nimbus".equals(info.getName())) {
+		            UIManager.setLookAndFeel(info.getClassName());
+		            break;
+		        }
+		    }
+		} catch (Exception e) {
+		    // If Nimbus is not available, you can set the GUI to another look and feel.
+		}
+	
+	//WebLookAndFeel.install ();
 	// file selection is enabled via a JFileChooser component 
 	JFileChooser fc = new JFileChooser();
 	
@@ -55,9 +71,11 @@ public class TradeViewer {
 		String fileType = filePath.substring(filePath.lastIndexOf('.'), filePath.length());
 	
 		frame = new TradeViewerFrame(filePath);
+		new MessageInfo(frame);
+		
 		if(!fileType.equals(".xlsm"))
-			JOptionPane.showMessageDialog(frame, "The Inputed format is not supported.\n"+
-												" The file is not with .xlsm extension!");
+			MessageInfo.processMessage("The Inputed format is not supported.\n"+
+										 	" The file is not with .xlsm extension!" );
 		
 	}	
 	else System.exit(0); // exit program if the file chooser dialog box for is closed
