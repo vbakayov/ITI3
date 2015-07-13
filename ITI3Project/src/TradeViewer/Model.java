@@ -39,6 +39,9 @@ import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+
+import com.alee.utils.FileUtils;
+
 import java.util.*;
 
 public class Model {
@@ -427,6 +430,7 @@ public class Model {
 			//open exel document	
 		XSSFWorkbook workbook2 = new XSSFWorkbook(output); 
 		XSSFSheet worksheet2 = workbook2.getSheetAt(0);
+		removeTrailing(worksheet2);
 		int lastRowNumCopy = worksheet2.getLastRowNum();
 		System.out.println("Last "+lastRowNumCopy);
 		
@@ -443,13 +447,17 @@ public class Model {
     	}
 		
 		Collections.sort(availableRows);
-		//remove rows from the spreadsheet original data 
-		for( int row= availableRows.size()-1 ; row>= 0; row--)
-			RemoveROwwriteXLSXFile(availableRows.get(row)+2);
+	
 //		
+
     	FileOutputStream out = 
                 new FileOutputStream(new File(absolutePath));
         workbook2.write(out);
+        
+    	//remove rows from the spreadsheet original data 
+		for( int row= availableRows.size()-1 ; row>= 0; row--)
+			RemoveROwwriteXLSXFile(availableRows.get(row)+2);
+     
         out.close();
         System.out.println("Excel written successfully..");
     	
@@ -466,8 +474,10 @@ public class Model {
 		
 			}
     	catch (FileNotFoundException e) {
-			System.out.println("Bravo na Viktor");
-			e.printStackTrace();
+			if(e.getMessage().contains("The process cannot access the file because it is being used by another process")){
+				MessageInfo.processMessage("Cannot access the file because it is being used by another process- probably Excel. Close Excel and try again");}
+			else if(e.getMessage().contains("The system cannot find the file specified"))
+				{MessageInfo.processMessage("The system cannot find the file specified");}
 		} catch (IOException e) {
 			System.out.println("Viktor '>>>' StackOverflow");
 			e.printStackTrace();
@@ -530,7 +540,15 @@ public class Model {
         //close the stream
         output_file.close(); 
         System.out.println("SUCEESS");
-		}catch(IOException e){
+        
+		}
+//		catch (FileNotFoundException e) {
+//			if(e.getMessage().contains("The process cannot access the file because it is being used by another process")){
+//				MessageInfo.processMessage("Cannot access the file because it is being used by another process- probably Excel. Close Excel and try again");}
+//			else if(e.getMessage().contains("The system cannot find the file specified"))
+//				{MessageInfo.processMessage("The system cannot find the file specified");}
+//		}
+			catch(IOException e){
 			e.printStackTrace();
 		}
 	}
@@ -565,5 +583,6 @@ public class Model {
 		}
 		
 	}
-
+	
+	
 }

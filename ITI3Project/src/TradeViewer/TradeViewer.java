@@ -36,19 +36,19 @@ public class TradeViewer {
 	// dialog box uses the native Look And Feel of his/her system.
 	//UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		
-		try {
-		    for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
-		        if ("Nimbus".equals(info.getName())) {
-		            UIManager.setLookAndFeel(info.getClassName());
-		            break;
-		        }
-		    }
-		} catch (Exception e) {
-		    // If Nimbus is not available, you can set the GUI to another look and feel.
-		}
+//		try {
+//		    for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
+//		        if ("Nimbus".equals(info.getName())) {
+//		            UIManager.setLookAndFeel(info.getClassName());
+//		            break;
+//		        }
+//		    }
+//		} catch (Exception e) {
+//		    // If Nimbus is not available, you can set the GUI to another look and feel.
+//		}
 	
-	//WebLookAndFeel.install ();
-	// file selection is enabled via a JFileChooser component 
+	WebLookAndFeel.install ();
+		// file selection is enabled via a JFileChooser component 
 	JFileChooser fc = new JFileChooser();
 	
 	// set a file type filter 

@@ -111,10 +111,10 @@ public class LogoStuff extends JPanel implements ViewController {
 	@Override
 	public void delete(boolean delete) {
 		
-		 count.setText(Integer.toString(model.dataSize()));
+		 count.setText("TOTAL: "+ Integer.toString(model.dataSize()));
 		 calculateGenderCount();
-		femaleTextField.setText(Integer.toString(genderCount[1]));
-		maleTextField.setText(Integer.toString(genderCount[0]));
+		femaleTextField.setText("Female: "+Integer.toString(genderCount[1]));
+		maleTextField.setText("   "+ "Male: " +Integer.toString(genderCount[0]));
 		
 	}
 	

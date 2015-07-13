@@ -47,6 +47,7 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
+import javax.xml.crypto.Data;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -85,6 +86,9 @@ class SelectorPanel extends JPanel
 	private JTextField filterText;
 	private JLabel closeLabel;
 	private JTextField filterDateText;
+	private int cureentNameSymbols;
+	private int curentNameSymbols;
+	private int currentNameSymbols;
 
 	public SelectorPanel(Model m) {
 		
@@ -159,7 +163,7 @@ class SelectorPanel extends JPanel
 			ageMenu.add(cb);
 		}
 		
-		 AgeGroupLabel = new JLabel("AgeGroup");
+		 AgeGroupLabel = new JLabel("Age Group");
 		 AgeGroupLabel.setBorder(BorderFactory.createLineBorder(Color.lightGray, 1));
 		 AgeGroupLabel.setHorizontalAlignment(JLabel.CENTER);
 		 AgeGroupLabel.setVerticalAlignment(JLabel.CENTER);
@@ -236,16 +240,16 @@ class SelectorPanel extends JPanel
 		filterText.getDocument().addDocumentListener( new DocumentListener() {
 			@Override
 			public void changedUpdate(DocumentEvent arg0) {
-				//newFilter();
-				System.out.println("first");
+				newFilter(arg0.getType().toString());
+				
 			}
 			@Override
 			public void insertUpdate(DocumentEvent arg0) {		
-				newFilter();
+				newFilter(arg0.getType().toString());
 			}
 			@Override
 			public void removeUpdate(DocumentEvent arg0) {
-				 newFilter();
+				 newFilter(arg0.getType().toString());
 			}
         });
 		
@@ -346,17 +350,7 @@ class SelectorPanel extends JPanel
 		add(violenceLabel);
 		add(ViolenceMenuBar);
 		
-	//	violanceCheckBox = new JCheckBox();
-	//	casesCheckBox = new JCheckBox();
-		  
-	
-	//	casesCheckBox.addItemListener(new CheckBoxListener ());
-		//casesCheckBox.add("RIGHT" , CasesMenu);
-	//	add(casesCheckBox);
-	
-	//	violanceCheckBox.addItemListener(new CheckBoxListener());
-		//casesCheckBox.add("RIGHT" , CasesMenu);
-	//	add(violanceCheckBox);
+
 	
 
 	}
@@ -369,6 +363,7 @@ class SelectorPanel extends JPanel
     	public void itemStateChanged(ItemEvent event) {
     		//get the JCheckBox which triggered the event
     		JCheckBoxMenuItem source = (JCheckBoxMenuItem) event.getSource() ;
+    		source.requestFocus();
     		String value2, value3;
     		//find the menue the CheckBox belongs to
     		JPopupMenu fromParent = (JPopupMenu)source.getParent();
@@ -547,20 +542,27 @@ class SelectorPanel extends JPanel
     /** 
      * Update the row filter regular expression from the expression in
      * the text box.
+     * @param type 
      */
-    private void newFilter() {
-    	if(!filterText.getText().equals( "Enter Name Here") && !filterText.getText().equals("")){
-        ArrayList<Integer> output = new ArrayList<Integer>();
-        //If current expression doesn't parse, don't update.
-        for(int row = 0; row<model.dataSize(); row++){
-			String name = (String) model.record(row).get(0);
-			System.out.println(name + " "+ filterText.getText());
-			if ( name.toLowerCase().contains(filterText.getText().toLowerCase())){
-				//System.out.println("It Matches");
-				output.add(row);
-			}
+    private void newFilter(String type) {
+    
+    	System.out.println(type);
+    	
+    	if(!filterText.getText().equals( "Enter Name") && ( !filterText.getText().equals("") || currentNameSymbols ==0)){
+    
+    		if(type.equals("REMOVE")) currentNameSymbols--;
+    		if(type.equals("INSERT")) currentNameSymbols++;
+    		System.out.println("COUNT "+ currentNameSymbols);
+    		ArrayList<Integer> output = new ArrayList<Integer>();
+    		//If current expression doesn't parse, don't update.
+    		for(int row = 0; row<model.dataSize(); row++){
+    			String name = (String) model.record(row).get(0);
+    			//System.out.println(name + " "+ filterText.getText());
+    			if ( name.toLowerCase().contains(filterText.getText().toLowerCase())){
+    				output.add(row);
+    			}
 			
-        }
+    		}
         // update the filtered rows
 		model.setAvailableRows(output);
 		// update the views by executing selection with an empty arra
@@ -569,8 +571,13 @@ class SelectorPanel extends JPanel
     }
     
 private void newDateFilter() {
-	if(!filterDateText.getText().equals("Example 01-Jun-2015") && !filterDateText.getText().equals("")){
-	  ArrayList<Integer> output = new ArrayList<Integer>();
+	Date dateRecord ;
+	ArrayList<Integer> output = new ArrayList<Integer>();
+	if(filterDateText.getText().trim().length() != 11)
+		 filterDateText.setBackground(Color.WHITE);
+	if(!filterDateText.getText().equals("Ex. 01-Jun-2015") && !filterDateText.getText().equals("")
+			&& filterDateText.getText().trim().length() == 11){
+	  output.clear();
 	  System.out.println("HEREEEE");
 	  boolean allRows = true;
 	  
@@ -579,19 +586,24 @@ private void newDateFilter() {
 	  try {
 		System.out.println(filterDateText.getText());
 		Date date = formatter.parse(filterDateText.getText());
-	    System.out.println(date);
+	
 	    filterDateText.setBackground(Color.green);
 		for(int row = 0; row<model.dataSize(); row++){
-				Date dateRecord = formatter.parse((String) model.record(row).get(36));
-				//System.out.println(name + " "+ filterText.getText());
+			//System.out.println(model.getPosition("Case Closed"));
+			String dateRecord1 =(String) model.record(row).get(model.getPosition("Case Closed"));
+			if(!dateRecord1.equals(""))	{
+				dateRecord = formatter.parse(dateRecord1);
+			    System.out.println("NOW   ");
+				System.out.print(dateRecord);
 				if ( dateRecord.before(date)){
 					System.out.println("It Matches");
 					output.add(row);
 					allRows= false;
 				}
-	     } 
+	     } }
 	     }
-	  catch (ParseException e) {	
+	  catch (ParseException e) {
+		  e.printStackTrace();
 		 // filterDateText.setBackground(Color.RED);
 	   }
 	  
@@ -605,7 +617,20 @@ private void newDateFilter() {
 		// update the views by executing selection with an empty arra
   	model.select(new ArrayList());
   	
+	}
+	else {
+		output.clear();
+		//when the data doesn't match criterion is progress show all available rows 
+		for(int i = 0 ; i< model.dataSize(); i++){
+			output.add(i);
 		}
+	
+		model.setAvailableRows(output);
+		// update the views by executing selection with an empty arra
+		model.select(new ArrayList());
+	
+	
+	}
   }
 class HintTextField extends JTextField implements FocusListener {
 

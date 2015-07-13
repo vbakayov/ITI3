@@ -135,7 +135,7 @@ public class StatisticsPanel extends JPanel
 	      
 	        add(countryButton);
 	        
-	        JButton ageGroupButton = new JButton ("AgeGroup chart");
+	        JButton ageGroupButton = new JButton ("Age Group Chart");
 	      
 	      
 	        
@@ -143,17 +143,17 @@ public class StatisticsPanel extends JPanel
 	       
 	        
 	        JButton casesButton=new JButton("Legal Cases");
-	        JButton deleteButton = new JButton("Remove rows");
+	        final JButton deleteButton = new JButton("Remove Filtered Cases");
 	        JButton localAButton = new JButton("Local Autority");
-	        JButton outcomesButton = new JButton("Cases Outcomes");
-	        JButton barChartButton = new JButton("Bar Chart");
+	        JButton outcomesButton = new JButton("Outcomes Chart");
+	        JButton barChartButton = new JButton("Violence Chart");
 	        JButton loadmoreData = new JButton("Load Closed Cases");
 	        
-	        add(casesButton);
-	        add(deleteButton);
-	        add(localAButton);
 	        add(outcomesButton);
 	        add(barChartButton);
+	        add(casesButton);
+	        add(localAButton);
+	        add(deleteButton);
 	        add(loadmoreData);
 	        
 	        
@@ -296,6 +296,9 @@ public class StatisticsPanel extends JPanel
 					model.refreshView();
 					System.out.println("DataSize2 "+model.dataSize());
 				}
+				deleteButton.setEnabled(false);
+				
+				
 				
 			}
 	    	   
