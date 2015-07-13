@@ -21,6 +21,7 @@ import javax.swing.JLabel;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
+import javax.swing.JSeparator;
 import javax.swing.JTextField;
 
 public class LogoStuff extends JPanel implements ViewController {
@@ -36,6 +37,7 @@ public class LogoStuff extends JPanel implements ViewController {
 	private JLabel maleTextField;
 	//count gender
 		private int[] genderCount = new int [2];
+		private JLabel available;
 
 	public LogoStuff(Model model) {
 		this.model= model;
@@ -54,15 +56,25 @@ public class LogoStuff extends JPanel implements ViewController {
 		 add(picLabel,c);
 		 
 		 count = new JLabel("TOTAL: "+ Integer.toString(model.dataSize()));
-		 count.setFont(new Font("Helvetica", Font.BOLD, 15));
+		 count.setFont(new Font("Helvetica", Font.BOLD, 16));
 		 count.setForeground(Color.darkGray);
 
 		 c.gridx = 1;
 		 c.gridy = 1;
 		 c.fill = GridBagConstraints.CENTER;
 		 add(count,c);
+		 
+		 JSeparator sep = new JSeparator(JSeparator.HORIZONTAL);
+		 c.fill = GridBagConstraints.HORIZONTAL;
+		 c.weightx=1;
+		 c.gridy = 2;
+		 add(sep,c);
 		
-
+		 
+		available = new JLabel("Current: "+ Integer.toString(model.getAvailableRows().size()));
+		c.fill = GridBagConstraints.CENTER;
+		c.gridy = 3;
+		add(available,c);
 	
 		 femaleTextField = new JLabel("Female: "+ Integer.toString(genderCount[1])+ "   ");
 		 femaleTextField.setFont(new Font("Courier New", Font.PLAIN, 14));
@@ -82,7 +94,7 @@ public class LogoStuff extends JPanel implements ViewController {
 //		add(label4,c);
 		
 		c.gridx=1;
-		c.gridy=2;
+		c.gridy=4;
 		
 		add(labelsMale,c);
 		
