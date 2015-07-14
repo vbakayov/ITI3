@@ -72,14 +72,9 @@ public class StatisticsPanel extends JPanel
 	
 	
 	public StatisticsPanel(Model model) {
-		this.model = model;
-	
-		
-		
-		
+		this.model = model;	
 		printMap();
-		GUI();
-		
+		GUI();	
 	}
 	
 
@@ -166,11 +161,7 @@ public class StatisticsPanel extends JPanel
 				
 				private void buttonPressed() {
 					populateMap();
-					ageGroupPieChart= new PieChart("Age Groups",ageGroupsMap,false);
-					setLayout(new BorderLayout());
-					
-				    // add("Center", demo);
-					
+					ageGroupPieChart= new PieChart("Age Groups",ageGroupsMap,false);				
 					ageGroupPieChart.pack();
 					RefineryUtilities.centerFrameOnScreen(ageGroupPieChart);
 					ageGroupPieChart.setVisible(true);

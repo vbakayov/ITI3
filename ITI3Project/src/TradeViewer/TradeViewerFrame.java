@@ -59,7 +59,8 @@ class TradeViewerFrame extends JFrame {
         splitPane2.setOneTouchExpandable(true);
         splitPane2.setDividerLocation(700);
         splitPane2.setMinimumSize(minimumSize2);
-        splitPane2.setMaximumSize(new Dimension(400,400));
+        splitPane2.setResizeWeight(1);
+        splitPane2.setMaximumSize(new Dimension(200,200));
         
         
 
