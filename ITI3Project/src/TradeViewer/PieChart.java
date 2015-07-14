@@ -63,7 +63,8 @@ private  PieDataset createDataset() {
 	DefaultPieDataset dataset = new DefaultPieDataset();
 	int total = sumValues();
 	int fivePersent = (int)(total*(5.0f/100.0f));
-	//System.out.println("The total is  "+ total + "and 5% is "+ k);
+	
+	System.out.println("The total is  "+ total + "and 5% is "+ fivePersent);
 	int others=0;
 	while (it.hasNext()) {
 		Map.Entry pair = (Map.Entry)it.next();

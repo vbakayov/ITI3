@@ -121,12 +121,13 @@ public class LogoStuff extends JPanel implements ViewController {
 
 
 	@Override
-	public void delete(boolean delete) {
+	public void notify(boolean delete) {
 		
 		 count.setText("TOTAL: "+ Integer.toString(model.dataSize()));
-		 calculateGenderCount();
+		calculateGenderCount();
 		femaleTextField.setText("Female: "+Integer.toString(genderCount[1]));
 		maleTextField.setText("   "+ "Male: " +Integer.toString(genderCount[0]));
+		available.setText("Current: "+ Integer.toString(model.getAvailableRows().size()));
 		
 	}
 	
@@ -135,8 +136,8 @@ public class LogoStuff extends JPanel implements ViewController {
 		 int indexGenderColumn = model.getIndexOfLabel("Gender");
 		 genderCount = new int[2];
 		 System.out.println(indexGenderColumn);
-		for(int i =0; i< model.dataSize(); i++){
-			String gender = model.getData(indexGenderColumn, i);
+		for(int i =0; i< model.getAvailableRows().size(); i++){
+			String gender = model.getData(indexGenderColumn, model.getAvailableRows().get(i));
 			if(gender.equals("Male"))  genderCount[0] ++;
 			if(gender.equals("Female")) genderCount[1]++;
 			

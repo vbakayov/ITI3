@@ -44,20 +44,24 @@ class TradeViewerFrame extends JFrame {
 //        
 //        
        
+        Dimension minimumSize2 = new Dimension(200, 200);
         
         JSplitPane splitPane1 = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,statisticsPanel ,logoStuff);
         splitPane1.setOneTouchExpandable(true);
         splitPane1.setDividerLocation(300);
+        splitPane1.setMinimumSize(minimumSize2);
         
-        Dimension minimumSize2 = new Dimension(200, 200);
-        statisticsPanel.setMinimumSize(minimumSize2);
-        logoStuff.setMinimumSize(minimumSize2);
+       
+   
+        
         
         JSplitPane splitPane2 = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,splitPane1 ,selectorPanel);
         splitPane2.setOneTouchExpandable(true);
         splitPane2.setDividerLocation(700);
-        selectorPanel.setMinimumSize(minimumSize2);
-        splitPane1.setMinimumSize(minimumSize2);
+        splitPane2.setMinimumSize(minimumSize2);
+        splitPane2.setMaximumSize(new Dimension(400,400));
+        
+        
 
  
 
@@ -80,8 +84,7 @@ class TradeViewerFrame extends JFrame {
         Toolkit toolkit =  Toolkit.getDefaultToolkit ();
         Dimension dim = toolkit.getScreenSize();
         setSize(dim.width-350,dim.height-200);
-     
-        setTitle("Legal Services Agency Viewer");
+        setTitle("Legal Services Agency Viewer - " +filename.substring(filename.lastIndexOf('\\')+1, filename.length()));
         setLocation(dim.width/2-getSize().width/2, dim.height/2-getSize().height/2);
         setVisible(true);
 

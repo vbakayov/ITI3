@@ -295,8 +295,9 @@ public class StatisticsPanel extends JPanel
 					model.load(path, false);
 					model.refreshView();
 					System.out.println("DataSize2 "+model.dataSize());
+					deleteButton.setEnabled(false);
 				}
-				deleteButton.setEnabled(false);
+				
 				
 				
 				
@@ -465,7 +466,7 @@ public class StatisticsPanel extends JPanel
 
 
 	@Override
-	public void delete(boolean delete) {
+	public void notify(boolean delete) {
 		
 		
 	}
@@ -504,7 +505,7 @@ class GuiWorker extends SwingWorker<Integer, Integer> {
 	  protected Integer doInBackground() throws Exception {
 	    System.out.println( "GuiWorker.doInBackground" );
 	    model.CopyRowXLSXFile(absolutePath);
-		model.notifyDelete();
+		model.notifyChangeChildren();
 	    return 0;
 	  }
 

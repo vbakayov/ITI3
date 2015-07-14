@@ -448,18 +448,21 @@ public class Model {
 		
 		Collections.sort(availableRows);
 	
-//		
 
-    	FileOutputStream out = 
-                new FileOutputStream(new File(absolutePath));
-        workbook2.write(out);
+	
         
     	//remove rows from the spreadsheet original data 
 		for( int row= availableRows.size()-1 ; row>= 0; row--)
 			RemoveROwwriteXLSXFile(availableRows.get(row)+2);
      
-        out.close();
+        
         System.out.println("Excel written successfully..");
+        
+    	//copy to out file
+    	FileOutputStream out = 
+                new FileOutputStream(new File(absolutePath));
+        workbook2.write(out);
+        out.close();
     	
         //remove the available rows from the programs' data model
         removeRowsFromDataSet();
@@ -503,9 +506,9 @@ public class Model {
 		}
 	}
 
-	public void RemoveROwwriteXLSXFile( int rowIndex) {
+	public void RemoveROwwriteXLSXFile( int rowIndex) throws FileNotFoundException, IOException {
 		 //Read Excel document first
-		try{
+		
         FileInputStream input_document = new FileInputStream(new File(filename)); 
         // convert it into a POI object
         XSSFWorkbook my_xlsx_workbook = new XSSFWorkbook(input_document); 
@@ -542,16 +545,8 @@ public class Model {
         System.out.println("SUCEESS");
         
 		}
-//		catch (FileNotFoundException e) {
-//			if(e.getMessage().contains("The process cannot access the file because it is being used by another process")){
-//				MessageInfo.processMessage("Cannot access the file because it is being used by another process- probably Excel. Close Excel and try again");}
-//			else if(e.getMessage().contains("The system cannot find the file specified"))
-//				{MessageInfo.processMessage("The system cannot find the file specified");}
-//		}
-			catch(IOException e){
-			e.printStackTrace();
-		}
-	}
+
+
 	 public ArrayList getDataType(){
 			return dataType;
 		}
@@ -564,10 +559,11 @@ public class Model {
 			return index;
 		}
 
-	public void notifyDelete() {
+	
+	 public void notifyChangeChildren() {
 		 for (int i = 0; i < children.size(); i++) {
 	            ViewController kid = (ViewController) children.get(i);
-	            kid.delete(true);
+	            kid.notify(true);
 	        }   
 		
 	}
@@ -579,7 +575,7 @@ public class Model {
 	    
 		for (int i = 0; i < children.size(); i++) {
             ViewController kid = (ViewController) children.get(i);
-            kid.delete(true);
+            kid.notify(true);
 		}
 		
 	}

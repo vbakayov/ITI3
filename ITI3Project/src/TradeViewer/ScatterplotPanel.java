@@ -184,7 +184,7 @@ class ScatterplotPanel extends JPanel
     }
 
 	@Override
-	public void delete(boolean delete) {
+	public void notify(boolean delete) {
 		// TODO Auto-generated method stub
 		
 	}
