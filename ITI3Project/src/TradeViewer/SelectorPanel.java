@@ -58,7 +58,7 @@ class SelectorPanel extends JPanel implements ViewController {
 
 	private Model model;
 	// range sliders for the continuous attributes
-	private JRangeSlider xRange, yRange, cIDRange, pIDRange, ageRange, dtmRange, amountRange, fullnameRange, indexRange;
+	private JRangeSlider ageRange;
 	// menu bars with menus containing check boxes for the categorical
 	// attributes
 	private JMenuBar AgeGroupMenuBar, CountrySegmentMenuBar, casesDateMenuBar, ViolenceMenuBar;
@@ -348,9 +348,9 @@ class SelectorPanel extends JPanel implements ViewController {
 				for (int row = 0; row < model.dataSize(); row++) {
 					ArrayList record = model.record(row);
 					if (menu.getName() == "Case" || menu.getName() == "Violence") {
-						if (record.get(indexColumn).equals(value2))
+						if (record.get(indexColumn).equals(value2) && !activeFiltersMap.get(menu).contains(row))
 							activeFiltersMap.get(menu).add(row);
-					} else if (menu.getName() == "Country") {
+					} else if (menu.getName() == "Country"  ) {
 						int indexCountry = model.getIndexOfLabel("Country of Origin");
 						if (record.get(indexCountry).equals(value2))
 							activeFiltersMap.get(menu).add(row);
@@ -369,7 +369,7 @@ class SelectorPanel extends JPanel implements ViewController {
 			}
 			// a check box is deselected
 			if (event.getStateChange() == ItemEvent.DESELECTED) {
-
+				System.out.println("HEREEEEE");
 				// decrement the active filters
 				activeFiltersMap.get(menu).decrementActiveFilters();
 
@@ -385,7 +385,7 @@ class SelectorPanel extends JPanel implements ViewController {
 					// restricted (remove)
 					// use new Integer(row) to remove by value , not by
 					// index!!!!
-					else if (record.contains(value2))
+					else if (record.get(indexColumn).equals(value2))
 						activeFiltersMap.get(menu).remove(new Integer(row));
 				}
 
@@ -470,17 +470,17 @@ class SelectorPanel extends JPanel implements ViewController {
 		public void stateChanged(ChangeEvent event) {
 			JRangeSlider source = (JRangeSlider) event.getSource();
 			// update the corresponding descriptive label
-			if (source.equals(xRange))
+			if (source.equals(ageRange))
 				ageLabel.setText("Age  [ " + ageRange.getLowValue() + " to " + ageRange.getHighValue() + "]");
-			else if (source.equals(indexRange)) {
+			else if (source.equals(ageRange)) {
 				// fix formatting
-				String lowerBound = "" + indexRange.getLowValue();
+				String lowerBound = "" + ageRange.getLowValue();
 				while (lowerBound.length() < 5)
 					lowerBound = "0" + lowerBound;
-				String upperBound = "" + indexRange.getHighValue();
+				String upperBound = "" + ageRange.getHighValue();
 				while (upperBound.length() < 5)
 					upperBound = "0" + upperBound;
-				indexLabel.setText("INDEX   [ T" + lowerBound + " to T" + upperBound + " ]");
+				ageLabel.setText("INDEX   [ T" + lowerBound + " to T" + upperBound + " ]");
 			}
 		}
 	}

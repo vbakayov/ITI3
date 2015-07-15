@@ -40,11 +40,9 @@ class TradeViewerFrame extends JFrame {
         logoStuff = new LogoStuff(model);
         model.addChild(logoStuff);
         
-      
-//        
-//        
+  
        
-        Dimension minimumSize2 = new Dimension(200, 200);
+        Dimension minimumSize2 = new Dimension(180, 180);
         
         JSplitPane splitPane1 = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,statisticsPanel ,logoStuff);
         splitPane1.setOneTouchExpandable(true);
@@ -58,25 +56,15 @@ class TradeViewerFrame extends JFrame {
         JSplitPane splitPane2 = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,splitPane1 ,selectorPanel);
         splitPane2.setOneTouchExpandable(true);
         splitPane2.setDividerLocation(700);
-        splitPane2.setMinimumSize(minimumSize2);
         splitPane2.setResizeWeight(1);
-        splitPane2.setMaximumSize(new Dimension(200,200));
-        
-        
-
+        splitPane2.setMaximumSize(new Dimension(400,400));
  
-
-
-        
         
         JSplitPane splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT,splitPane2, tablePanel);
         splitPane.setOneTouchExpandable(true);
         
         
-        Dimension maximumSize = new Dimension(400, 500);
-        
-        splitPane2.setMinimumSize(minimumSize2);
-        logoStuff.setMinimumSize(minimumSize2);
+  
         
        add( splitPane);
         

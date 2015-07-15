@@ -23,6 +23,10 @@ public class SelectionFilter {
 		return activeFilters;
 	}
 	
+	public boolean contains(int row){
+		return data.contains(row);
+	}
+	
 	public void incrementActiveFilters() {
 		activeFilters++;
 	}

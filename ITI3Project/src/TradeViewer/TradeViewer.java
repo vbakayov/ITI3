@@ -24,10 +24,8 @@ import com.alee.laf.WebLookAndFeel;
 
 import javax.swing.filechooser.FileFilter;
 
-
-
 public class TradeViewer {
-	
+
 	public static void main(String args[]) throws ClassNotFoundException, InstantiationException, 
 												  IllegalAccessException, UnsupportedLookAndFeelException {
 	
@@ -50,63 +48,56 @@ public class TradeViewer {
 	WebLookAndFeel.install ();
 		// file selection is enabled via a JFileChooser component 
 	JFileChooser fc = new JFileChooser();
-	
-	// set a file type filter 
-	//FileNameExtensionFilter csvFilter = new FileNameExtensionFilter("CSV files", "csv");
-	//fc.setFileFilter(csvFilter);
-	
-	FileFilter csvFilter = new FileTypeFilter(".csv", "CSV Fie");
 	FileFilter xlsFilter = new FileTypeFilter(".xlsm", "Microsoft Excel Documents");
-	 
-	fc.addChoosableFileFilter(csvFilter);
 	fc.addChoosableFileFilter(xlsFilter);
 	
-	// open the dialog box
-	int returned = fc.showOpenDialog(fc);
 	
+	// open the dialog box
+	boolean firstTime=true;
+	 String fileType= "";
 	// create the TradeViewerFrame
 	TradeViewerFrame frame;
-	if (returned == JFileChooser.APPROVE_OPTION) {
+	while(!fileType.equals( ".xlsm" )|| firstTime){
+		System.out.println(fileType.equals(".xlsm")  + "  "+ firstTime);
+		firstTime = false;
+		int returned = fc.showOpenDialog(fc);
+		if (returned == JFileChooser.APPROVE_OPTION) {
 		String filePath = fc.getSelectedFile().toString();
-		String fileType = filePath.substring(filePath.lastIndexOf('.'), filePath.length());
+		fileType = filePath.substring(filePath.lastIndexOf('.'), filePath.length());
 	
-		frame = new TradeViewerFrame(filePath);
-		new MessageInfo(frame);
 		
-		if(!fileType.equals(".xlsm"))
-			MessageInfo.processMessage("The Inputed format is not supported.\n"+
-										 	" The file is not with .xlsm extension!" );
-		
-	}	
+		if(fileType.equals(".xlsm")){
+			frame = new TradeViewerFrame(filePath);
+			}
+		else{
+			MessageInfo.processMessage(JOptionPane.WARNING_MESSAGE,"The Inputed format is not supported.\n"+
+								 	" The file is not with .xlsm extension!" );
+			}
+		}	
 	else System.exit(0); // exit program if the file chooser dialog box for is closed
 	
 	}
-	
+	}
+
 	static class FileTypeFilter extends FileFilter {
-	    private String extension;
-	    private String description;
-	 
-	    public FileTypeFilter(String extension, String description) {
-	        this.extension = extension;
-	        this.description = description;
-	    }
-	 
-	    public boolean accept(File file) {
-	        if (file.isDirectory()) {
-	            return true;
-	        }
-	        return file.getName().endsWith(extension);
-	    }
-	 
-	    public String getDescription() {
-	        return description + String.format(" (*%s)", extension);
-	    }
-	
+		private String extension;
+		private String description;
+
+		public FileTypeFilter(String extension, String description) {
+			this.extension = extension;
+			this.description = description;
+		}
+
+		public boolean accept(File file) {
+			if (file.isDirectory()) {
+				return true;
+			}
+			return file.getName().endsWith(extension);
+		}
+
+		public String getDescription() {
+			return description + String.format(" (*%s)", extension);
+		}
+
+	}
 }
-}
-
-
-
-
-
-

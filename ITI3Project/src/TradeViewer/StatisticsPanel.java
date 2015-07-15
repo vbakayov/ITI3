@@ -513,11 +513,17 @@ class GuiWorker extends SwingWorker<Integer, Integer> {
 	}
 
 	private boolean validateFileType(String filePath){
+		try{
 		String fileType = filePath.substring(filePath.lastIndexOf('.'), filePath.length());
 		if(fileType.equals(".xlsm"))
 			return true;
-		MessageInfo.processMessage("The Inputed format is not supported.\n"+
+		MessageInfo.processMessage(JOptionPane.WARNING_MESSAGE,"The Inputed format is not supported.\n"+
 				" The file is not with .xlsm extension!");
+		return false;
+		}catch(StringIndexOutOfBoundsException er){
+			MessageInfo.processMessage(JOptionPane.WARNING_MESSAGE,"The input file name has no extension - add .xlsm \n"+
+					" The file is not with .xlsm extension!");
+		}
 		return false;
 	}
 	
