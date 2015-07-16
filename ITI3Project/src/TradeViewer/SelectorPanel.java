@@ -38,6 +38,7 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
 import java.awt.*;
+import java.awt.List;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.ItemEvent;
@@ -160,8 +161,6 @@ class SelectorPanel extends JPanel implements ViewController {
 		AgeGroupLabel.setHorizontalAlignment(JLabel.CENTER);
 		AgeGroupLabel.setVerticalAlignment(JLabel.CENTER);
 
-		add(AgeGroupLabel);
-		add("Center", AgeGroupMenuBar);
 
 		// CountryMenue
 		countryMenu = new JMenu("Selection Menu Country  ");
@@ -183,9 +182,6 @@ class SelectorPanel extends JPanel implements ViewController {
 		CountrySegmentLabel.setBorder(BorderFactory.createLineBorder(Color.lightGray, 1));
 		CountrySegmentLabel.setHorizontalAlignment(JLabel.CENTER);
 		CountrySegmentLabel.setVerticalAlignment(JLabel.CENTER);
-
-		add(CountrySegmentLabel);
-		add(CountrySegmentMenuBar);
 
 		// Cases Menue
 		// Union or Intersection
@@ -211,9 +207,7 @@ class SelectorPanel extends JPanel implements ViewController {
 		casesLabel.setBorder(BorderFactory.createLineBorder(Color.lightGray, 1));
 		casesLabel.setHorizontalAlignment(JLabel.CENTER);
 		casesLabel.setVerticalAlignment(JLabel.CENTER);
-
-		add(casesLabel);
-		add(casesDateMenuBar);
+		
 
 		NameLabel = new JLabel("Name");
 		NameLabel.setBorder(BorderFactory.createLineBorder(Color.lightGray, 1));
@@ -240,8 +234,6 @@ class SelectorPanel extends JPanel implements ViewController {
 			}
 		});
 
-		add(NameLabel);
-		add(filterText);
 
 		closeLabel = new JLabel("Closing Date");
 		closeLabel.setBorder(BorderFactory.createLineBorder(Color.lightGray, 1));
@@ -269,10 +261,6 @@ class SelectorPanel extends JPanel implements ViewController {
 			}
 		});
 
-		add(closeLabel);
-		add(filterDateText);
-
-	
 
 		//Age
 		ageRange = new JRangeSlider(0, 100, 0, 100, JRangeSlider.HORIZONTAL);
@@ -284,15 +272,11 @@ class SelectorPanel extends JPanel implements ViewController {
 		ageLabel.setHorizontalAlignment(JLabel.CENTER);
 		ageLabel.setVerticalAlignment(JLabel.CENTER);
 
-		add(ageLabel);
-		add(ageRange);
 
 		ViolenceMenu = new JMenu("Selection Menu Violence");
 		ViolenceMenu.setName("Violence");
 		ViolenceMenu.setBorder(BorderFactory.createLineBorder(Color.lightGray, 1));
 		ViolenceMenu.setBorderPainted(true);
-		// ViolenceMenu.setAlignmentX(CENTER_ALIGNMENT);
-		// ViolenceMenu.setAlignmentY(CENTER_ALIGNMENT);
 
 		ViolenceMenuBar = new JMenuBar();
 		ViolenceMenuBar.add("MIDDLE", ViolenceMenu);
@@ -312,9 +296,28 @@ class SelectorPanel extends JPanel implements ViewController {
 		violenceLabel.setBorder(BorderFactory.createLineBorder(Color.lightGray, 1));
 		violenceLabel.setHorizontalAlignment(JLabel.CENTER);
 		violenceLabel.setVerticalAlignment(JLabel.CENTER);
+		
+		add(AgeGroupLabel);
+		add( AgeGroupMenuBar);
+
+		add(CountrySegmentLabel);
+		add(CountrySegmentMenuBar);
+		
+		add(casesLabel);
+		add(casesDateMenuBar);
 
 		add(violenceLabel);
 		add(ViolenceMenuBar);
+		
+		add(ageLabel);
+		add(ageRange);
+		
+		add(NameLabel);
+		add(filterText);
+		
+		add(closeLabel);
+		add(filterDateText);
+		
 
 	}
 
@@ -426,6 +429,7 @@ class SelectorPanel extends JPanel implements ViewController {
 		ArrayList<Integer> output = new ArrayList<Integer>();
 		Set<Integer> outputCases = new HashSet<Integer>();
 		int first = 0;
+		int firstSpecial = 0;
 		// iterate on the menus
 		Iterator it = activeFiltersMap.entrySet().iterator();
 		while (it.hasNext()) {
@@ -441,8 +445,11 @@ class SelectorPanel extends JPanel implements ViewController {
 			while(it2.hasNext()){
 				Map.Entry pair2 = (Map.Entry) it2.next();
 				ArrayList<Integer> data2 =  (ArrayList<Integer>) pair2.getValue();
-				System.out.println(pair2.getKey()+ " " +data2.toString());
-				outputCases.addAll(data2);
+			//	System.out.println(pair2.getKey()+ " " +data2.toString());
+				if(firstSpecial++ == 0)
+					outputCases.addAll(data2);
+				else{
+					outputCases.retainAll(data2);}
 			}
 			
 				
@@ -452,10 +459,15 @@ class SelectorPanel extends JPanel implements ViewController {
 				output.addAll(outputCases);
 				}
 			// Intersection
-			if(data.size() != 0)
+			if(data.size() != 0){
 				output.retainAll(data);
-		//	output.retainAll(outputCases);
+			}
 		}
+		if(outputCases.size() != 0)
+			output.retainAll(outputCases);
+		Collections.sort(output);
+		
+		System.out.println(output.toString());
 		return output;
 	}
 
