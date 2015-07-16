@@ -202,6 +202,7 @@ class SelectorPanel extends JPanel implements ViewController {
 
 		for (String str : casesList) {
 			JCheckBoxMenuItem cb = new JCheckBoxMenuItem(str);
+			cb.setName(str);
 			cb.addItemListener(new CheckBoxListener());
 			CasesMenu.add(cb);
 		}
@@ -302,6 +303,7 @@ class SelectorPanel extends JPanel implements ViewController {
 
 		for (String str : violenceList) {
 			JCheckBoxMenuItem vn = new JCheckBoxMenuItem(str);
+			vn.setName(str);
 			vn.addItemListener(new CheckBoxListener());
 			ViolenceMenu.add(vn);
 		}
@@ -322,6 +324,7 @@ class SelectorPanel extends JPanel implements ViewController {
 		public void itemStateChanged(ItemEvent event) {
 			// get the JCheckBox which triggered the event
 			JCheckBoxMenuItem source = (JCheckBoxMenuItem) event.getSource();
+			int indexColumn= 0;
 			source.requestFocus();
 			String value2, value3;
 			// find the menue the CheckBox belongs to
@@ -329,7 +332,13 @@ class SelectorPanel extends JPanel implements ViewController {
 			JMenu menu = (JMenu) fromParent.getInvoker();
 			/// "YES" for range values
 			value2 = (menu.getName() == "Violence" || menu.getName() == "Case") ? "YES" : source.getText();
-			int indexColumn = model.getIndexOfLabel(source.getText());
+			if (menu.getName() == "Case" || menu.getName() == "Violence") {
+				indexColumn = model.getIndexOfLabel(source.getText());}
+			 else if (menu.getName() == "Country"  ) {
+				 indexColumn= model.getIndexOfLabel("Country of Origin");}
+			 else if (menu.getName() == "Age Group") {
+				 indexColumn = model.getIndexOfLabel("Age Group");}
+			
 
 			// HashMap to track the active menus
 			if (!activeFiltersMap.containsKey(menu))
@@ -339,6 +348,7 @@ class SelectorPanel extends JPanel implements ViewController {
 			if (event.getStateChange() == ItemEvent.SELECTED) {
 				// clear the data if there are no active filets for the
 				// correspoding menu
+		
 				if (activeFiltersMap.get(menu).getActiveFilters().equals(0))
 					activeFiltersMap.get(menu).getData().clear();
 
@@ -348,15 +358,15 @@ class SelectorPanel extends JPanel implements ViewController {
 				for (int row = 0; row < model.dataSize(); row++) {
 					ArrayList record = model.record(row);
 					if (menu.getName() == "Case" || menu.getName() == "Violence") {
-						if (record.get(indexColumn).equals(value2) && !activeFiltersMap.get(menu).contains(row))
-							activeFiltersMap.get(menu).add(row);
+						if (record.get(indexColumn).equals(value2) ){
+							activeFiltersMap.get(menu).addToHashMap(source.getName(), row);
+							
+						}
 					} else if (menu.getName() == "Country"  ) {
-						int indexCountry = model.getIndexOfLabel("Country of Origin");
-						if (record.get(indexCountry).equals(value2))
+						if (record.get(indexColumn).equals(value2))
 							activeFiltersMap.get(menu).add(row);
 					} else if (menu.getName() == "Age Group") {
-						int indexAge = model.getIndexOfLabel("Age Group");
-						if (record.get(indexAge).equals(value2))
+						if (record.get(indexColumn).equals(value2))
 							activeFiltersMap.get(menu).add(row);
 					}
 				}
@@ -385,9 +395,12 @@ class SelectorPanel extends JPanel implements ViewController {
 					// restricted (remove)
 					// use new Integer(row) to remove by value , not by
 					// index!!!!
-					else if (record.get(indexColumn).equals(value2))
+					else if (record.get(indexColumn).equals(value2) && activeFiltersMap.get(menu).contains(row))
 						activeFiltersMap.get(menu).remove(new Integer(row));
 				}
+				
+				if( menu.getName().equals( "Case") || menu.getName().equals("Violence"))
+					activeFiltersMap.get(menu).removeFromHashMap(source.getName());
 
 				model.setAvailableRows(filterdata());
 				model.select(new ArrayList());
@@ -411,17 +424,37 @@ class SelectorPanel extends JPanel implements ViewController {
 		filterDateText.setBackground(Color.WHITE);
 		// store the elements which occur in every(intersection) menu(filter)
 		ArrayList<Integer> output = new ArrayList<Integer>();
+		Set<Integer> outputCases = new HashSet<Integer>();
 		int first = 0;
 		// iterate on the menus
 		Iterator it = activeFiltersMap.entrySet().iterator();
 		while (it.hasNext()) {
+			System.out.println(" I Am here");
 			Map.Entry pair = (Map.Entry) it.next();
+			System.out.println(pair.getKey());
 			// System.out.println(pair.getKey() + " = " + pair.getValue());
 			ArrayList<Integer> data = ((SelectionFilter) pair.getValue()).getData();
-			if (first++ == 0)
+			System.out.println(data);
+			HashMap<String, ArrayList> dataFromViolenceAndCases =((SelectionFilter)pair.getValue()).getMapForViolenceOrCases();
+			
+			Iterator it2= dataFromViolenceAndCases.entrySet().iterator();
+			while(it2.hasNext()){
+				Map.Entry pair2 = (Map.Entry) it2.next();
+				ArrayList<Integer> data2 =  (ArrayList<Integer>) pair2.getValue();
+				System.out.println(pair2.getKey()+ " " +data2.toString());
+				outputCases.addAll(data2);
+			}
+			
+				
+			//if only one filter active
+			if (first++ == 0){
 				output.addAll(data);
+				output.addAll(outputCases);
+				}
 			// Intersection
-			output.retainAll(data);
+			if(data.size() != 0)
+				output.retainAll(data);
+		//	output.retainAll(outputCases);
 		}
 		return output;
 	}
