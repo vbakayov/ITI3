@@ -72,8 +72,7 @@ class TradeViewerFrame extends JFrame {
         Toolkit toolkit =  Toolkit.getDefaultToolkit ();
         Dimension dim = toolkit.getScreenSize();
         setSize(dim.width-350,dim.height-200);
-        System.out.println("BLa- BANANAA" +getSize().toString());
-        splitPane1.setDividerLocation(getWidth()/4);
+        splitPane1.setDividerLocation(getWidth()/3);
         splitPane2.setDividerLocation(getWidth()-(getWidth()/3));
         setTitle("Legal Services Agency Viewer - " +filename.substring(filename.lastIndexOf('\\')+1, filename.length()));
         setLocation(dim.width/2-getSize().width/2, dim.height/2-getSize().height/2);

@@ -84,7 +84,7 @@ public class StatisticsPanel extends JPanel
 	private void getOutcomesCount() {
 		outcomesCategories.clear();
 
-		int indexColAsylum= model.getIndexOfLabel("Asylum Application");
+		int indexColAsylum= model.getIndexOfLabel("Refugee Status");
 		int indexColAppeal= model.getIndexOfLabel("Asylum Appeal");
 		int indexColFreshClaim= model.getIndexOfLabel("Fresh Claim for Asylum");
 		
