@@ -176,12 +176,12 @@ public class Model {
 					// System.out.println(row.getLastCellNum());
 					Cell cell = row.getCell(cn, Row.CREATE_NULL_AS_BLANK);
 					if (isHeader && addLabels) {
-						labels.add(cell.toString());
+						labels.add(cell.toString().trim());
 					}
 					if (isType == 1 && addLabels)
-						dataType.add(cell.toString());
+						dataType.add(cell.toString().trim());
 					else {
-						rowArray.add(cell.toString());
+						rowArray.add(cell.toString().trim());
 						// Check the cell type and format accordingly
 						switch (cell.getCellType()) {
 						case Cell.CELL_TYPE_NUMERIC:
@@ -442,13 +442,16 @@ public class Model {
 
 			// copy to out file
 			FileOutputStream out = new FileOutputStream(new File(absolutePath));
+			workbook2.write(out);
+			out.close();
+			
 			int sizeAvailable= availableRows.size();
 			// remove rows from the spreadsheet original data
 			for (int row = availableRows.size() - 1; row >= 0; row--)
 				RemoveROwwriteXLSXFile(availableRows.get(row) + 2);
 
-			workbook2.write(out);
-			out.close();
+
+			
 			System.out.println("Excel written successfully..");
 			// remove the available rows from the programs' data model
 			removeRowsFromDataSet();
@@ -468,8 +471,8 @@ public class Model {
 		}
 		
 		catch (FileNotFoundException e) {
-			if (e.getMessage()
-					.contains("The process cannot access the file because it is being used by another process")) {
+			e.printStackTrace();
+			if (e.getMessage().contains("The process cannot access the file because it is being used by another process")) {
 				MessageInfo.processMessage(JOptionPane.ERROR_MESSAGE,
 						"Cannot access the file because it is being used by another process- probably Excel. Close Excel and try again");
 			} else if (e.getMessage().contains("The system cannot find the file specified")) {

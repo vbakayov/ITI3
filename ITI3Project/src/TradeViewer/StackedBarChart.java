@@ -67,7 +67,7 @@ public class StackedBarChart extends JFrame {
         	
         	switch(i){
         	case 0:
-        		category= "Asylum Application";
+        		category= "Refugee Status";
         		break;
         	case 1:
         		category= "Asylum Appeal";

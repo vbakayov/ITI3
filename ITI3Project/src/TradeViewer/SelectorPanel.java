@@ -542,6 +542,7 @@ class SelectorPanel extends JPanel implements ViewController {
 
 		if (!filterText.getText().equals("Enter Name")
 				&& (!filterText.getText().equals("") || currentNameSymbols == 0)) {
+			clearSelection();
 
 			if (type.equals("REMOVE"))
 				currentNameSymbols--;
@@ -564,6 +565,11 @@ class SelectorPanel extends JPanel implements ViewController {
 			model.select(new ArrayList());
 			model.notifyChangeChildren();
 		}
+	}
+
+	private void clearSelection() {
+	//	activeFiltersMap.clear();
+		
 	}
 
 	private void newDateFilter() {
